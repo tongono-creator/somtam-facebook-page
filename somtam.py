@@ -14,7 +14,7 @@ GEMINI_API_KEY    = os.environ.get("GEMINI_API_KEY", "AIzaSyCi6AbETW4XTjJpcbRxj2
 
 client      = genai.Client(api_key=GEMINI_API_KEY)
 TEXT_MODELS  = ["gemini-2.5-flash", "gemini-1.5-flash-latest"]
-IMAGE_MODEL  = "gemini-2.0-flash-preview-image-generation"
+IMAGE_MODEL  = "gemini-2.0-flash-exp-image-generation"
 
 HEADERS = {"User-Agent": "Mozilla/5.0"}
 
