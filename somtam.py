@@ -210,7 +210,7 @@ def main():
     print(f"Food: {food_name} | Type: {content_type} | Query: {food_query}")
 
     # ดึงรูปจาก Pexels
-    img_url, _ = get_pexels_image(food_query)
+    img_url, photographer = get_pexels_image(food_query)
     if not img_url:
         print("Pexels failed")
         return
