@@ -5,6 +5,7 @@ import time
 import requests
 import tempfile
 from google import genai
+from google.genai import types
 
 # ── Config ───────────────────────────────────────────────────────────
 PAGE_ID           = "554501167740603"
@@ -17,36 +18,27 @@ TEXT_MODELS = ["gemini-2.5-flash", "gemini-3.5-flash"]
 
 HEADERS = {"User-Agent": "Mozilla/5.0"}
 
-# ── Food Topics ───────────────────────────────────────────────────────
-FOOD_CATEGORIES = [
-    ("ส้มตำ",              "som tum papaya salad thai"),
-    ("ลาบหมู",             "larb moo thai minced pork salad"),
-    ("ลาบไก่",             "larb gai thai chicken salad"),
-    ("ก้อยกุ้ง",           "thai spicy shrimp salad"),
-    ("ข้าวเหนียว",         "sticky rice thai food"),
-    ("ไก่ย่าง",            "thai grilled chicken"),
-    ("ซุปหน่อไม้",         "bamboo shoot soup thai"),
-    ("ต้มแซ่บ",            "tom saep spicy thai soup"),
-    ("น้ำตกหมู",           "waterfall pork thai food"),
-    ("ยำวุ้นเส้น",         "glass noodle salad thai"),
-    ("แกงอ่อม",            "thai herb curry"),
-    ("ปลาร้าทรงเครื่อง",   "pla ra thai fermented fish"),
-    ("ส้มตำปูปลาร้า",      "som tum crab thai"),
-    ("ส้มตำไทย",           "som tum thai classic"),
-    ("ส้มตำซีฟู้ด",        "som tum seafood thai"),
+# ── Pexels search queries (broad — ให้ Gemini วิเคราะห์รูปเอง) ───────
+PEXELS_QUERIES = [
+    "thai food",
+    "isaan thai food",
+    "thai street food",
+    "som tum papaya salad",
+    "thai grilled chicken",
+    "thai spicy salad",
+    "thai rice dish",
+    "thai curry food",
+    "thai noodles",
+    "larb thai salad",
+    "sticky rice thai",
+    "thai food plate",
 ]
 
-CONTENT_TYPES = [
-    "สูตร",
-    "เคล็ดลับ",
-    "เมนูแนะนำ",
-    "ความรู้",
-]
+CONTENT_TYPES = ["ความรู้", "tips", "เคล็ดลับ", "เมนูแนะนำ"]
 
 
 # ── Pexels ────────────────────────────────────────────────────────────
 def get_pexels_image(query):
-    """ดึงรูปจาก Pexels ตาม keyword — คืน (image_url, photographer)"""
     try:
         resp = requests.get(
             "https://api.pexels.com/v1/search",
@@ -60,17 +52,15 @@ def get_pexels_image(query):
             print(f"Pexels: no results for '{query}'")
             return None, None
         photo = random.choice(photos)
-        url = photo["src"]["large"]
-        photographer = photo.get("photographer", "")
-        print(f"Pexels: picked photo by {photographer} | {url[:60]}")
-        return url, photographer
+        print(f"Pexels: {photo['src']['large'][:60]}")
+        return photo["src"]["large"], photo.get("photographer", "Pexels")
     except Exception as e:
         print(f"Pexels error: {e}")
         return None, None
 
 
+# ── Download image ────────────────────────────────────────────────────
 def download_image(url):
-    """Download รูปจาก URL คืน temp file path"""
     MAX_BYTES = 4 * 1024 * 1024
     try:
         resp = requests.get(url, headers=HEADERS, timeout=15, stream=True)
@@ -86,41 +76,74 @@ def download_image(url):
         tmp.close()
         return tmp.name
     except Exception as e:
-        print(f"Image download failed: {e}")
+        print(f"Download failed: {e}")
         return None
 
 
-# ── Gemini Text ───────────────────────────────────────────────────────
+# ── Gemini Vision — วิเคราะห์รูป ─────────────────────────────────────
+def analyze_image(img_path):
+    """ดูรูปแล้วบอกว่าอาหารอะไร (ภาษาไทย)"""
+    with open(img_path, "rb") as f:
+        img_data = f.read()
+
+    prompt = (
+        "ดูรูปนี้แล้วตอบสั้นๆ ว่าเป็นอาหารอะไร ชื่อภาษาไทย 1-4 คำ "
+        "เช่น 'ส้มตำ', 'ไก่ย่าง', 'ลาบหมู' "
+        "ถ้าไม่ใช่รูปอาหาร ตอบว่า 'ไม่ใช่อาหาร'"
+    )
+
+    for model in TEXT_MODELS:
+        try:
+            resp = client.models.generate_content(
+                model=model,
+                contents=[
+                    types.Part.from_bytes(data=img_data, mime_type="image/jpeg"),
+                    types.Part.from_text(text=prompt),
+                ],
+            )
+            result = resp.text.strip()
+            print(f"Vision: {result}")
+            return result
+        except Exception as e:
+            print(f"[{model}] vision failed: {e}")
+    return None
+
+
+# ── Gemini Caption ────────────────────────────────────────────────────
 def generate_caption(food_name, content_type):
     prompts = {
-        "สูตร": (
-            f"เขียน Facebook caption ภาษาไทยสำหรับเพจอาหารอีสาน แนะนำสูตร{food_name}\n"
-            "บรรทัด 1: หัวข้อดึงดูด ไม่เกิน 40 ตัวอักษร\n"
-            "บรรทัด 2-3: วัตถุดิบหลัก 3-4 อย่าง + วิธีทำสั้นๆ\n"
-            "บรรทัด 4: hashtag 3 อัน\n"
-            "ห้ามใช้ ** markdown ตอบแค่ caption"
-        ),
-        "เคล็ดลับ": (
-            f"เขียน Facebook caption ภาษาไทยสำหรับเพจอาหาร เคล็ดลับทำ{food_name}ให้อร่อย\n"
-            "บรรทัด 1: หัวข้อสั้น hook คน ไม่เกิน 40 ตัวอักษร\n"
-            "บรรทัด 2-3: tips 2-3 ข้อ สั้นมาก\n"
-            "บรรทัด 4: hashtag 3 อัน\n"
-            "ห้ามใช้ ** markdown ตอบแค่ caption"
-        ),
-        "เมนูแนะนำ": (
-            f"เขียน Facebook caption ภาษาไทยสำหรับเพจอาหาร แนะนำเมนู{food_name}\n"
-            "บรรทัด 1: ประโยคชวนน้ำลายไหล ไม่เกิน 40 ตัวอักษร\n"
-            "บรรทัด 2: บรรยายรสชาติสั้นๆ 1 ประโยค\n"
-            "บรรทัด 3: คำถามชวนคอมเม้น\n"
-            "บรรทัด 4: hashtag 3 อัน\n"
-            "ห้ามใช้ ** markdown ตอบแค่ caption"
-        ),
         "ความรู้": (
-            f"เขียน Facebook caption ภาษาไทยสำหรับเพจอาหาร ความรู้เรื่อง{food_name}\n"
-            "บรรทัด 1: fact น่าสนใจ ไม่เกิน 40 ตัวอักษร\n"
+            f"เขียน Facebook caption ภาษาไทยสำหรับเพจรวมรูปอาหารอีสาน\n"
+            f"อาหารในรูป: {food_name}\n"
+            "บรรทัด 1: fact น่าสนใจเรื่องอาหารนี้ ไม่เกิน 40 ตัวอักษร\n"
             "บรรทัด 2: อธิบายสั้นๆ 1-2 ประโยค\n"
             "บรรทัด 3: hashtag 3 อัน\n"
-            "ห้ามใช้ ** markdown ตอบแค่ caption"
+            "สื่อให้ชัดว่าเป็นเพจรวมรูปอาหาร ไม่ใช่ร้านค้า ห้ามใช้ ** ตอบแค่ caption"
+        ),
+        "tips": (
+            f"เขียน Facebook caption ภาษาไทยสำหรับเพจรวมรูปอาหารอีสาน\n"
+            f"อาหารในรูป: {food_name}\n"
+            "บรรทัด 1: tips การทำหรือกินอาหารนี้ ไม่เกิน 40 ตัวอักษร\n"
+            "บรรทัด 2-3: tips 2 ข้อสั้นๆ\n"
+            "บรรทัด 4: hashtag 3 อัน\n"
+            "สื่อให้ชัดว่าเป็นเพจรวมรูปอาหาร ไม่ใช่ร้านค้า ห้ามใช้ ** ตอบแค่ caption"
+        ),
+        "เคล็ดลับ": (
+            f"เขียน Facebook caption ภาษาไทยสำหรับเพจรวมรูปอาหารอีสาน\n"
+            f"อาหารในรูป: {food_name}\n"
+            "บรรทัด 1: หัวข้อ hook ไม่เกิน 40 ตัวอักษร\n"
+            "บรรทัด 2-3: เคล็ดลับทำให้อร่อย 2-3 ข้อ\n"
+            "บรรทัด 4: hashtag 3 อัน\n"
+            "สื่อให้ชัดว่าเป็นเพจรวมรูปอาหาร ไม่ใช่ร้านค้า ห้ามใช้ ** ตอบแค่ caption"
+        ),
+        "เมนูแนะนำ": (
+            f"เขียน Facebook caption ภาษาไทยสำหรับเพจรวมรูปอาหารอีสาน\n"
+            f"อาหารในรูป: {food_name}\n"
+            "บรรทัด 1: ประโยคชวนน้ำลายไหล ไม่เกิน 40 ตัวอักษร\n"
+            "บรรทัด 2: บรรยายรสชาติสั้นๆ\n"
+            "บรรทัด 3: คำถามชวนคอมเม้น\n"
+            "บรรทัด 4: hashtag 3 อัน\n"
+            "สื่อให้ชัดว่าเป็นเพจรวมรูปอาหาร ไม่ใช่ร้านค้า ห้ามใช้ ** ตอบแค่ caption"
         ),
     }
     prompt = prompts.get(content_type, prompts["เมนูแนะนำ"])
@@ -150,10 +173,7 @@ def post_photo(caption, img_path):
         with open(img_path, "rb") as f:
             resp = requests.post(
                 api_url,
-                data={
-                    "message":      caption,
-                    "access_token": PAGE_ACCESS_TOKEN,
-                },
+                data={"message": caption, "access_token": PAGE_ACCESS_TOKEN},
                 files={"source": ("food.jpg", f, "image/jpeg")},
                 timeout=60,
             )
@@ -205,27 +225,37 @@ def add_comment(post_id):
 def main():
     print("=== ส้มตำคุณอร Bot ===")
 
-    food_name, food_query = random.choice(FOOD_CATEGORIES)
-    content_type          = random.choice(CONTENT_TYPES)
-    print(f"Food: {food_name} | Type: {content_type} | Query: {food_query}")
+    # ลองหารูปที่เป็นอาหารจริงๆ (max 3 attempts)
+    for attempt in range(3):
+        query        = random.choice(PEXELS_QUERIES)
+        content_type = random.choice(CONTENT_TYPES)
+        print(f"Query: {query} | Type: {content_type} | Attempt {attempt+1}")
 
-    # ดึงรูปจาก Pexels
-    img_url, photographer = get_pexels_image(food_query)
-    if not img_url:
-        print("Pexels failed")
+        img_url, photographer = get_pexels_image(query)
+        if not img_url:
+            continue
+
+        img_path = download_image(img_url)
+        if not img_path:
+            continue
+
+        # Gemini Vision วิเคราะห์ว่ารูปเป็นอาหารอะไร
+        food_name = analyze_image(img_path)
+        if not food_name or "ไม่ใช่อาหาร" in food_name:
+            print("Not a food image, retrying...")
+            os.unlink(img_path)
+            continue
+
+        # เขียน caption ตามรูปจริง
+        caption = generate_caption(food_name, content_type)
+        if photographer:
+            caption += f"\n📷 Photo by {photographer} via Pexels"
+        print(f"Caption:\n{caption}\n")
+
+        post_photo(caption, img_path)
         return
 
-    img_path = download_image(img_url)
-    if not img_path:
-        print("Download failed")
-        return
-
-    caption = generate_caption(food_name, content_type)
-    if photographer:
-        caption += f"\n📷 Photo by {photographer} via Pexels"
-    print(f"Caption:\n{caption}\n")
-
-    post_photo(caption, img_path)
+    print("Failed after 3 attempts")
 
 
 if __name__ == "__main__":
