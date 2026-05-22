@@ -13,8 +13,9 @@ PAGE_ACCESS_TOKEN = os.environ["SOMTAM_PAGE_ACCESS_TOKEN"]
 GEMINI_API_KEY    = os.environ.get("GEMINI_API_KEY", "")
 PEXELS_API_KEY    = os.environ["PEXELS_API_KEY"]
 
-client      = genai.Client(api_key=GEMINI_API_KEY)
-TEXT_MODELS = ["gemini-2.5-flash", "gemini-3.5-flash"]
+client       = genai.Client(api_key=GEMINI_API_KEY)
+TEXT_MODELS  = ["gemini-2.5-flash", "gemini-3.5-flash"]
+ACCENT_COLOR = (255, 107, 53)  # ส้ม #FF6B35
 
 HEADERS = {"User-Agent": "Mozilla/5.0"}
 
@@ -110,6 +111,25 @@ def analyze_image(img_path):
 
 
 # ── Gemini Caption ────────────────────────────────────────────────────
+def generate_hook(food_name, content_type):
+    prompt = (
+        f"อาหารในรูป: {food_name} | เนื้อหา: {content_type}\n"
+        "เขียน hook text สั้นๆ ภาษาไทย สำหรับใส่บนรูปอาหาร\n"
+        "บรรทัด 1: hook 3-5 คำ ชวนน้ำลายไหล/อยากกิน\n"
+        "บรรทัด 2: คำถาม/เคล็ดลับสั้น 4-7 คำ\n"
+        "ตอบแค่ 2 บรรทัด ไม่มี hashtag ไม่มี **"
+    )
+    for model in TEXT_MODELS:
+        try:
+            resp = client.models.generate_content(model=model, contents=prompt)
+            lines = clean_text(resp.text.strip()).split("\n")
+            lines = [l.strip() for l in lines if l.strip()]
+            return lines[0] if lines else food_name[:20], lines[1] if len(lines) > 1 else ""
+        except Exception as e:
+            print(f"[{model}] hook failed: {e}")
+    return food_name[:20], ""
+
+
 def generate_caption(food_name, content_type):
     prompts = {
         "ความรู้": (
@@ -246,7 +266,17 @@ def main():
             os.unlink(img_path)
             continue
 
-        # เขียน caption ตามรูปจริง
+        line1, line2 = generate_hook(food_name, content_type)
+        print(f"Hook: {line1} | {line2}")
+
+        try:
+            from overlay_utils import add_overlay
+            overlaid = add_overlay(img_path, line1, line2, ACCENT_COLOR)
+            os.unlink(img_path)
+            img_path = overlaid
+        except Exception as e:
+            print(f"Overlay failed (using original): {e}")
+
         caption = generate_caption(food_name, content_type)
         if photographer:
             caption += f"\n📷 Photo by {photographer} via Pexels"
