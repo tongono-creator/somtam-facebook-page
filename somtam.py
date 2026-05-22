@@ -221,6 +221,8 @@ def main():
         return
 
     caption = generate_caption(food_name, content_type)
+    if photographer:
+        caption += f"\n📷 Photo by {photographer} via Pexels"
     print(f"Caption:\n{caption}\n")
 
     post_photo(caption, img_path)
