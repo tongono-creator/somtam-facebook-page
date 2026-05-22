@@ -5,64 +5,110 @@ import time
 import requests
 import tempfile
 from google import genai
-from google.genai import types
 
 # ── Config ───────────────────────────────────────────────────────────
 PAGE_ID           = "554501167740603"
 PAGE_ACCESS_TOKEN = os.environ["SOMTAM_PAGE_ACCESS_TOKEN"]
-GEMINI_API_KEY    = os.environ.get("GEMINI_API_KEY", "AIzaSyCi6AbETW4XTjJpcbRxj2oL3ftEWRbv_xI")
+GEMINI_API_KEY    = os.environ.get("GEMINI_API_KEY", "")
+PEXELS_API_KEY    = os.environ["PEXELS_API_KEY"]
 
 client      = genai.Client(api_key=GEMINI_API_KEY)
-TEXT_MODELS  = ["gemini-2.5-flash", "gemini-3.5-flash"]
-IMAGE_MODEL  = "gemini-3.1-flash-image-preview"
+TEXT_MODELS = ["gemini-2.5-flash", "gemini-3.5-flash"]
 
 HEADERS = {"User-Agent": "Mozilla/5.0"}
 
 # ── Food Topics ───────────────────────────────────────────────────────
 FOOD_CATEGORIES = [
-    "ส้มตำ",
-    "ลาบ หมู/ไก่/เป็ด",
-    "ก้อย กุ้ง/ปลา",
-    "ข้าวเหนียว",
-    "ไก่ย่าง",
-    "ซุปหน่อไม้",
-    "ต้มแซ่บ",
-    "น้ำตกหมู",
-    "ยำวุ้นเส้น",
-    "แกงอ่อม",
-    "ปลาร้าทรงเครื่อง",
-    "ส้มตำปูปลาร้า",
-    "ส้มตำไทย",
-    "ส้มตำซีฟู้ด",
+    ("ส้มตำ",              "som tum papaya salad thai"),
+    ("ลาบหมู",             "larb moo thai minced pork salad"),
+    ("ลาบไก่",             "larb gai thai chicken salad"),
+    ("ก้อยกุ้ง",           "thai spicy shrimp salad"),
+    ("ข้าวเหนียว",         "sticky rice thai food"),
+    ("ไก่ย่าง",            "thai grilled chicken"),
+    ("ซุปหน่อไม้",         "bamboo shoot soup thai"),
+    ("ต้มแซ่บ",            "tom saep spicy thai soup"),
+    ("น้ำตกหมู",           "waterfall pork thai food"),
+    ("ยำวุ้นเส้น",         "glass noodle salad thai"),
+    ("แกงอ่อม",            "thai herb curry"),
+    ("ปลาร้าทรงเครื่อง",   "pla ra thai fermented fish"),
+    ("ส้มตำปูปลาร้า",      "som tum crab thai"),
+    ("ส้มตำไทย",           "som tum thai classic"),
+    ("ส้มตำซีฟู้ด",        "som tum seafood thai"),
 ]
 
 CONTENT_TYPES = [
-    "สูตร",        # สูตรทำกินเอง
-    "เคล็ดลับ",   # tips อาหารอร่อย
-    "เมนูแนะนำ",  # แนะนำเมนู
-    "ความรู้",    # ความรู้เรื่องอาหาร
+    "สูตร",
+    "เคล็ดลับ",
+    "เมนูแนะนำ",
+    "ความรู้",
 ]
 
 
+# ── Pexels ────────────────────────────────────────────────────────────
+def get_pexels_image(query):
+    """ดึงรูปจาก Pexels ตาม keyword — คืน (image_url, photographer)"""
+    try:
+        resp = requests.get(
+            "https://api.pexels.com/v1/search",
+            headers={"Authorization": PEXELS_API_KEY},
+            params={"query": query, "per_page": 15, "orientation": "landscape"},
+            timeout=10,
+        )
+        resp.raise_for_status()
+        photos = resp.json().get("photos", [])
+        if not photos:
+            print(f"Pexels: no results for '{query}'")
+            return None, None
+        photo = random.choice(photos)
+        url = photo["src"]["large"]
+        photographer = photo.get("photographer", "")
+        print(f"Pexels: picked photo by {photographer} | {url[:60]}")
+        return url, photographer
+    except Exception as e:
+        print(f"Pexels error: {e}")
+        return None, None
+
+
+def download_image(url):
+    """Download รูปจาก URL คืน temp file path"""
+    MAX_BYTES = 4 * 1024 * 1024
+    try:
+        resp = requests.get(url, headers=HEADERS, timeout=15, stream=True)
+        resp.raise_for_status()
+        data = b""
+        for chunk in resp.iter_content(chunk_size=65536):
+            data += chunk
+            if len(data) > MAX_BYTES:
+                print("Image too large, skipping")
+                return None
+        tmp = tempfile.NamedTemporaryFile(suffix=".jpg", delete=False)
+        tmp.write(data)
+        tmp.close()
+        return tmp.name
+    except Exception as e:
+        print(f"Image download failed: {e}")
+        return None
+
+
 # ── Gemini Text ───────────────────────────────────────────────────────
-def generate_caption(food, content_type):
+def generate_caption(food_name, content_type):
     prompts = {
         "สูตร": (
-            f"เขียน Facebook caption ภาษาไทยสำหรับเพจอาหารอีสาน แนะนำ{content_type}{food}\n"
+            f"เขียน Facebook caption ภาษาไทยสำหรับเพจอาหารอีสาน แนะนำสูตร{food_name}\n"
             "บรรทัด 1: หัวข้อดึงดูด ไม่เกิน 40 ตัวอักษร\n"
             "บรรทัด 2-3: วัตถุดิบหลัก 3-4 อย่าง + วิธีทำสั้นๆ\n"
             "บรรทัด 4: hashtag 3 อัน\n"
             "ห้ามใช้ ** markdown ตอบแค่ caption"
         ),
         "เคล็ดลับ": (
-            f"เขียน Facebook caption ภาษาไทยสำหรับเพจอาหาร เคล็ดลับทำ{food}ให้อร่อย\n"
+            f"เขียน Facebook caption ภาษาไทยสำหรับเพจอาหาร เคล็ดลับทำ{food_name}ให้อร่อย\n"
             "บรรทัด 1: หัวข้อสั้น hook คน ไม่เกิน 40 ตัวอักษร\n"
             "บรรทัด 2-3: tips 2-3 ข้อ สั้นมาก\n"
             "บรรทัด 4: hashtag 3 อัน\n"
             "ห้ามใช้ ** markdown ตอบแค่ caption"
         ),
         "เมนูแนะนำ": (
-            f"เขียน Facebook caption ภาษาไทยสำหรับเพจอาหาร แนะนำเมนู{food}\n"
+            f"เขียน Facebook caption ภาษาไทยสำหรับเพจอาหาร แนะนำเมนู{food_name}\n"
             "บรรทัด 1: ประโยคชวนน้ำลายไหล ไม่เกิน 40 ตัวอักษร\n"
             "บรรทัด 2: บรรยายรสชาติสั้นๆ 1 ประโยค\n"
             "บรรทัด 3: คำถามชวนคอมเม้น\n"
@@ -70,7 +116,7 @@ def generate_caption(food, content_type):
             "ห้ามใช้ ** markdown ตอบแค่ caption"
         ),
         "ความรู้": (
-            f"เขียน Facebook caption ภาษาไทยสำหรับเพจอาหาร ความรู้เรื่อง{food}\n"
+            f"เขียน Facebook caption ภาษาไทยสำหรับเพจอาหาร ความรู้เรื่อง{food_name}\n"
             "บรรทัด 1: fact น่าสนใจ ไม่เกิน 40 ตัวอักษร\n"
             "บรรทัด 2: อธิบายสั้นๆ 1-2 ประโยค\n"
             "บรรทัด 3: hashtag 3 อัน\n"
@@ -78,14 +124,13 @@ def generate_caption(food, content_type):
         ),
     }
     prompt = prompts.get(content_type, prompts["เมนูแนะนำ"])
-
     for model in TEXT_MODELS:
         try:
             resp = client.models.generate_content(model=model, contents=prompt)
             return clean_text(resp.text.strip())
         except Exception as e:
             print(f"[{model}] caption failed: {e}")
-    return f"{food} อร่อยมาก!\n#อาหารไทย #อาหารอีสาน #ส้มตำ"
+    return f"{food_name} อร่อยมาก!\n#อาหารไทย #อาหารอีสาน #ส้มตำ"
 
 
 def clean_text(text):
@@ -96,34 +141,6 @@ def clean_text(text):
     text = re.sub(r"_(.+?)_",       r"\1", text)
     text = re.sub(r"^#+\s*",        "",    text, flags=re.MULTILINE)
     return text.strip()
-
-
-# ── Gemini Image ──────────────────────────────────────────────────────
-def generate_food_image(food, content_type):
-    prompt = (
-        f"Ultra-realistic Thai food photography of {food}, "
-        "professional food styling, natural lighting, shallow depth of field, "
-        "vibrant colors, appetizing presentation, wooden table background, "
-        "4K quality, Instagram-worthy food photo"
-    )
-    try:
-        resp = client.models.generate_content(
-            model=IMAGE_MODEL,
-            contents=prompt,
-            config=types.GenerateContentConfig(
-                response_modalities=["IMAGE", "TEXT"]
-            ),
-        )
-        for part in resp.candidates[0].content.parts:
-            if part.inline_data:
-                tmp = tempfile.NamedTemporaryFile(suffix=".jpg", delete=False)
-                tmp.write(part.inline_data.data)
-                tmp.close()
-                print(f"Image generated: {tmp.name}")
-                return tmp.name
-    except Exception as e:
-        print(f"Image gen failed: {e}")
-    return None
 
 
 # ── Facebook ──────────────────────────────────────────────────────────
@@ -188,17 +205,23 @@ def add_comment(post_id):
 def main():
     print("=== ส้มตำคุณอร Bot ===")
 
-    food         = random.choice(FOOD_CATEGORIES)
-    content_type = random.choice(CONTENT_TYPES)
-    print(f"Food: {food} | Type: {content_type}")
+    food_name, food_query = random.choice(FOOD_CATEGORIES)
+    content_type          = random.choice(CONTENT_TYPES)
+    print(f"Food: {food_name} | Type: {content_type} | Query: {food_query}")
 
-    caption = generate_caption(food, content_type)
-    print(f"Caption:\n{caption}\n")
-
-    img_path = generate_food_image(food, content_type)
-    if not img_path:
-        print("Image generation failed")
+    # ดึงรูปจาก Pexels
+    img_url, _ = get_pexels_image(food_query)
+    if not img_url:
+        print("Pexels failed")
         return
+
+    img_path = download_image(img_url)
+    if not img_path:
+        print("Download failed")
+        return
+
+    caption = generate_caption(food_name, content_type)
+    print(f"Caption:\n{caption}\n")
 
     post_photo(caption, img_path)
 
