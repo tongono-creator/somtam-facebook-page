@@ -159,6 +159,21 @@ def analyze_image(img_path):
 
 
 # ── Gemini Caption ────────────────────────────────────────────────────
+def food_to_english_query(food_name):
+    """แปลชื่ออาหารไทย → English keyword สำหรับ Pexels search"""
+    prompt = (
+        f"แปลชื่ออาหารไทยนี้เป็น English keyword 2-4 words สำหรับค้นหารูปใน Pexels: {food_name}\n"
+        "ตอบแค่ keyword ภาษาอังกฤษ ไม่มีอะไรอื่น"
+    )
+    for model in TEXT_MODELS:
+        try:
+            resp = client.models.generate_content(model=model, contents=prompt)
+            return resp.text.strip().lower()
+        except Exception as e:
+            print(f"[{model}] translate failed: {e}")
+    return "thai food"
+
+
 def generate_hook(food_name, content_type):
     prompt = (
         f"อาหารในรูป: {food_name} | เนื้อหา: {content_type}\n"
@@ -299,42 +314,41 @@ def main():
         content_type = random.choice(CONTENT_TYPES)
         print(f"Query: {query} | Type: {content_type} | Attempt {attempt+1}")
 
-        # ── ดึง 4 รูปสำหรับ collage ──────────────────────────────────
-        photo_list = get_pexels_images(query, count=4)
-        if len(photo_list) < 4:
-            # fallback รูปเดียวถ้าได้ไม่ครบ 4
-            img_url, photographer = get_pexels_image(query)
-            if not img_url:
-                continue
-            photo_list = [(img_url, photographer)]
-
-        # download ทุกรูป
-        img_paths = []
-        for url, _ in photo_list:
-            p = download_image(url)
-            if p:
-                img_paths.append(p)
-
-        if not img_paths:
+        # ── รูปแรก: broad query → Vision ระบุอาหาร ─────────────────────
+        img_url, _ = get_pexels_image(query)
+        if not img_url:
+            continue
+        first_path = download_image(img_url)
+        if not first_path:
             continue
 
-        # Vision วิเคราะห์รูปแรก
-        food_name = analyze_image(img_paths[0])
+        food_name = analyze_image(first_path)
         if not food_name or "ไม่ใช่อาหาร" in food_name:
             print("Not a food image, retrying...")
-            for p in img_paths:
-                os.unlink(p)
+            os.unlink(first_path)
             continue
 
+        # ── รูป 2-4: ค้นด้วย food_name ที่รู้แล้ว (ตรงกับ caption) ──
+        en_query = food_to_english_query(food_name)
+        print(f"Collage query: {en_query}")
+        extra_photos = get_pexels_images(en_query, count=3)
+        extra_paths = []
+        for url, _ in extra_photos:
+            p = download_image(url)
+            if p:
+                extra_paths.append(p)
+
+        all_paths = [first_path] + extra_paths
+
         # ── สร้าง collage ─────────────────────────────────────────────
-        if len(img_paths) >= 4:
-            collage_path = make_collage(img_paths)
-            for p in img_paths:
+        if len(all_paths) >= 4:
+            collage_path = make_collage(all_paths)
+            for p in all_paths:
                 os.unlink(p)
             img_path = collage_path
         else:
-            img_path = img_paths[0]
-            for p in img_paths[1:]:
+            img_path = first_path
+            for p in extra_paths:
                 os.unlink(p)
 
         # text overlay บน collage
