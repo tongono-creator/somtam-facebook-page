@@ -4,6 +4,7 @@ import random
 import time
 import requests
 import tempfile
+import xml.etree.ElementTree as ET
 from google import genai
 from google.genai import types
 
@@ -11,104 +12,76 @@ from google.genai import types
 PAGE_ID           = "554501167740603"
 PAGE_ACCESS_TOKEN = os.environ["SOMTAM_PAGE_ACCESS_TOKEN"]
 GEMINI_API_KEY    = os.environ.get("GEMINI_API_KEY", "")
-PEXELS_API_KEY    = os.environ["PEXELS_API_KEY"]
 
 client       = genai.Client(api_key=GEMINI_API_KEY)
 TEXT_MODELS  = ["gemini-2.5-flash", "gemini-3.5-flash"]
 ACCENT_COLOR = (255, 107, 53)  # ส้ม #FF6B35
 
-HEADERS = {"User-Agent": "Mozilla/5.0"}
+HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; SomtamBot/1.0; +github)"}
 
-# ── Pexels search queries (broad — ให้ Gemini วิเคราะห์รูปเอง) ───────
-PEXELS_QUERIES = [
-    "thai food",
-    "isaan thai food",
-    "thai street food",
-    "som tum papaya salad",
-    "thai grilled chicken",
-    "thai spicy salad",
-    "thai rice dish",
-    "thai curry food",
-    "thai noodles",
-    "larb thai salad",
-    "sticky rice thai",
-    "thai food plate",
+# ── Food Subreddits ──────────────────────────────────────────────────
+FOOD_SUBREDDITS = [
+    "FoodPorn",
+    "food",
+    "tonightsdinner",
+    "streetfood",
+    "DessertPorn",
+    "Cooking",
+    "recipes",
+    "MealPrepSunday",
+    "eatsandwiches",
+    "sushi",
+    "Pizza",
+    "ramen",
+    "noodles",
+    "BBQ",
+    "grilling",
 ]
 
+IMAGE_EXTS   = (".jpg", ".jpeg", ".png", ".gif", ".webp")
 CONTENT_TYPES = ["ความรู้", "tips", "เคล็ดลับ", "เมนูแนะนำ"]
 
 
-# ── Pexels ────────────────────────────────────────────────────────────
-def get_pexels_image(query):
+# ── Reddit RSS ────────────────────────────────────────────────────────
+def get_reddit_food_post():
+    subreddit = random.choice(FOOD_SUBREDDITS)
+    url = f"https://www.reddit.com/r/{subreddit}/hot.rss"
     try:
-        resp = requests.get(
-            "https://api.pexels.com/v1/search",
-            headers={"Authorization": PEXELS_API_KEY},
-            params={"query": query, "per_page": 15, "orientation": "landscape"},
-            timeout=10,
-        )
+        resp = requests.get(url, headers=HEADERS, timeout=10)
         resp.raise_for_status()
-        photos = resp.json().get("photos", [])
-        if not photos:
-            print(f"Pexels: no results for '{query}'")
-            return None, None
-        photo = random.choice(photos)
-        print(f"Pexels: {photo['src']['large'][:60]}")
-        return photo["src"]["large"], photo.get("photographer", "Pexels")
+        root    = ET.fromstring(resp.content)
+        ns      = {"atom": "http://www.w3.org/2005/Atom"}
+        entries = root.findall("atom:entry", ns)
+
+        image_posts = []
+        for entry in entries:
+            title   = entry.findtext("atom:title", "", ns).strip()
+            content = entry.findtext("atom:content", "", ns)
+            img_urls = re.findall(
+                r'https?://[^\s"<>]+\.(?:jpg|jpeg|png|gif|webp)', content or ""
+            )
+            good_imgs = [u for u in img_urls if "i.redd.it" in u or "imgur.com" in u]
+            if good_imgs and title:
+                image_posts.append({
+                    "title":     title,
+                    "url":       good_imgs[0],
+                    "subreddit": subreddit,
+                })
+
+        if not image_posts:
+            print(f"[{subreddit}] no image posts in RSS")
+            return None
+
+        post = random.choice(image_posts[:10])
+        print(f"[{subreddit}] picked: {post['title'][:60]}")
+        return post
+
     except Exception as e:
-        print(f"Pexels error: {e}")
-        return None, None
+        print(f"Reddit error ({subreddit}): {e}")
+        return None
 
 
-def get_pexels_images(query, count=4):
-    """ดึงหลายรูปจาก Pexels query เดียวกัน — สำหรับ collage"""
-    try:
-        resp = requests.get(
-            "https://api.pexels.com/v1/search",
-            headers={"Authorization": PEXELS_API_KEY},
-            params={"query": query, "per_page": 20, "orientation": "landscape"},
-            timeout=10,
-        )
-        resp.raise_for_status()
-        photos = resp.json().get("photos", [])
-        if len(photos) < count:
-            print(f"Pexels: not enough photos for collage ({len(photos)} < {count})")
-            return []
-        selected = random.sample(photos, count)
-        return [(p["src"]["large"], p.get("photographer", "Pexels")) for p in selected]
-    except Exception as e:
-        print(f"Pexels collage error: {e}")
-        return []
-
-
-def make_collage(img_paths):
-    """สร้าง 2x2 collage จาก 4 รูป → 1080x1080 JPEG"""
-    from PIL import Image
-    cell   = 540
-    canvas = Image.new("RGB", (1080, 1080))
-    positions = [(0, 0), (540, 0), (0, 540), (540, 540)]
-
-    for i, path in enumerate(img_paths[:4]):
-        try:
-            img = Image.open(path).convert("RGB")
-            # crop square แล้ว resize ให้พอดี cell
-            w, h = img.size
-            side = min(w, h)
-            img = img.crop(((w - side) // 2, (h - side) // 2,
-                            (w + side) // 2, (h + side) // 2))
-            img = img.resize((cell, cell), Image.LANCZOS)
-            canvas.paste(img, positions[i])
-        except Exception as e:
-            print(f"Collage cell {i} error: {e}")
-
-    tmp = tempfile.NamedTemporaryFile(suffix=".jpg", delete=False)
-    canvas.save(tmp.name, "JPEG", quality=92)
-    tmp.close()
-    print(f"Collage created: {tmp.name}")
-    return tmp.name
-
-
-# ── Download image ────────────────────────────────────────────────────
+# ── Download ──────────────────────────────────────────────────────────
 def download_image(url):
     MAX_BYTES = 4 * 1024 * 1024
     try:
@@ -120,7 +93,12 @@ def download_image(url):
             if len(data) > MAX_BYTES:
                 print("Image too large, skipping")
                 return None
-        tmp = tempfile.NamedTemporaryFile(suffix=".jpg", delete=False)
+        suffix = ".jpg"
+        for ext in IMAGE_EXTS:
+            if url.lower().split("?")[0].endswith(ext):
+                suffix = ext
+                break
+        tmp = tempfile.NamedTemporaryFile(suffix=suffix, delete=False)
         tmp.write(data)
         tmp.close()
         return tmp.name
@@ -129,18 +107,16 @@ def download_image(url):
         return None
 
 
-# ── Gemini Vision — วิเคราะห์รูป ─────────────────────────────────────
+# ── Gemini Vision ─────────────────────────────────────────────────────
 def analyze_image(img_path):
     """ดูรูปแล้วบอกว่าอาหารอะไร (ภาษาไทย)"""
     with open(img_path, "rb") as f:
         img_data = f.read()
-
     prompt = (
         "ดูรูปนี้แล้วตอบสั้นๆ ว่าเป็นอาหารอะไร ชื่อภาษาไทย 1-4 คำ "
-        "เช่น 'ส้มตำ', 'ไก่ย่าง', 'ลาบหมู' "
-        "ถ้าไม่ใช่รูปอาหาร ตอบว่า 'ไม่ใช่อาหาร'"
+        "เช่น 'ส้มตำ', 'ไก่ย่าง', 'พิซซ่า', 'ราเมน' "
+        "ถ้าไม่ใช่รูปอาหารเลย ตอบว่า 'ไม่ใช่อาหาร'"
     )
-
     for model in TEXT_MODELS:
         try:
             resp = client.models.generate_content(
@@ -159,21 +135,6 @@ def analyze_image(img_path):
 
 
 # ── Gemini Caption ────────────────────────────────────────────────────
-def food_to_english_query(food_name):
-    """แปลชื่ออาหารไทย → English keyword สำหรับ Pexels search"""
-    prompt = (
-        f"แปลชื่ออาหารไทยนี้เป็น English keyword 2-4 words สำหรับค้นหารูปใน Pexels: {food_name}\n"
-        "ตอบแค่ keyword ภาษาอังกฤษ ไม่มีอะไรอื่น"
-    )
-    for model in TEXT_MODELS:
-        try:
-            resp = client.models.generate_content(model=model, contents=prompt)
-            return resp.text.strip().lower()
-        except Exception as e:
-            print(f"[{model}] translate failed: {e}")
-    return "thai food"
-
-
 def generate_hook(food_name, content_type):
     prompt = (
         f"อาหารในรูป: {food_name} | เนื้อหา: {content_type}\n"
@@ -193,40 +154,40 @@ def generate_hook(food_name, content_type):
     return food_name[:20], ""
 
 
-def generate_caption(food_name, content_type):
+def generate_caption(food_name, content_type, subreddit):
     prompts = {
         "ความรู้": (
-            f"เขียน Facebook caption ภาษาไทยสำหรับเพจรวมรูปอาหารอีสาน\n"
+            f"เขียน Facebook caption ภาษาไทยสำหรับเพจรวมรูปอาหาร\n"
             f"อาหารในรูป: {food_name}\n"
             "บรรทัด 1: fact น่าสนใจเรื่องอาหารนี้ ไม่เกิน 40 ตัวอักษร\n"
             "บรรทัด 2: อธิบายสั้นๆ 1-2 ประโยค\n"
             "บรรทัด 3: hashtag 3 อัน\n"
-            "สื่อให้ชัดว่าเป็นเพจรวมรูปอาหาร ไม่ใช่ร้านค้า ห้ามใช้ ** ตอบแค่ caption"
+            "ห้ามใช้ ** ตอบแค่ caption"
         ),
         "tips": (
-            f"เขียน Facebook caption ภาษาไทยสำหรับเพจรวมรูปอาหารอีสาน\n"
+            f"เขียน Facebook caption ภาษาไทยสำหรับเพจรวมรูปอาหาร\n"
             f"อาหารในรูป: {food_name}\n"
             "บรรทัด 1: tips การทำหรือกินอาหารนี้ ไม่เกิน 40 ตัวอักษร\n"
             "บรรทัด 2-3: tips 2 ข้อสั้นๆ\n"
             "บรรทัด 4: hashtag 3 อัน\n"
-            "สื่อให้ชัดว่าเป็นเพจรวมรูปอาหาร ไม่ใช่ร้านค้า ห้ามใช้ ** ตอบแค่ caption"
+            "ห้ามใช้ ** ตอบแค่ caption"
         ),
         "เคล็ดลับ": (
-            f"เขียน Facebook caption ภาษาไทยสำหรับเพจรวมรูปอาหารอีสาน\n"
+            f"เขียน Facebook caption ภาษาไทยสำหรับเพจรวมรูปอาหาร\n"
             f"อาหารในรูป: {food_name}\n"
             "บรรทัด 1: หัวข้อ hook ไม่เกิน 40 ตัวอักษร\n"
             "บรรทัด 2-3: เคล็ดลับทำให้อร่อย 2-3 ข้อ\n"
             "บรรทัด 4: hashtag 3 อัน\n"
-            "สื่อให้ชัดว่าเป็นเพจรวมรูปอาหาร ไม่ใช่ร้านค้า ห้ามใช้ ** ตอบแค่ caption"
+            "ห้ามใช้ ** ตอบแค่ caption"
         ),
         "เมนูแนะนำ": (
-            f"เขียน Facebook caption ภาษาไทยสำหรับเพจรวมรูปอาหารอีสาน\n"
+            f"เขียน Facebook caption ภาษาไทยสำหรับเพจรวมรูปอาหาร\n"
             f"อาหารในรูป: {food_name}\n"
             "บรรทัด 1: ประโยคชวนน้ำลายไหล ไม่เกิน 40 ตัวอักษร\n"
             "บรรทัด 2: บรรยายรสชาติสั้นๆ\n"
             "บรรทัด 3: คำถามชวนคอมเม้น\n"
             "บรรทัด 4: hashtag 3 อัน\n"
-            "สื่อให้ชัดว่าเป็นเพจรวมรูปอาหาร ไม่ใช่ร้านค้า ห้ามใช้ ** ตอบแค่ caption"
+            "ห้ามใช้ ** ตอบแค่ caption"
         ),
     }
     prompt = prompts.get(content_type, prompts["เมนูแนะนำ"])
@@ -236,7 +197,7 @@ def generate_caption(food_name, content_type):
             return clean_text(resp.text.strip())
         except Exception as e:
             print(f"[{model}] caption failed: {e}")
-    return f"{food_name} อร่อยมาก!\n#อาหารไทย #อาหารอีสาน #ส้มตำ"
+    return f"{food_name} อร่อยมาก!\n#อาหาร #foodporn #อร่อย"
 
 
 def clean_text(text):
@@ -281,7 +242,7 @@ def post_photo(caption, img_path):
 def add_comment(post_id):
     from affiliate_utils import get_all_comments
     comments = get_all_comments()
-    delay0 = random.uniform(60, 180)
+    delay0   = random.uniform(60, 180)
     print(f"Waiting {delay0:.0f}s before first comment...")
     time.sleep(delay0)
     for i, msg in enumerate(comments, 1):
@@ -308,69 +269,48 @@ def add_comment(post_id):
 def main():
     print("=== ส้มตำคุณอร Bot ===")
 
-    # ลองหารูปที่เป็นอาหารจริงๆ (max 3 attempts)
-    for attempt in range(3):
-        query        = random.choice(PEXELS_QUERIES)
-        content_type = random.choice(CONTENT_TYPES)
-        print(f"Query: {query} | Type: {content_type} | Attempt {attempt+1}")
+    post = None
+    for attempt in range(5):
+        post = get_reddit_food_post()
+        if post:
+            break
+        print(f"Retry {attempt + 1}/5...")
 
-        # ── รูปแรก: broad query → Vision ระบุอาหาร ─────────────────────
-        img_url, _ = get_pexels_image(query)
-        if not img_url:
-            continue
-        first_path = download_image(img_url)
-        if not first_path:
-            continue
-
-        food_name = analyze_image(first_path)
-        if not food_name or "ไม่ใช่อาหาร" in food_name:
-            print("Not a food image, retrying...")
-            os.unlink(first_path)
-            continue
-
-        # ── รูป 2-4: ค้นด้วย food_name ที่รู้แล้ว (ตรงกับ caption) ──
-        en_query = food_to_english_query(food_name)
-        print(f"Collage query: {en_query}")
-        extra_photos = get_pexels_images(en_query, count=3)
-        extra_paths = []
-        for url, _ in extra_photos:
-            p = download_image(url)
-            if p:
-                extra_paths.append(p)
-
-        all_paths = [first_path] + extra_paths
-
-        # ── สร้าง collage ─────────────────────────────────────────────
-        if len(all_paths) >= 4:
-            collage_path = make_collage(all_paths)
-            for p in all_paths:
-                os.unlink(p)
-            img_path = collage_path
-        else:
-            img_path = first_path
-            for p in extra_paths:
-                os.unlink(p)
-
-        # text overlay บน collage
-        line1, line2 = generate_hook(food_name, content_type)
-        print(f"Hook: {line1} | {line2}")
-
-        try:
-            from overlay_utils import add_overlay
-            overlaid = add_overlay(img_path, line1, line2, ACCENT_COLOR)
-            os.unlink(img_path)
-            img_path = overlaid
-        except Exception as e:
-            print(f"Overlay failed (using original): {e}")
-
-        caption = generate_caption(food_name, content_type)
-        caption += "\n📷 Photos via Pexels"
-        print(f"Caption:\n{caption}\n")
-
-        post_photo(caption, img_path)
+    if not post:
+        print("No suitable post found after 5 attempts")
         return
 
-    print("Failed after 3 attempts")
+    img_path = download_image(post["url"])
+    if not img_path:
+        print("Image download failed")
+        return
+
+    # Vision วิเคราะห์รูปจริงๆ → caption ตรงกับรูปเสมอ
+    food_name = analyze_image(img_path)
+    if not food_name or "ไม่ใช่อาหาร" in food_name:
+        print("Not a food image, using Reddit title as fallback")
+        food_name = post["title"]
+
+    content_type = random.choice(CONTENT_TYPES)
+    line1, line2 = generate_hook(food_name, content_type)
+    print(f"Hook: {line1} | {line2}")
+
+    # PIL overlay
+    try:
+        from overlay_utils import add_overlay
+        overlaid = add_overlay(img_path, line1, line2, ACCENT_COLOR)
+        os.unlink(img_path)
+        img_path = overlaid
+    except Exception as e:
+        print(f"Overlay failed (using original): {e}")
+
+    caption = generate_caption(food_name, content_type, post["subreddit"])
+    caption += f"\n📷 via r/{post['subreddit']}"
+    print(f"Caption:\n{caption}\n")
+
+    success = post_photo(caption, img_path)
+    if not success:
+        print("FAILED")
 
 
 if __name__ == "__main__":
