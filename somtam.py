@@ -60,6 +60,54 @@ def get_pexels_image(query):
         return None, None
 
 
+def get_pexels_images(query, count=4):
+    """ดึงหลายรูปจาก Pexels query เดียวกัน — สำหรับ collage"""
+    try:
+        resp = requests.get(
+            "https://api.pexels.com/v1/search",
+            headers={"Authorization": PEXELS_API_KEY},
+            params={"query": query, "per_page": 20, "orientation": "landscape"},
+            timeout=10,
+        )
+        resp.raise_for_status()
+        photos = resp.json().get("photos", [])
+        if len(photos) < count:
+            print(f"Pexels: not enough photos for collage ({len(photos)} < {count})")
+            return []
+        selected = random.sample(photos, count)
+        return [(p["src"]["large"], p.get("photographer", "Pexels")) for p in selected]
+    except Exception as e:
+        print(f"Pexels collage error: {e}")
+        return []
+
+
+def make_collage(img_paths):
+    """สร้าง 2x2 collage จาก 4 รูป → 1080x1080 JPEG"""
+    from PIL import Image
+    cell   = 540
+    canvas = Image.new("RGB", (1080, 1080))
+    positions = [(0, 0), (540, 0), (0, 540), (540, 540)]
+
+    for i, path in enumerate(img_paths[:4]):
+        try:
+            img = Image.open(path).convert("RGB")
+            # crop square แล้ว resize ให้พอดี cell
+            w, h = img.size
+            side = min(w, h)
+            img = img.crop(((w - side) // 2, (h - side) // 2,
+                            (w + side) // 2, (h + side) // 2))
+            img = img.resize((cell, cell), Image.LANCZOS)
+            canvas.paste(img, positions[i])
+        except Exception as e:
+            print(f"Collage cell {i} error: {e}")
+
+    tmp = tempfile.NamedTemporaryFile(suffix=".jpg", delete=False)
+    canvas.save(tmp.name, "JPEG", quality=92)
+    tmp.close()
+    print(f"Collage created: {tmp.name}")
+    return tmp.name
+
+
 # ── Download image ────────────────────────────────────────────────────
 def download_image(url):
     MAX_BYTES = 4 * 1024 * 1024
@@ -251,21 +299,45 @@ def main():
         content_type = random.choice(CONTENT_TYPES)
         print(f"Query: {query} | Type: {content_type} | Attempt {attempt+1}")
 
-        img_url, photographer = get_pexels_image(query)
-        if not img_url:
+        # ── ดึง 4 รูปสำหรับ collage ──────────────────────────────────
+        photo_list = get_pexels_images(query, count=4)
+        if len(photo_list) < 4:
+            # fallback รูปเดียวถ้าได้ไม่ครบ 4
+            img_url, photographer = get_pexels_image(query)
+            if not img_url:
+                continue
+            photo_list = [(img_url, photographer)]
+
+        # download ทุกรูป
+        img_paths = []
+        for url, _ in photo_list:
+            p = download_image(url)
+            if p:
+                img_paths.append(p)
+
+        if not img_paths:
             continue
 
-        img_path = download_image(img_url)
-        if not img_path:
-            continue
-
-        # Gemini Vision วิเคราะห์ว่ารูปเป็นอาหารอะไร
-        food_name = analyze_image(img_path)
+        # Vision วิเคราะห์รูปแรก
+        food_name = analyze_image(img_paths[0])
         if not food_name or "ไม่ใช่อาหาร" in food_name:
             print("Not a food image, retrying...")
-            os.unlink(img_path)
+            for p in img_paths:
+                os.unlink(p)
             continue
 
+        # ── สร้าง collage ─────────────────────────────────────────────
+        if len(img_paths) >= 4:
+            collage_path = make_collage(img_paths)
+            for p in img_paths:
+                os.unlink(p)
+            img_path = collage_path
+        else:
+            img_path = img_paths[0]
+            for p in img_paths[1:]:
+                os.unlink(p)
+
+        # text overlay บน collage
         line1, line2 = generate_hook(food_name, content_type)
         print(f"Hook: {line1} | {line2}")
 
@@ -278,8 +350,7 @@ def main():
             print(f"Overlay failed (using original): {e}")
 
         caption = generate_caption(food_name, content_type)
-        if photographer:
-            caption += f"\n📷 Photo by {photographer} via Pexels"
+        caption += "\n📷 Photos via Pexels"
         print(f"Caption:\n{caption}\n")
 
         post_photo(caption, img_path)
