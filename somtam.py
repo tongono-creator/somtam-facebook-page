@@ -109,13 +109,15 @@ def download_image(url):
 
 # ── Gemini Vision ─────────────────────────────────────────────────────
 def analyze_image(img_path):
-    """ดูรูปแล้วบอกว่าอาหารอะไร (ภาษาไทย)"""
+    """ดูรูปแล้วบอกว่าอาหารอะไร + ความรู้สึกแรกที่เห็น"""
     with open(img_path, "rb") as f:
         img_data = f.read()
     prompt = (
-        "ดูรูปนี้แล้วตอบสั้นๆ ว่าเป็นอาหารอะไร ชื่อภาษาไทย 1-4 คำ "
-        "เช่น 'ส้มตำ', 'ไก่ย่าง', 'พิซซ่า', 'ราเมน' "
-        "ถ้าไม่ใช่รูปอาหารเลย ตอบว่า 'ไม่ใช่อาหาร'"
+        "ดูรูปนี้แล้วตอบ 2 อย่าง แยกด้วย | :\n"
+        "1. ชื่ออาหาร ภาษาไทย 1-4 คำ เช่น ส้มตำ, ไก่ย่าง, พิซซ่า\n"
+        "2. ความรู้สึกแรกที่เห็น เช่น น่ากินมาก, ดูแห้งๆ, ดูตลกแปลก, ดูเศร้า, หน้าตาประหลาด, ดูธรรมดา\n"
+        "ตัวอย่าง: ข้าวปั้น|ดูเหมือนโดนบังคับมาทำ\n"
+        "ถ้าไม่ใช่อาหาร ตอบว่า: ไม่ใช่อาหาร|ไม่เกี่ยว"
     )
     for model in TEXT_MODELS:
         try:
@@ -128,24 +130,33 @@ def analyze_image(img_path):
             )
             result = resp.text.strip()
             print(f"Vision: {result}")
-            return result
+            # parse food_name|vibe
+            parts = result.split("|", 1)
+            food_name = parts[0].strip()
+            vibe      = parts[1].strip() if len(parts) > 1 else "ธรรมดา"
+            return food_name, vibe
         except Exception as e:
             print(f"[{model}] vision failed: {e}")
-    return None
+    return None, None
 
 
 # ── Gemini Caption ────────────────────────────────────────────────────
-def generate_hook(food_name, content_type):
-    if content_type == "ตลก":
-        style = "hook ตลก/ฮา/แซว อาหารนี้ 3-5 คำ\nบรรทัด 2: ประโยคฮาหรือแซวสั้น 4-7 คำ"
+def generate_hook(food_name, vibe, content_type):
+    if content_type == "ตลก" or any(w in vibe for w in ["ตลก", "แปลก", "เศร้า", "แห้ง", "ประหลาด", "บังคับ"]):
+        style = (
+            f"รูป: {food_name} | ความรู้สึกแรก: {vibe}\n"
+            "เขียน hook text แนวแซว/ฮา/กวนๆ สำหรับใส่บนรูป\n"
+            "บรรทัด 1: hook ตลก 3-5 คำ เหมือนคอมเมนต์ไวรัล\n"
+            "บรรทัด 2: ต่อมุกสั้น 4-6 คำ"
+        )
     else:
-        style = "hook 3-5 คำ ชวนน้ำลายไหล/อยากกิน\nบรรทัด 2: คำถาม/เคล็ดลับสั้น 4-7 คำ"
-    prompt = (
-        f"อาหารในรูป: {food_name} | เนื้อหา: {content_type}\n"
-        f"เขียน hook text สั้นๆ ภาษาไทย สำหรับใส่บนรูปอาหาร\n"
-        f"บรรทัด 1: {style}\n"
-        "ตอบแค่ 2 บรรทัด ไม่มี hashtag ไม่มี **"
-    )
+        style = (
+            f"รูป: {food_name} | ความรู้สึกแรก: {vibe}\n"
+            "เขียน hook text สั้นๆ ภาษาไทย สำหรับใส่บนรูปอาหาร\n"
+            "บรรทัด 1: hook 3-5 คำ ชวนน้ำลายไหล\n"
+            "บรรทัด 2: คำถาม/เคล็ดลับสั้น 4-7 คำ"
+        )
+    prompt = f"{style}\nตอบแค่ 2 บรรทัด ไม่มี hashtag ไม่มี **"
     for model in TEXT_MODELS:
         try:
             resp = client.models.generate_content(model=model, contents=prompt)
@@ -157,46 +168,57 @@ def generate_hook(food_name, content_type):
     return food_name[:20], ""
 
 
-def generate_caption(food_name, content_type, subreddit):
+def generate_caption(food_name, vibe, content_type, subreddit):
+    # human framework prompt — ใช้กับทุก type
+    human_base = (
+        f"อาหาร: {food_name}\n"
+        f"ความรู้สึกแรกที่เห็นรูปนี้: {vibe}\n\n"
+        "คิดเหมือนคนไถ Facebook จริงๆ ไม่ใช่นักการตลาด\n"
+        "วิเคราะห์อารมณ์จากภาพ เดาความรู้สึกแรกที่คนเห็น\n"
+        "ถ้ารูปดูแปลก/ไม่น่ากิน/ตลก → เล่นมุกได้ ห้ามอวยอัตโนมัติ\n"
+        "ถ้ารูปดูน่ากิน → บรรยายแบบทำให้น้ำลายไหลจริงๆ\n\n"
+    )
     prompts = {
         "ความรู้": (
-            f"เขียน Facebook caption ภาษาไทยสำหรับเพจรวมรูปอาหาร\n"
-            f"อาหารในรูป: {food_name}\n"
-            "บรรทัด 1: fact น่าสนใจเรื่องอาหารนี้ ไม่เกิน 40 ตัวอักษร\n"
+            human_base +
+            "เขียน Facebook caption แนวให้ความรู้สนุกๆ\n"
+            "บรรทัด 1: fact หรือ hook ไม่เกิน 40 ตัวอักษร\n"
             "บรรทัด 2: อธิบายสั้นๆ 1-2 ประโยค\n"
             "บรรทัด 3: hashtag 3 อัน\n"
             "ห้ามใช้ ** ตอบแค่ caption"
         ),
         "tips": (
-            f"เขียน Facebook caption ภาษาไทยสำหรับเพจรวมรูปอาหาร\n"
-            f"อาหารในรูป: {food_name}\n"
-            "บรรทัด 1: tips การทำหรือกินอาหารนี้ ไม่เกิน 40 ตัวอักษร\n"
+            human_base +
+            "เขียน Facebook caption แนว tips กินหรือทำ\n"
+            "บรรทัด 1: hook ไม่เกิน 40 ตัวอักษร\n"
             "บรรทัด 2-3: tips 2 ข้อสั้นๆ\n"
             "บรรทัด 4: hashtag 3 อัน\n"
             "ห้ามใช้ ** ตอบแค่ caption"
         ),
         "เคล็ดลับ": (
-            f"เขียน Facebook caption ภาษาไทยสำหรับเพจรวมรูปอาหาร\n"
-            f"อาหารในรูป: {food_name}\n"
-            "บรรทัด 1: หัวข้อ hook ไม่เกิน 40 ตัวอักษร\n"
-            "บรรทัด 2-3: เคล็ดลับทำให้อร่อย 2-3 ข้อ\n"
+            human_base +
+            "เขียน Facebook caption แนวเคล็ดลับทำให้อร่อย\n"
+            "บรรทัด 1: hook ไม่เกิน 40 ตัวอักษร\n"
+            "บรรทัด 2-3: เคล็ดลับ 2-3 ข้อ\n"
             "บรรทัด 4: hashtag 3 อัน\n"
             "ห้ามใช้ ** ตอบแค่ caption"
         ),
         "เมนูแนะนำ": (
-            f"เขียน Facebook caption ภาษาไทยสำหรับเพจรวมรูปอาหาร\n"
-            f"อาหารในรูป: {food_name}\n"
-            "บรรทัด 1: ประโยคชวนน้ำลายไหล ไม่เกิน 40 ตัวอักษร\n"
+            human_base +
+            "เขียน Facebook caption ชวนลองกิน\n"
+            "บรรทัด 1: ประโยคชวนกิน ไม่เกิน 40 ตัวอักษร\n"
             "บรรทัด 2: บรรยายรสชาติสั้นๆ\n"
             "บรรทัด 3: คำถามชวนคอมเม้น\n"
             "บรรทัด 4: hashtag 3 อัน\n"
             "ห้ามใช้ ** ตอบแค่ caption"
         ),
         "ตลก": (
-            f"เขียน Facebook caption ภาษาไทยแนวตลก/ฮา/แซว สำหรับเพจรวมรูปอาหาร\n"
-            f"อาหารในรูป: {food_name}\n"
-            "บรรทัด 1: ประโยคตลก/แซว/มุก เกี่ยวกับอาหารนี้ ไม่เกิน 40 ตัวอักษร\n"
-            "บรรทัด 2: ต่อมุกหรือชวนให้คนคอมเม้น\n"
+            human_base +
+            "เขียน Facebook caption แนวตลก/แซว/กวนๆ เหมือนคอมเมนต์ไวรัล\n"
+            "ไม่ต้องบรรยายภาพตรงๆ ไม่ต้องขายของ ไม่ต้องโลกสวย\n"
+            "โทน: ตลกธรรมชาติ เหมือนความคิดในหัวคน สั้น กระแทก มีความ 'อิหยังวะ'\n"
+            "บรรทัด 1: มุก/แซว ไม่เกิน 40 ตัวอักษร\n"
+            "บรรทัด 2: ต่อมุกหรือชวนคอมเม้น\n"
             "บรรทัด 3: hashtag 2-3 อัน\n"
             "ห้ามใช้ ** ตอบแค่ caption"
         ),
@@ -296,14 +318,16 @@ def main():
         print("Image download failed")
         return
 
-    # Vision วิเคราะห์รูปจริงๆ → caption ตรงกับรูปเสมอ
-    food_name = analyze_image(img_path)
+    # Vision วิเคราะห์รูปจริงๆ → food_name + vibe
+    food_name, vibe = analyze_image(img_path)
     if not food_name or "ไม่ใช่อาหาร" in food_name:
         print("Not a food image, using Reddit title as fallback")
         food_name = post["title"]
+        vibe      = "ธรรมดา"
 
+    print(f"Food: {food_name} | Vibe: {vibe}")
     content_type = random.choice(CONTENT_TYPES)
-    line1, line2 = generate_hook(food_name, content_type)
+    line1, line2 = generate_hook(food_name, vibe, content_type)
     print(f"Hook: {line1} | {line2}")
 
     # PIL overlay
@@ -315,7 +339,7 @@ def main():
     except Exception as e:
         print(f"Overlay failed (using original): {e}")
 
-    caption = generate_caption(food_name, content_type, post["subreddit"])
+    caption = generate_caption(food_name, vibe, content_type, post["subreddit"])
     caption += f"\n📷 via r/{post['subreddit']}"
     print(f"Caption:\n{caption}\n")
 
