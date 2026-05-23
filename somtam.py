@@ -109,15 +109,19 @@ def download_image(url):
 
 # ── Gemini Vision ─────────────────────────────────────────────────────
 def analyze_image(img_path):
-    """ดูรูปแล้วบอกว่าอาหารอะไร + ความรู้สึกแรกที่เห็น"""
+    """ดูรูปแล้วบอก food_name | vibe | genre"""
     with open(img_path, "rb") as f:
         img_data = f.read()
     prompt = (
-        "ดูรูปนี้แล้วตอบ 2 อย่าง แยกด้วย | :\n"
-        "1. ชื่ออาหาร ภาษาไทย 1-4 คำ เช่น ส้มตำ, ไก่ย่าง, พิซซ่า\n"
-        "2. ความรู้สึกแรกที่เห็น เช่น น่ากินมาก, ดูแห้งๆ, ดูตลกแปลก, ดูเศร้า, หน้าตาประหลาด, ดูธรรมดา\n"
-        "ตัวอย่าง: ข้าวปั้น|ดูเหมือนโดนบังคับมาทำ\n"
-        "ถ้าไม่ใช่อาหาร ตอบว่า: ไม่ใช่อาหาร|ไม่เกี่ยว"
+        "ดูรูปนี้แล้วตอบ 3 อย่าง แยกด้วย | :\n"
+        "1. ชื่ออาหาร ภาษาไทย 1-4 คำ\n"
+        "2. ความรู้สึกแรกที่เห็น เช่น น่ากินมาก, ดูแห้งๆ, ดูตลกแปลก, หน้าตาประหลาด\n"
+        "3. ประเภทอาหารในชีวิตจริง เลือก 1 จาก: "
+        "ข้าวแกง, street_snack, บุฟเฟต์, ร้านตามสั่ง, ของหวาน, comfort_food, "
+        "หมูกระทะ, ของตลาด, อาหารตะวันตก, ซูชิ, ราเมน, พิซซ่า, อาหารทะเล, อื่นๆ\n"
+        "ตัวอย่าง: ข้าวแกง|น่ากินมาก หลากหลายถาด|ข้าวแกง\n"
+        "ตัวอย่าง: ไก่ทอด|กรอบน่ากิน|street_snack\n"
+        "ถ้าไม่ใช่อาหาร ตอบว่า: ไม่ใช่อาหาร|ไม่เกี่ยว|ไม่เกี่ยว"
     )
     for model in TEXT_MODELS:
         try:
@@ -130,17 +134,35 @@ def analyze_image(img_path):
             )
             result = resp.text.strip()
             print(f"Vision: {result}")
-            # parse food_name|vibe
-            parts = result.split("|", 1)
+            parts = result.split("|")
             food_name = parts[0].strip()
             vibe      = parts[1].strip() if len(parts) > 1 else "ธรรมดา"
-            return food_name, vibe
+            genre     = parts[2].strip() if len(parts) > 2 else "อื่นๆ"
+            return food_name, vibe, genre
         except Exception as e:
             print(f"[{model}] vision failed: {e}")
-    return None, None
+    return None, None, None
 
 
 # ── Gemini Caption ────────────────────────────────────────────────────
+# emotional triggers ตาม food genre — แต่ละ genre มี "ความรู้สึก" ที่คนไทยนึกถึงต่างกัน
+GENRE_TRIGGERS = {
+    "ข้าวแกง":       "ตักเพลินจนข้าวหมด, ร้านลับไม่มีป้าย, กับข้าวบ้านๆ ที่อันตราย, สิ้นเดือนก็ยังแวะ, บอกว่าเอา 2 อย่างสรุป 5",
+    "street_snack":  "หยุดนิ้วไม่ได้, ซื้อเล่นๆ สรุปหมดถุง, ริมทางแต่อร่อยเกินร้านหรู, ของที่คำว่าพอไม่มีความหมาย",
+    "บุฟเฟต์":       "กินให้คุ้มค่าตัว, รอบสองไม่อาย, มาหิวกลับอิ่ม, ลากจานไม่หยุด",
+    "ร้านตามสั่ง":   "สั่งเพิ่มทุกครั้ง, ใส่ไข่ดาวสิ, ราคาเป็นมิตร แต่อ้วนไม่เป็นมิตร, ร้านดังไม่มีป้ายราคา",
+    "ของหวาน":       "ความรู้สึกผิดที่อร่อย, ลดน้ำหนักไว้ก่อนแล้วกัน, หวานจนต้องนั่งสักครู่, คำเดียวก็ยังเกินพอ",
+    "comfort_food":  "วันเหนื่อยต้องอันนี้, กินคนเดียวก็โอเค, บ้านๆ แต่ถูกใจ, ไม่สวยแต่อิ่มใจ",
+    "หมูกระทะ":      "ปิ้งเองได้ที่, น้ำจิ้มแจ่มมาก, ควันหอม, ไปกันทีละโต๊ะใหญ่",
+    "ของตลาด":       "เดินตลาดแล้วแวะ, ซื้อกลับบ้านทีละถุง, ราคาเป็นมิตร, ตื่นเช้ามาเพื่ออันนี้",
+    "อาหารตะวันตก": "แพงแต่คุ้ม, ร้าน aesthetic, instagrammable, ฝรั่งกินแล้วยังต้องถ่ายรูป",
+    "ซูชิ":          "กินเอง vs ร้านดัง ต่างกันมาก, สดจนต้องหลับตา, ราเตคืนเดียวสบาย",
+    "ราเมน":         "น้ำซุปดูดหมดชาม, เส้นเหนียวพอดี, กินคนเดียวในร้านเงียบๆ",
+    "พิซซ่า":        "ชีสยืดเป็นเมตร, สั่งมาแชร์แต่สุดท้ายกินคนเดียว, ขอบหนาหรือบาง eternal debate",
+    "อาหารทะเล":     "สดมาก, กลิ่นทะเล, ต้มยำหม้อใหญ่, กุ้งตัวโต",
+    "อื่นๆ":         "น่ากิน, อยากลอง, หิวขึ้นมาเฉยๆ",
+}
+
 REALISM_FILTER = (
     "เขียนเหมือนคนพิมพ์เองใน Facebook ไม่ใช่นักการตลาด\n"
     "ภาษาพูดธรรมดา ความคิดแรกที่นึกได้ ง่ายๆ ตรงๆ\n"
@@ -151,18 +173,22 @@ REALISM_FILTER = (
 )
 
 
-def generate_hook(food_name, vibe, content_type):
-    if content_type == "ตลก" or any(w in vibe for w in ["ตลก", "แปลก", "เศร้า", "แห้ง", "ประหลาด", "บังคับ"]):
+def generate_hook(food_name, vibe, genre, content_type):
+    triggers = GENRE_TRIGGERS.get(genre, GENRE_TRIGGERS["อื่นๆ"])
+    is_funny = content_type == "ตลก" or any(w in vibe for w in ["ตลก", "แปลก", "เศร้า", "แห้ง", "ประหลาด", "บังคับ"])
+    if is_funny:
         style = (
-            f"รูป: {food_name} | ความรู้สึกแรก: {vibe}\n"
-            "เขียน hook text แนวแซว/กวนๆ สำหรับใส่บนรูป\n"
+            f"รูป: {food_name} | ประเภท: {genre} | ความรู้สึกแรก: {vibe}\n"
+            f"emotional context ของ {genre}: {triggers}\n"
+            "เขียน hook text แนวแซว/กวนๆ ให้ตรง genre สำหรับใส่บนรูป\n"
             "บรรทัด 1: มุกง่ายๆ 3-5 คำ เหมือนความคิดแรกในหัวคน\n"
             "บรรทัด 2: ต่อสั้น 4-6 คำ\n"
         )
     else:
         style = (
-            f"รูป: {food_name} | ความรู้สึกแรก: {vibe}\n"
-            "เขียน hook text สั้นๆ สำหรับใส่บนรูปอาหาร\n"
+            f"รูป: {food_name} | ประเภท: {genre} | ความรู้สึกแรก: {vibe}\n"
+            f"emotional context ของ {genre}: {triggers}\n"
+            "เขียน hook text สำหรับใส่บนรูปอาหาร ให้ตรง genre\n"
             "บรรทัด 1: hook 3-5 คำ ตรงๆ ไม่ประดิษฐ์\n"
             "บรรทัด 2: คำถาม/ประโยคสั้น 4-7 คำ\n"
         )
@@ -178,14 +204,16 @@ def generate_hook(food_name, vibe, content_type):
     return food_name[:20], ""
 
 
-def generate_caption(food_name, vibe, content_type, subreddit):
+def generate_caption(food_name, vibe, genre, content_type, subreddit):
+    triggers = GENRE_TRIGGERS.get(genre, GENRE_TRIGGERS["อื่นๆ"])
     # human framework prompt — ใช้กับทุก type
     human_base = (
-        f"อาหาร: {food_name}\n"
-        f"ความรู้สึกแรกที่เห็นรูปนี้: {vibe}\n\n"
+        f"อาหาร: {food_name} | ประเภท: {genre}\n"
+        f"ความรู้สึกแรกที่เห็นรูปนี้: {vibe}\n"
+        f"emotional context ของ {genre} ที่คนไทยนึกถึง: {triggers}\n\n"
         + REALISM_FILTER +
         "ถ้ารูปดูแปลก/ไม่น่ากิน/ตลก → เล่นมุกได้ ห้ามอวยอัตโนมัติ\n"
-        "ถ้ารูปดูน่ากิน → เขียนให้คนรู้สึกหิวหรือรู้สึกผิด ไม่ใช่แค่บรรยายสวยๆ\n\n"
+        "ถ้ารูปดูน่ากิน → เขียนให้คนรู้สึกหิวหรือรู้สึกผิด ใช้ emotional context ของ genre\n\n"
     )
     prompts = {
         "ความรู้": (
@@ -327,16 +355,17 @@ def main():
         print("Image download failed")
         return
 
-    # Vision วิเคราะห์รูปจริงๆ → food_name + vibe
-    food_name, vibe = analyze_image(img_path)
+    # Vision วิเคราะห์รูปจริงๆ → food_name + vibe + genre
+    food_name, vibe, genre = analyze_image(img_path)
     if not food_name or "ไม่ใช่อาหาร" in food_name:
         print("Not a food image, using Reddit title as fallback")
         food_name = post["title"]
         vibe      = "ธรรมดา"
+        genre     = "อื่นๆ"
 
-    print(f"Food: {food_name} | Vibe: {vibe}")
+    print(f"Food: {food_name} | Genre: {genre} | Vibe: {vibe}")
     content_type = random.choice(CONTENT_TYPES)
-    line1, line2 = generate_hook(food_name, vibe, content_type)
+    line1, line2 = generate_hook(food_name, vibe, genre, content_type)
     print(f"Hook: {line1} | {line2}")
 
     # PIL overlay
@@ -348,7 +377,7 @@ def main():
     except Exception as e:
         print(f"Overlay failed (using original): {e}")
 
-    caption = generate_caption(food_name, vibe, content_type, post["subreddit"])
+    caption = generate_caption(food_name, vibe, genre, content_type, post["subreddit"])
     caption += f"\n📷 via r/{post['subreddit']}"
     print(f"Caption:\n{caption}\n")
 
