@@ -4,7 +4,6 @@ import random
 import time
 import requests
 import tempfile
-import xml.etree.ElementTree as ET
 from google import genai
 from google.genai import types
 
@@ -12,6 +11,7 @@ from google.genai import types
 PAGE_ID           = "554501167740603"
 PAGE_ACCESS_TOKEN = os.environ["SOMTAM_PAGE_ACCESS_TOKEN"]
 GEMINI_API_KEY    = os.environ.get("GEMINI_API_KEY", "")
+PEXELS_API_KEY    = os.environ.get("PEXELS_API_KEY", "")
 
 client       = genai.Client(api_key=GEMINI_API_KEY)
 TEXT_MODELS  = ["gemini-2.5-flash", "gemini-3.5-flash"]
@@ -19,22 +19,20 @@ ACCENT_COLOR = (255, 107, 53)  # ส้ม #FF6B35
 
 HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; SomtamBot/1.0; +github)"}
 
-# ── Food Subreddits ──────────────────────────────────────────────────
-FOOD_SUBREDDITS = [
-    # Thai / spicy subs — content ตรง concept มากที่สุด (weight สูง)
-    "ThaiFood",
-    "ThaiFood",
-    "ThaiFood",
-    "Thailand",
-    "Thailand",
-    "Spicy_Food",
-    "Spicy_Food",
-    "spicy",
-    # Asian food ที่ฝรั่งมักจะ react — secondary
-    "AsianFood",
-    "streetfood",
-    "noodles",
-    "ramen",
+# ── Pexels Search Queries ────────────────────────────────────────────
+THAI_FOOD_QUERIES = [
+    "thai food",
+    "thai food",
+    "thai food",
+    "thai street food",
+    "thai street food",
+    "som tam papaya salad",
+    "pad thai noodles",
+    "tom yum soup",
+    "thai spicy food",
+    "thai curry",
+    "mango sticky rice",
+    "thai fried rice",
 ]
 
 IMAGE_EXTS   = (".jpg", ".jpeg", ".png", ".gif", ".webp")
@@ -42,42 +40,33 @@ IMAGE_EXTS   = (".jpg", ".jpeg", ".png", ".gif", ".webp")
 CONTENT_TYPES = ["ช็อกเผ็ด", "ติดใจ", "งงแต่กิน", "ไม่คาดหวัง", "กลับมาอีก"]
 
 
-# ── Reddit RSS ────────────────────────────────────────────────────────
-def get_reddit_food_post():
-    subreddit = random.choice(FOOD_SUBREDDITS)
-    url = f"https://www.reddit.com/r/{subreddit}/hot.rss"
+# ── Pexels ───────────────────────────────────────────────────────────
+def get_pexels_food_image():
+    if not PEXELS_API_KEY:
+        print("PEXELS_API_KEY not set")
+        return None
+
+    query = random.choice(THAI_FOOD_QUERIES)
+    page  = random.randint(1, 15)
     try:
-        resp = requests.get(url, headers=HEADERS, timeout=10)
+        resp = requests.get(
+            "https://api.pexels.com/v1/search",
+            headers={"Authorization": PEXELS_API_KEY},
+            params={"query": query, "per_page": 20, "page": page},
+            timeout=10,
+        )
         resp.raise_for_status()
-        root    = ET.fromstring(resp.content)
-        ns      = {"atom": "http://www.w3.org/2005/Atom"}
-        entries = root.findall("atom:entry", ns)
-
-        image_posts = []
-        for entry in entries:
-            title   = entry.findtext("atom:title", "", ns).strip()
-            content = entry.findtext("atom:content", "", ns)
-            img_urls = re.findall(
-                r'https?://[^\s"<>]+\.(?:jpg|jpeg|png|gif|webp)', content or ""
-            )
-            good_imgs = [u for u in img_urls if "i.redd.it" in u or "imgur.com" in u]
-            if good_imgs and title:
-                image_posts.append({
-                    "title":     title,
-                    "url":       good_imgs[0],
-                    "subreddit": subreddit,
-                })
-
-        if not image_posts:
-            print(f"[{subreddit}] no image posts in RSS")
+        photos = resp.json().get("photos", [])
+        if not photos:
+            print(f"[Pexels] no results for '{query}' page {page}")
             return None
-
-        post = random.choice(image_posts[:10])
-        print(f"[{subreddit}] picked: {post['title'][:60]}")
-        return post
-
+        photo   = random.choice(photos)
+        img_url = photo["src"].get("large2x") or photo["src"]["large"]
+        alt     = photo.get("alt", query)
+        print(f"[Pexels] query='{query}' | alt='{alt[:60]}'")
+        return {"url": img_url, "title": alt, "subreddit": query}
     except Exception as e:
-        print(f"Reddit error ({subreddit}): {e}")
+        print(f"Pexels error: {e}")
         return None
 
 
@@ -360,7 +349,7 @@ def main():
 
     post = None
     for attempt in range(5):
-        post = get_reddit_food_post()
+        post = get_pexels_food_image()
         if post:
             break
         print(f"Retry {attempt + 1}/5...")
@@ -399,7 +388,7 @@ def main():
         print(f"Overlay failed (using original): {e}")
 
     caption = generate_caption(food_name, vibe, genre, content_type, post["subreddit"], reddit_title=reddit_title)
-    caption += f"\n📷 via r/{post['subreddit']}"
+    caption += f"\n📷 via Pexels"
     print(f"Caption:\n{caption}\n")
 
     success = post_photo(caption, img_path)
