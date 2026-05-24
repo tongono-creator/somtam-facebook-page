@@ -21,21 +21,20 @@ HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; SomtamBot/1.0; +github)"}
 
 # ── Food Subreddits ──────────────────────────────────────────────────
 FOOD_SUBREDDITS = [
+    # Thai / spicy subs — content ตรง concept มากที่สุด (weight สูง)
+    "ThaiFood",
+    "ThaiFood",
     "ThaiFood",
     "Thailand",
+    "Thailand",
+    "Spicy_Food",
+    "Spicy_Food",
     "spicy",
+    # Asian food ที่ฝรั่งมักจะ react — secondary
     "AsianFood",
     "streetfood",
-    "FoodPorn",
-    "food",
-    "Cooking",
-    "DessertPorn",
-    "tonightsdinner",
     "noodles",
     "ramen",
-    "sushi",
-    "MealPrepSunday",
-    "Spicy_Food",
 ]
 
 IMAGE_EXTS   = (".jpg", ".jpeg", ".png", ".gif", ".webp")
@@ -118,6 +117,8 @@ def analyze_image(img_path, reddit_title=""):
         f"{title_ctx}"
         "ดูรูปนี้แล้วตอบ 3 อย่าง แยกด้วย | :\n"
         "1. ชื่ออาหาร ภาษาไทย 1-4 คำ\n"
+        "   ถ้าเป็นอาหารตะวันตกล้วน (pizza, burger, pasta, steak ฯลฯ) ที่คนไทยไม่ตื่นเต้น\n"
+        "   ตอบว่า: ไม่ตรงคอนเทน|ไม่เกี่ยว|ไม่เกี่ยว\n"
         "2. ถ้าฝรั่งกินครั้งแรก น่าจะ react ยังไง 5-8 คำ เช่น "
         "หน้าแดงน้ำตาไหลแต่ตักต่อ, ตาโตแล้วถ่ายรูปก่อนกิน, "
         "ส่ายหัวแต่ยังกัดต่อ, บอกว่าโอเคแต่เหงื่อแตก\n"
@@ -180,18 +181,20 @@ def generate_hook(food_name, vibe, genre, content_type, reddit_title=""):
             f"{title_ctx}"
             f"อาหาร: {food_name} | ฝรั่ง react: {vibe} | challenge: {genre}\n"
             f"reaction context: {reactions}\n"
-            "เขียน hook text มุมมองคนไทยดูฝรั่งกิน แนวแซว/เห็นใจ สำหรับใส่บนรูป\n"
-            "บรรทัด 1: ความคิดแรกของคนไทยที่เห็น 3-5 คำ เช่น 'ยังไหวไหมนะ', 'บอกว่าไม่เผ็ด', 'เห็นมั้ย'\n"
-            "บรรทัด 2: ต่อสั้น 4-6 คำ ชวนคอมเม้น\n"
+            "เขียน hook text บนรูปอาหาร — มุมคนไทยดูฝรั่งกินแล้วช็อก\n"
+            "บรรทัด 1: ต้องมีคำว่า 'ฝรั่ง' หรือ 'เขา' ชัดเจน 3-6 คำ\n"
+            "  เช่น 'ฝรั่งเจอส้มตำ..', 'เขาบอกว่าโอเค..', 'ฝรั่งกิน[food_name]ครั้งแรก..'\n"
+            "บรรทัด 2: ต่อแบบเห็นใจ/แซว 3-5 คำ ลงท้ายให้คนอยากคอมเม้น\n"
         )
     else:
         style = (
             f"{title_ctx}"
             f"อาหาร: {food_name} | ฝรั่ง react: {vibe} | challenge: {genre}\n"
             f"reaction context: {reactions}\n"
-            "เขียน hook text มุมมองคนไทยดูฝรั่งกินแล้วติดใจ สำหรับใส่บนรูป\n"
-            "บรรทัด 1: ความรู้สึก 3-5 คำ เช่น 'ติดใจแล้วสินะ', 'กลับมาอีกแล้ว', 'เขาเข้าใจแล้ว'\n"
-            "บรรทัด 2: คำถาม/ประโยคสั้น 4-7 คำ\n"
+            "เขียน hook text บนรูปอาหาร — มุมคนไทยดูฝรั่งติดใจ\n"
+            "บรรทัด 1: ต้องมีคำว่า 'ฝรั่ง' หรือ 'เขา' ชัดเจน 3-6 คำ\n"
+            "  เช่น 'ฝรั่งติดใจ[food_name]แล้ว', 'เขากลับมาอีกแล้ว', 'ฝรั่งเข้าใจแล้วสิ'\n"
+            "บรรทัด 2: คำถาม/ประโยคสั้น 3-5 คำ ชวนแชร์ประสบการณ์\n"
         )
     prompt = f"{style}{REALISM_FILTER}ตอบแค่ 2 บรรทัด ไม่มี hashtag ไม่มี **"
     for model in TEXT_MODELS:
@@ -375,7 +378,7 @@ def main():
 
     # Vision วิเคราะห์รูป → food_name + foreigner reaction vibe + challenge level
     food_name, vibe, genre = analyze_image(img_path, reddit_title=reddit_title)
-    if not food_name or "ไม่ใช่อาหาร" in food_name:
+    if not food_name or "ไม่ใช่อาหาร" in food_name or "ไม่ตรงคอนเทน" in food_name:
         print("Not a food image, using Reddit title as fallback")
         food_name = reddit_title
         vibe      = "ถ่ายรูปก่อนกิน"
