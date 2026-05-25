@@ -410,7 +410,7 @@ def add_comment(post_id):
 
 # ── Main ──────────────────────────────────────────────────────────────
 def main():
-    print("=== ส้มตำคุณอร Bot ===")
+    print("=== พริก 10 เม็ด Bot ===")
 
     post = None
     for attempt in range(5):
