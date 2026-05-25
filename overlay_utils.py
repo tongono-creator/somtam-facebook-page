@@ -210,3 +210,136 @@ def add_overlay(img_path, line1, line2, accent_color, out_path=None):
 
     img.save(out_path, "JPEG", quality=92)
     return out_path
+
+
+def clean_image_text(text):
+    # Keep only ASCII, Latin-1, Thai characters, and common punctuation. Strip emojis to prevent tofu boxes.
+    allowed_chars = []
+    for c in text:
+        o = ord(c)
+        if (0 <= o <= 127) or (0x0E00 <= o <= 0x0E7F) or (o in [0x2013, 0x2014, 0x2026]):
+            allowed_chars.append(c)
+    return "".join(allowed_chars).strip()
+
+
+def create_diagonal_gradient(width, height, color1, color2):
+    size = 128
+    img = Image.new("RGB", (size, size))
+    draw = ImageDraw.Draw(img)
+    for i in range(size * 2):
+        t = i / (size * 2)
+        r = int(color1[0] + (color2[0] - color1[0]) * t)
+        g = int(color1[1] + (color2[1] - color1[1]) * t)
+        b = int(color1[2] + (color2[2] - color1[2]) * t)
+        draw.line([(x, i - x) for x in range(i + 1) if x < size and (i - x) < size], fill=(r, g, b))
+    return img.resize((width, height), Image.Resampling.BILINEAR)
+
+
+def draw_capsule(draw, x_center, y_center, text, font, fill_color, text_color):
+    bbox = draw.textbbox((0, 0), text, font=font)
+    tw = bbox[2] - bbox[0]
+    th = bbox[3] - bbox[1]
+    
+    pad_x = 24
+    pad_y = 12
+    
+    x1 = x_center - tw // 2 - pad_x
+    y1 = y_center - th // 2 - pad_y
+    x2 = x_center + tw // 2 + pad_x
+    y2 = y_center + th // 2 + pad_y
+    
+    draw.rounded_rectangle([x1, y1, x2, y2], radius=(y2 - y1) // 2, fill=fill_color)
+    tx = x_center - tw // 2 - bbox[0]
+    ty = y_center - th // 2 - bbox[1]
+    draw.text((tx, ty), text, font=font, fill=text_color)
+
+
+def create_acid_debate_card(line1, line2, out_path):
+    """
+    Generates a premium text status card with an Acid Lime & Yellow gradient background,
+    dotted grid, L-brackets, branding capsule, and clean non-overlapping text.
+    """
+    W, H = 1080, 1080
+    color_lime = (174, 243, 89)
+    color_yellow = (255, 215, 0)
+    
+    # 1. Background Gradient
+    img = create_diagonal_gradient(W, H, color_lime, color_yellow)
+    
+    # Create transparent overlay layer for grid and decorations
+    overlay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    draw_ol = ImageDraw.Draw(overlay)
+    
+    # 2. Dotted Grid (6% opacity)
+    grid_color = (40, 40, 40, 15)
+    for gx in range(120, 960, 40):
+        for gy in range(120, 960, 40):
+            draw_ol.ellipse([gx-2, gy-2, gx+2, gy+2], fill=grid_color)
+            
+    # 3. Outer Border & L-brackets
+    dark_gray = (40, 40, 40, 255)
+    border_inset = 60
+    # Inner border line
+    draw_ol.rectangle([border_inset, border_inset, W - border_inset, H - border_inset], outline=(40, 40, 40, 80), width=1)
+    
+    # L-bracket Corner decorations
+    bracket_len = 60
+    bracket_thick = 6
+    x_min, y_min = border_inset, border_inset
+    x_max, y_max = W - border_inset, H - border_inset
+    
+    # Corner drawing
+    draw_ol.line([x_min, y_min, x_min + bracket_len, y_min], fill=dark_gray, width=bracket_thick)
+    draw_ol.line([x_min, y_min, x_min, y_min + bracket_len], fill=dark_gray, width=bracket_thick)
+    draw_ol.line([x_max, y_min, x_max - bracket_len, y_min], fill=dark_gray, width=bracket_thick)
+    draw_ol.line([x_max, y_min, x_max, y_min + bracket_len], fill=dark_gray, width=bracket_thick)
+    draw_ol.line([x_min, y_max, x_min + bracket_len, y_max], fill=dark_gray, width=bracket_thick)
+    draw_ol.line([x_min, y_max, x_min, y_max - bracket_len], fill=dark_gray, width=bracket_thick)
+    draw_ol.line([x_max, y_max, x_max - bracket_len, y_max], fill=dark_gray, width=bracket_thick)
+    draw_ol.line([x_max, y_max, x_max, y_max - bracket_len], fill=dark_gray, width=bracket_thick)
+    
+    # Merge overlay
+    img = Image.alpha_composite(img.convert("RGBA"), overlay).convert("RGB")
+    draw = ImageDraw.Draw(img)
+    
+    # 4. Top Branding Capsule
+    capsule_font = ImageFont.truetype(FONT_PATH, 28)
+    capsule_text = clean_image_text("พริก 10 เม็ด")
+    draw_capsule(
+        draw=draw,
+        x_center=W // 2,
+        y_center=110,
+        text=capsule_text,
+        font=capsule_font,
+        fill_color=(40, 40, 40),
+        text_color=(255, 255, 255)
+    )
+    
+    # 5. Main Text wrapping and rendering
+    full_text = f"{line1}\n{line2}" if line2 else line1
+    cleaned_text = clean_image_text(full_text)
+    
+    sz = 76 if len(cleaned_text) < 60 else (66 if len(cleaned_text) < 100 else 56)
+    main_font = ImageFont.truetype(FONT_PATH, sz)
+    
+    wrapped_lines = []
+    for line in cleaned_text.split("\n"):
+        wrapped_lines.extend(_wrap_text(draw, line, main_font, W - 200))
+        
+    line_h = int(main_font.size * 1.35)
+    line_gap = 15
+    total_text_h = len(wrapped_lines) * line_h + (len(wrapped_lines) - 1) * line_gap
+    
+    y = (H - total_text_h) // 2 + 30
+    for line in wrapped_lines:
+        bbox = draw.textbbox((0, 0), line, font=main_font)
+        tw = bbox[2] - bbox[0]
+        tx = (W - tw) // 2 - bbox[0]
+        # Drop shadow
+        draw.text((tx + 2, y + 2), line, font=main_font, fill=(0, 0, 0, 40))
+        # Main text
+        draw.text((tx, y), line, font=main_font, fill=(40, 40, 40))
+        y += line_h + line_gap
+        
+    img.save(out_path, "JPEG", quality=92)
+    return out_path

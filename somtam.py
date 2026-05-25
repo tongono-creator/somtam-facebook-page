@@ -310,53 +310,126 @@ def add_comment(post_id):
             time.sleep(random.uniform(30, 90))
 
 
+def generate_debate_content():
+    prompt = (
+        "You are an expert Thai social media copywriter for 'พริก 10 เม็ด' (Spicy Thai Food page).\n"
+        "Generate a highly engaging, funny, and relatable food debate question (ข้อพิพาทอาหาร) in THAI language to drive comments.\n"
+        "Topics could be about Thai food ingredients (e.g., holy basil with long beans, sweet green curry, pineapple on pizza/fried rice), eating habits, or restaurant etiquette.\n"
+        "Requirements:\n"
+        "1. Output exactly 3 sections labeled with markers:\n"
+        "   ===HOOK1=== (Hook Line 1: Main statement, very short, 4-6 Thai words. NO emojis)\n"
+        "   ===HOOK2=== (Hook Line 2: Question or sub-hook, very short, 3-5 Thai words. NO emojis)\n"
+        "   ===CAPTION=== (Facebook Caption: structured as 6-8 bullet points. Start each bullet with a ▪️ emoji. End with 3 relevant hashtags)\n\n"
+        "Ensure natural Thai street style, large font readability, and no emojis in the hooks (emojis are fine in the caption)."
+    )
+    for model in TEXT_MODELS:
+        try:
+            resp = client.models.generate_content(model=model, contents=prompt)
+            result = resp.text.strip()
+            print(f"Debate Content Generation [{model}]:\n{result[:300]}...\n")
+            
+            line1 = "กะเพราแท้"
+            line2 = "ต้องไม่มีถั่วฝักยาว?"
+            caption = ""
+            
+            h1_match = re.search(r'===HOOK1===\s*(.*)', result, re.IGNORECASE)
+            h2_match = re.search(r'===HOOK2===\s*(.*)', result, re.IGNORECASE)
+            cap_match = re.search(r'===CAPTION===\s*(.*)', result, re.DOTALL | re.IGNORECASE)
+            
+            if h1_match:
+                line1 = h1_match.group(1).split('\n')[0].strip()
+            if h2_match:
+                line2 = h2_match.group(1).split('\n')[0].strip()
+            if cap_match:
+                caption = cap_match.group(1).strip()
+            
+            # Clean label prefixes if any
+            label_pattern = r'^(ข้อความในโพสต์\s*Facebook|ข้อความบนรูป|ข้อความในรูป|ข้อความ|คำบรรยาย|คำอธิบาย|บรรทัดที่\s*\d+|บรรทัด\s*\d+|ประโยคที่\s*\d+|ประโยค\s*\d+|Hook\s*text|Hook|Line\s*\d+|[L|l]ine\s*\d+|\d+)\s*[:\-\.\s]\s*'
+            line1 = re.sub(label_pattern, '', line1, flags=re.IGNORECASE).strip()
+            line2 = re.sub(label_pattern, '', line2, flags=re.IGNORECASE).strip()
+            line1 = line1.strip('"\'“”‘’')
+            line2 = line2.strip('"\'“”‘’')
+            
+            if caption:
+                return line1, line2, caption
+        except Exception as e:
+            print(f"[{model}] debate content generation failed: {e}")
+            
+    return "กะเพราแท้", "ต้องไม่มีถั่วฝักยาว?", "คุณคิดยังไงกันบ้างครับ?\n#กะเพรา #อาหารไทย #ดราม่าอาหาร"
+
+
 # ── Main ──────────────────────────────────────────────────────────────
 def main():
     print("=== พริก 10 เม็ด Bot ===")
 
-    post = None
-    for attempt in range(5):
-        post = get_pexels_food_image()
-        if post:
-            break
-        print(f"Retry {attempt + 1}/5...")
-
-    if not post:
-        print("No suitable post found after 5 attempts")
-        return
-
-    img_path = download_image(post["url"])
-    if not img_path:
-        print("Image download failed")
-        return
-
-    reddit_title = post["title"]
-
-    # Vision วิเคราะห์รูป → food_name + foreigner reaction vibe + challenge level
-    image_type, food_name, has_foreigner, vibe, genre = analyze_image(img_path, reddit_title=reddit_title)
-    if not food_name or "ไม่ใช่อาหาร" in food_name or "ไม่ตรงคอนเทน" in food_name:
-        print("Not a food image, using Reddit title as fallback")
-        food_name = reddit_title
-        image_type = "dish"
-        has_foreigner = False
-        vibe      = "ถ่ายรูปก่อนกิน"
-        genre     = "น่ากินเลย"
-
-    print(f"Food: {food_name} | Type: {image_type} | Foreigner: {has_foreigner} | Challenge: {genre} | Reaction: {vibe}")
     content_type = random.choice(CONTENT_TYPES)
-    line1, line2, caption = generate_post_content(img_path, image_type, food_name, vibe, genre, content_type, has_foreigner, reddit_title=reddit_title)
-    print(f"Hook: {line1} | {line2}")
+    print(f"Selected Category: {content_type}")
 
-    # PIL overlay
-    try:
-        from overlay_utils import add_overlay
-        overlaid = add_overlay(img_path, line1, line2, ACCENT_COLOR)
-        os.unlink(img_path)
-        img_path = overlaid
-    except Exception as e:
-        print(f"Overlay failed (using original): {e}")
+    if content_type == "ข้อพิพาทอาหาร":
+        # 1. Generate text-only debate content
+        line1, line2, caption = generate_debate_content()
+        print(f"Debate Hooks: {line1} | {line2}")
 
-    caption += f"\n📷 via Pexels"
+        # Create temporary file path
+        import tempfile
+        tmp = tempfile.NamedTemporaryFile(suffix=".jpg", delete=False)
+        img_path = tmp.name
+        tmp.close()
+
+        # 2. Render Gradient Card
+        try:
+            from overlay_utils import create_acid_debate_card
+            img_path = create_acid_debate_card(line1, line2, img_path)
+            print(f"Gradient Card generated: {img_path}")
+        except Exception as e:
+            print(f"Gradient Card generation failed: {e}")
+            return
+
+    else:
+        # Original Pexels flow
+        post = None
+        for attempt in range(5):
+            post = get_pexels_food_image()
+            if post:
+                break
+            print(f"Retry {attempt + 1}/5...")
+
+        if not post:
+            print("No suitable post found after 5 attempts")
+            return
+
+        img_path = download_image(post["url"])
+        if not img_path:
+            print("Image download failed")
+            return
+
+        reddit_title = post["title"]
+
+        # Vision วิเคราะห์รูป → food_name + foreigner reaction vibe + challenge level
+        image_type, food_name, has_foreigner, vibe, genre = analyze_image(img_path, reddit_title=reddit_title)
+        if not food_name or "ไม่ใช่อาหาร" in food_name or "ไม่ตรงคอนเทน" in food_name:
+            print("Not a food image, using Reddit title as fallback")
+            food_name = reddit_title
+            image_type = "dish"
+            has_foreigner = False
+            vibe      = "ถ่ายรูปก่อนกิน"
+            genre     = "น่ากินเลย"
+
+        print(f"Food: {food_name} | Type: {image_type} | Foreigner: {has_foreigner} | Challenge: {genre} | Reaction: {vibe}")
+        line1, line2, caption = generate_post_content(img_path, image_type, food_name, vibe, genre, content_type, has_foreigner, reddit_title=reddit_title)
+        print(f"Hook: {line1} | {line2}")
+
+        # PIL overlay
+        try:
+            from overlay_utils import add_overlay
+            overlaid = add_overlay(img_path, line1, line2, ACCENT_COLOR)
+            os.unlink(img_path)
+            img_path = overlaid
+        except Exception as e:
+            print(f"Overlay failed (using original): {e}")
+
+        caption += f"\n📷 via Pexels"
+
     print(f"Caption:\n{caption}\n")
 
     success = post_photo(caption, img_path)
