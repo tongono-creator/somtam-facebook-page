@@ -158,6 +158,28 @@ REALISM_FILTER = (
 )
 
 
+def clean_hook_lines(raw_text):
+    text = clean_text(raw_text)
+    
+    # Check if we should split by pipe or newline
+    if "|" in text:
+        parts = text.split("|")
+    else:
+        parts = text.split("\n")
+        
+    # Pattern to strip prefixes like "บรรทัด 1: ", "ข้อความในโพสต์ Facebook: ", "1. ", etc.
+    label_pattern = r'^(ข้อความในโพสต์\s*Facebook|ข้อความบนรูป|ข้อความในรูป|ข้อความ|คำบรรยาย|คำอธิบาย|บรรทัดที่\s*\d+|บรรทัด\s*\d+|ประโยคที่\s*\d+|ประโยค\s*\d+|Hook\s*text|Hook|Line\s*\d+|[L|l]ine\s*\d+|\d+)\s*[:\-\.\s]\s*'
+    
+    cleaned_lines = []
+    for part in parts:
+        cleaned = re.sub(label_pattern, '', part, flags=re.IGNORECASE).strip()
+        cleaned = cleaned.strip('"\'“”‘’')
+        if cleaned:
+            cleaned_lines.append(cleaned)
+            
+    return cleaned_lines
+
+
 def generate_hook(food_name, vibe, genre, content_type, reddit_title=""):
     # vibe = reaction ฝรั่ง, genre = challenge level
     reactions = FOREIGNER_REACTIONS.get(genre, FOREIGNER_REACTIONS["น่ากินเลย"])
@@ -185,12 +207,12 @@ def generate_hook(food_name, vibe, genre, content_type, reddit_title=""):
             "  เช่น 'ฝรั่งติดใจ[food_name]แล้ว', 'เขากลับมาอีกแล้ว', 'ฝรั่งเข้าใจแล้วสิ'\n"
             "บรรทัด 2: คำถาม/ประโยคสั้น 3-5 คำ ชวนแชร์ประสบการณ์\n"
         )
-    prompt = f"{style}{REALISM_FILTER}ตอบแค่ 2 บรรทัด ไม่มี hashtag ไม่มี **"
+    prompt = f"{style}{REALISM_FILTER}ตอบแค่ 2 บรรทัด ไม่มี hashtag ไม่มี **\n" \
+             f"ห้ามเขียนคำนำ ห้ามเขียนสรุป ห้ามใส่ป้ายกำกับใดๆ เช่น 'บรรทัด 1:' หรือ 'Hook:' เด็ดขาด"
     for model in TEXT_MODELS:
         try:
             resp = client.models.generate_content(model=model, contents=prompt)
-            lines = clean_text(resp.text.strip()).split("\n")
-            lines = [l.strip() for l in lines if l.strip()]
+            lines = clean_hook_lines(resp.text)
             return lines[0] if lines else food_name[:20], lines[1] if len(lines) > 1 else ""
         except Exception as e:
             print(f"[{model}] hook failed: {e}")
