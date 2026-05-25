@@ -98,24 +98,21 @@ def download_image(url):
 
 # ── Gemini Vision ─────────────────────────────────────────────────────
 def analyze_image(img_path, reddit_title=""):
-    """ดูรูปแล้วบอก food_name | foreigner_reaction | challenge_level"""
+    """ดูรูปแล้วบอก image_type | food_name | is_foreigner_visible | foreigner_reaction | challenge_level"""
     with open(img_path, "rb") as f:
         img_data = f.read()
     title_ctx = f'ชื่อโพสต์ต้นฉบับ: "{reddit_title}"\n' if reddit_title else ""
     prompt = (
         f"{title_ctx}"
-        "ดูรูปนี้แล้วตอบ 3 อย่าง แยกด้วย | :\n"
-        "1. ชื่ออาหาร ภาษาไทย 1-4 คำ\n"
-        "   ถ้าเป็นอาหารตะวันตกล้วน (pizza, burger, pasta, steak ฯลฯ) ที่คนไทยไม่ตื่นเต้น\n"
-        "   ตอบว่า: ไม่ตรงคอนเทน|ไม่เกี่ยว|ไม่เกี่ยว\n"
-        "2. ถ้าฝรั่งกินครั้งแรก น่าจะ react ยังไง 5-8 คำ เช่น "
-        "หน้าแดงน้ำตาไหลแต่ตักต่อ, ตาโตแล้วถ่ายรูปก่อนกิน, "
-        "ส่ายหัวแต่ยังกัดต่อ, บอกว่าโอเคแต่เหงื่อแตก\n"
-        "3. challenge level สำหรับฝรั่ง เลือก 1 จาก: "
-        "เผ็ดช็อก, กลิ่นแรง, หน้าตาแปลกตา, น่ากินเลย, เผ็ดพอดี\n"
-        "ตัวอย่าง: ส้มตำ|หน้าแดงน้ำตาไหลแต่ตักต่อ|เผ็ดช็อก\n"
-        "ตัวอย่าง: ทุเรียน|ดมแล้วหยุด กัดแล้วไม่หยุด|กลิ่นแรง\n"
-        "ถ้าไม่ใช่อาหาร ตอบว่า: ไม่ใช่อาหาร|ไม่เกี่ยว|ไม่เกี่ยว"
+        "Analyze this image and provide 5 fields separated by a vertical bar '|':\n"
+        "1. Image Type: Choose either 'dish' (if it's a close-up of a food dish), 'stall' (if it's a street food stall, market vendor, or shop front), or 'other'.\n"
+        "2. Food Name: The Thai name of the food or the type of food stall (1-4 Thai words, e.g., 'ส้มตำ', 'ร้านต้มยำกุ้ง', 'แกงเขียวหวาน'). If it is not related to Thai/Asian food, output 'ไม่ตรงคอนเทน'.\n"
+        "3. Is Foreigner Visible: Choose 'yes' if there is a foreigner/tourist clearly visible in the image, otherwise 'no'.\n"
+        "4. Foreigner Reaction: A short realistic description in Thai (5-8 words) of how a foreigner would react to this food or stall (e.g., 'หน้าแดงน้ำตาไหลแต่สู้ต่อ', 'ยืนส่องผักสดหน้าร้านแบบงงๆ').\n"
+        "5. Challenge Level: Choose one of these categories: 'เผ็ดช็อก', 'กลิ่นแรง', 'หน้าตาแปลกตา', 'น่ากินเลย', 'เผ็ดพอดี', 'แกงกินผิดวิธี', 'ข้อพิพาทอาหาร'.\n\n"
+        "Format: Image Type | Food Name | Is Foreigner Visible | Foreigner Reaction | Challenge Level\n"
+        "Example: dish | ส้มตำ | no | หน้าแดงเหงื่อตกแต่ตักกินต่อ | เผ็ดช็อก\n"
+        "Example: stall | ร้านส้มตำรถเข็น | no | ยืนงงๆ กับกองผักสดหน้าร้าน | หน้าตาแปลกตา"
     )
     for model in TEXT_MODELS:
         try:
@@ -127,19 +124,20 @@ def analyze_image(img_path, reddit_title=""):
                 ],
             )
             result = resp.text.strip()
-            print(f"Vision: {result}")
+            print(f"Vision Analysis: {result}")
             parts = result.split("|")
-            food_name = parts[0].strip()
-            vibe      = parts[1].strip() if len(parts) > 1 else "ถ่ายรูปก่อนกิน"
-            genre     = parts[2].strip() if len(parts) > 2 else "น่ากินเลย"
-            return food_name, vibe, genre
+            image_type = parts[0].strip()
+            food_name = parts[1].strip()
+            has_foreigner = parts[2].strip().lower() == "yes"
+            vibe      = parts[3].strip() if len(parts) > 3 else "ถ่ายรูปก่อนกิน"
+            genre     = parts[4].strip() if len(parts) > 4 else "น่ากินเลย"
+            return image_type, food_name, has_foreigner, vibe, genre
         except Exception as e:
             print(f"[{model}] vision failed: {e}")
-    return None, None, None
+    return "dish", reddit_title, False, "ถ่ายรูปก่อนกิน", "น่ากินเลย"
 
 
-# ── Gemini Caption ────────────────────────────────────────────────────
-# foreigner reactions ตาม challenge level — ฝรั่งมักจะ react ยังไงกับอาหารแต่ละแบบ
+# ── Gemini Caption & Hook (Combined for Consistency) ───────────────────
 FOREIGNER_REACTIONS = {
     "เผ็ดช็อก":     "หน้าแดง น้ำตาไหล แต่ยังตักต่อ, 'it's fine' แต่เหงื่อแตกทั่วตัว, สั่งน้ำ 3 แก้วแต่ไม่ยอมหยุดกิน, กูเกิลว่า 'ส้มตำ addictive' ตอนกลางคืน",
     "กลิ่นแรง":     "หยุดก่อนแล้วดมอีกครั้ง, หน้าเบ้แต่กัดต่อ, ถ่ายรูปส่งเพื่อน 'กินอะไรก็ไม่รู้', แปลกใจมากที่ตัวเองชอบ",
@@ -160,187 +158,91 @@ REALISM_FILTER = (
 )
 
 
-def clean_hook_lines(raw_text):
-    text = clean_text(raw_text)
-    
-    # Check if we should split by pipe or newline
-    if "|" in text:
-        parts = text.split("|")
-    else:
-        parts = text.split("\n")
-        
-    # Pattern to strip prefixes like "บรรทัด 1: ", "ข้อความในโพสต์ Facebook: ", "1. ", etc.
-    label_pattern = r'^(ข้อความในโพสต์\s*Facebook|ข้อความบนรูป|ข้อความในรูป|ข้อความ|คำบรรยาย|คำอธิบาย|บรรทัดที่\s*\d+|บรรทัด\s*\d+|ประโยคที่\s*\d+|ประโยค\s*\d+|Hook\s*text|Hook|Line\s*\d+|[L|l]ine\s*\d+|\d+)\s*[:\-\.\s]\s*'
-    
-    cleaned_lines = []
-    for part in parts:
-        cleaned = re.sub(label_pattern, '', part, flags=re.IGNORECASE).strip()
-        cleaned = cleaned.strip('"\'“”‘’')
-        if cleaned:
-            cleaned_lines.append(cleaned)
+def generate_post_content(img_path, image_type, food_name, vibe, genre, content_type, has_foreigner, reddit_title=""):
+    with open(img_path, "rb") as f:
+        img_data = f.read()
+
+    reactions = FOREIGNER_REACTIONS.get(genre, FOREIGNER_REACTIONS["น่ากินเลย"])
+    prompt = (
+        f"You are an expert Thai social media copywriter for a food page named 'พริก 10 เม็ด' (Spicy Thai Food/Stall content).\n"
+        f"Analyze the attached image and generate highly engaging, funny, and relatable Facebook content in THAI language about this food/stall:\n"
+        f"- Food/Stall Name: {food_name}\n"
+        f"- Image Type: {image_type} (either 'dish' or 'stall')\n"
+        f"- Challenge Level: {genre}\n"
+        f"- Foreigner Vibe: {vibe}\n"
+        f"- Post Category: {content_type}\n"
+        f"- Is a foreigner visible in the image?: {'Yes' if has_foreigner else 'No'}\n"
+        f"- Original Source Context: {reddit_title}\n\n"
+        "Post Category descriptions:\n"
+        "  * 'ช็อกเผ็ด': Foreigner shocked/crying by Thai spiciness but keeps eating.\n"
+        "  * 'ติดใจ': Foreigner falls in love with the food and wants to eat it again.\n"
+        "  * 'งงแต่กิน': Foreigner is confused by the food's appearance or smell but ends up eating it all.\n"
+        "  * 'ไม่คาดหวัง': Foreigner had low expectations but is mind-blown by the taste.\n"
+        "  * 'กลับมาอีก': Foreigner becomes a regular customer at this stall/food.\n"
+        "  * 'แกงกินผิดวิธี': Foreigner eating Thai food in a hilariously wrong way (e.g., using chopsticks for Pad Thai, pouring soup on wrong dishes).\n"
+        "  * 'ข้อพิพาทอาหาร': Playful debate about Thai food recipes or ingredients (e.g., whether holy basil should have long beans, boat noodle soup thickness, crispy vs soft oyster omelet) to drive comments.\n\n"
+        "Requirements:\n"
+        "1. Output exactly 3 sections labeled with markers:\n"
+        "   ===HOOK1=== (Hook Line 1: to be written on the image. Very short, 3-6 Thai words. Must feel like a casual first thought)\n"
+        "   ===HOOK2=== (Hook Line 2: to be written on the image. Very short, 3-5 Thai words)\n"
+        "   ===CAPTION=== (Facebook Caption: a short story structured as 6-8 bullet points. Start each bullet with a ▪️ emoji. 1-2 sentences per bullet.)\n\n"
+        "2. Strict Constraints for Natural Thai Style and Spelling (AVOID TYPOS & TRANSLATION ERRORS):\n"
+        "   - WRITE IN NATURAL, CASUAL THAI STREET/FACEBOOK STYLE (ภาษาพูดธรรมดา ท้องถิ่น สบายๆ ขำๆ เหมือนแชร์เรื่องฮาๆ ลงกลุ่ม).\n"
+        "   - AVOID ENGLISH LITERAL TRANSLATIONS:\n"
+        "     * DO NOT use 'ยินดีฝรั่งคนนึง' to mean 'a foreigner gladly...'. Instead use 'มีฝรั่งคนนึง', 'เห็นฝรั่งคนนึง', or 'วันก่อนเจอฝรั่งคนนึง'.\n"
+        "     * DO NOT translate literal sizes or English terms into gibberish like 'น้ำบิ๊กสวย'. Use real, common Thai drink names or packaging size words, e.g., 'น้ำแก้วใหญ่', 'น้ำอัดลม', 'น้ำเก๊กฮวย', 'แป๊ปซี่', 'น้ำเปล่า'.\n"
+        "     * AVOID spelling/typing errors. For example, use 'แต่ก็ยังตัก...' or 'แต่ก็ตัก...' instead of typos like 'แต่ข้อตัก...'.\n"
+        "   - STRICT LOGICAL CONSISTENCY between hooks and caption: Hook lines and caption MUST tell the exact same story. If the hook says 'เขาบอกเผ็ดน้อยนะ' (He said mild spicy), then in the caption story, the foreigner MUST have ordered 'mild spicy' (not 'local style extra spicy'). If he ordered extra spicy, then the hook should say 'สั่งเผ็ดๆ เลยนะ' or similar. There must be NO logical contradictions.\n"
+        "   - MATCH THE IMAGE VISUALS: Look closely at the image content. If there is no foreigner visible in the picture, DO NOT write a specific story about a fictional foreigner standing there doing things. Instead, write about the food/stall's vibe, or a general story about what foreigners usually do/feel when encountering this, or focus on the food/stall itself.\n"
+        "   - Do not use markdown like ** or bolding in the caption.\n"
+        "   - End the caption with 3 relevant hashtags.\n\n"
+        f"Realism Guidelines:\n{REALISM_FILTER}\n"
+        "Format of Response:\n"
+        "===HOOK1=== [Hook Line 1]\n"
+        "===HOOK2=== [Hook Line 2]\n"
+        "===CAPTION=== [Facebook Caption]"
+    )
+    for model in TEXT_MODELS:
+        try:
+            resp = client.models.generate_content(
+                model=model,
+                contents=[
+                    types.Part.from_bytes(data=img_data, mime_type="image/jpeg"),
+                    types.Part.from_text(text=prompt),
+                ],
+            )
+            result = resp.text.strip()
+            print(f"Content Generation [{model}]:\n{result[:300]}...\n")
             
-    return cleaned_lines
-
-
-def generate_hook(food_name, vibe, genre, content_type, reddit_title=""):
-    # vibe = reaction ฝรั่ง, genre = challenge level
-    reactions = FOREIGNER_REACTIONS.get(genre, FOREIGNER_REACTIONS["น่ากินเลย"])
-    is_shock = content_type in ("ช็อกเผ็ด", "งงแต่กิน") or any(
-        w in vibe for w in ["แดง", "น้ำตา", "เหงื่อ", "ส่ายหัว", "งง", "เบ้"]
-    )
-    title_ctx = f'ชื่อโพสต์เจ้าของรูป: "{reddit_title}"\n' if reddit_title else ""
-    
-    if content_type == "แกงกินผิดวิธี":
-        style = (
-            f"{title_ctx}"
-            f"อาหาร: {food_name}\n"
-            "เขียน hook text บนรูปอาหาร — มุมคนไทยเห็นฝรั่งกินอาหารไทยผิดวิธีชวนหัวจะปวด (จิกกัดแซวฮาๆ)\n"
-            "บรรทัด 1: แซวพฤติกรรมฝรั่งกินผิดวิธี 3-6 คำ (ต้องมีคำว่า 'ฝรั่ง' หรือ 'เขา')\n"
-            "  เช่น 'เมื่อฝรั่งกินผัดไทยด้วยตะเกียบ..', 'เขาบอกข้าวมันไก่จืดเลยใส่มะเขือเทศ..'\n"
-            "บรรทัด 2: ประโยคแซวที่ทำให้คนไทยคันไม้คันมืออยากคอมเมนต์ 3-5 คำ\n"
-        )
-    elif content_type == "ข้อพิพาทอาหาร":
-        style = (
-            f"{title_ctx}"
-            f"อาหาร: {food_name}\n"
-            "เขียน hook text บนรูปอาหาร — ตั้งคำถามถกเถียงเรื่องรสชาติ/เครื่องปรุงที่คนไทยชอบเถียงกัน\n"
-            "บรรทัด 1: ตั้งคำถามเถียงกันบนรูป 4-6 คำ ลงท้ายด้วย ..\n"
-            "  เช่น 'กะเพราใส่ถั่วฝักยาว..', 'ส้มตำไทย vs ปูปลาร้า..', 'ผัดไทยไม่ปรุง..'\n"
-            "บรรทัด 2: ประโยคท้าทายให้คนคอมเมนต์เลือกฝั่ง 3-5 คำ\n"
-        )
-    elif is_shock:
-        style = (
-            f"{title_ctx}"
-            f"อาหาร: {food_name} | ฝรั่ง react: {vibe} | challenge: {genre}\n"
-            f"reaction context: {reactions}\n"
-            "เขียน hook text บนรูปอาหาร — มุมคนไทยดูฝรั่งกินแล้วช็อก\n"
-            "บรรทัด 1: ต้องมีคำว่า 'ฝรั่ง' หรือ 'เขา' ชัดเจน 3-6 คำ\n"
-            "  เช่น 'ฝรั่งเจอส้มตำ..', 'เขาบอกว่าโอเค..', 'ฝรั่งกิน[food_name]ครั้งแรก..'\n"
-            "บรรทัด 2: ต่อแบบเห็นใจ/แซว 3-5 คำ ลงท้ายให้คนอยากคอมเม้น\n"
-        )
-    else:
-        style = (
-            f"{title_ctx}"
-            f"อาหาร: {food_name} | ฝรั่ง react: {vibe} | challenge: {genre}\n"
-            f"reaction context: {reactions}\n"
-            "เขียน hook text บนรูปอาหาร — มุมคนไทยดูฝรั่งติดใจ\n"
-            "บรรทัด 1: ต้องมีคำว่า 'ฝรั่ง' หรือ 'เขา' ชัดเจน 3-6 คำ\n"
-            "  เช่น 'ฝรั่งติดใจ[food_name]แล้ว', 'เขากลับมาอีกแล้ว', 'ฝรั่งเข้าใจแล้วสิ'\n"
-            "บรรทัด 2: คำถาม/ประโยคสั้น 3-5 คำ ชวนแชร์ประสบการณ์\n"
-        )
-    prompt = f"{style}{REALISM_FILTER}ตอบแค่ 2 บรรทัด ไม่มี hashtag ไม่มี **\n" \
-             f"ห้ามเขียนคำนำ ห้ามเขียนสรุป ห้ามใส่ป้ายกำกับใดๆ เช่น 'บรรทัด 1:' หรือ 'Hook:' เด็ดขาด"
-    for model in TEXT_MODELS:
-        try:
-            resp = client.models.generate_content(model=model, contents=prompt)
-            lines = clean_hook_lines(resp.text)
-            return lines[0] if lines else food_name[:20], lines[1] if len(lines) > 1 else ""
+            line1 = "น่าสนใจมาก!"
+            line2 = ""
+            caption = ""
+            
+            h1_match = re.search(r'===HOOK1===\s*(.*)', result, re.IGNORECASE)
+            h2_match = re.search(r'===HOOK2===\s*(.*)', result, re.IGNORECASE)
+            cap_match = re.search(r'===CAPTION===\s*(.*)', result, re.DOTALL | re.IGNORECASE)
+            
+            if h1_match:
+                line1 = h1_match.group(1).split('\n')[0].strip()
+            if h2_match:
+                line2 = h2_match.group(1).split('\n')[0].strip()
+            if cap_match:
+                caption = cap_match.group(1).strip()
+            
+            # Clean label prefixes if any
+            label_pattern = r'^(ข้อความในโพสต์\s*Facebook|ข้อความบนรูป|ข้อความในรูป|ข้อความ|คำบรรยาย|คำอธิบาย|บรรทัดที่\s*\d+|บรรทัด\s*\d+|ประโยคที่\s*\d+|ประโยค\s*\d+|Hook\s*text|Hook|Line\s*\d+|[L|l]ine\s*\d+|\d+)\s*[:\-\.\s]\s*'
+            line1 = re.sub(label_pattern, '', line1, flags=re.IGNORECASE).strip()
+            line2 = re.sub(label_pattern, '', line2, flags=re.IGNORECASE).strip()
+            line1 = line1.strip('"\'“”‘’')
+            line2 = line2.strip('"\'“”‘’')
+            
+            if caption:
+                return line1, line2, caption
         except Exception as e:
-            print(f"[{model}] hook failed: {e}")
-    return food_name[:20], ""
-
-
-def generate_caption(food_name, vibe, genre, content_type, subreddit, reddit_title=""):
-    # vibe = reaction ฝรั่ง, genre = challenge level
-    reactions = FOREIGNER_REACTIONS.get(genre, FOREIGNER_REACTIONS["น่ากินเลย"])
-    title_ctx = f'ชื่อโพสต์เจ้าของรูป: "{reddit_title}"\n' if reddit_title else ""
-    # base context — มุมมองคนไทยดูฝรั่งกินอาหารไทย/เผ็ด
-    human_base = (
-        f"{title_ctx}"
-        f"อาหาร: {food_name} | challenge level: {genre}\n"
-        f"ฝรั่ง react ยังไง: {vibe}\n"
-        f"pattern reaction ที่คนไทยคุ้นเคย: {reactions}\n\n"
-        + REALISM_FILTER +
-        "มุมมองหลัก: คนไทยดูฝรั่งกิน ตลก/ภูมิใจ/เห็นใจ/หัวจะปวด\n"
-        "ห้ามอวยฝรั่งหรืออวยอาหารแบบ generic — เล่าเรื่องให้มีชีวิต\n\n"
-    )
-    prompts = {
-        "แกงกินผิดวิธี": (
-            human_base +
-            "เขียน Facebook caption แบบ ▪️ bullet narrative — ฝรั่งกินอาหารไทยผิดวิธีชวนคนไทยหัวจะปวด\n"
-            "ใช้ ▪️ นำหน้าทุก bullet — 6-8 จุด เล่าเรื่องมีความต่อเนื่องและตลกจิกกัดเบาๆ\n"
-            "▪️ 1-2: Setup — เหตุการณ์ที่ฝรั่งเจออาหารเมนูนี้เป็นครั้งแรก\n"
-            "▪️ 3-4: Moment — พฤติกรรมการทานแปลกๆ ที่เขาประดิษฐ์ขึ้นมา (เช่น คลุกน้ำแกงกับอาหารอื่น, ใช้ช้อนส้อมกินผิดประเภท)\n"
-            "▪️ 5-6: Twist — ผลลัพธ์ที่เขาปลื้มใจมากจนบอกว่า 'Delicious!' แต่คนไทยมองแล้วอยากเอามือกุมขมับ\n"
-            "▪️ 7-8: Engage — เคยเจอฝรั่งรอบตัวกินอะไรพิสดารแบบนี้ไหม คอมเมนต์บอกหน่อย\n"
-            "แต่ละ bullet: 1-2 ประโยค ภาษาพูดธรรมดาไม่ประดิษฐ์\n"
-            "จบด้วย hashtag 3 อัน ห้ามใช้ ** ตอบแค่ caption"
-        ),
-        "ข้อพิพาทอาหาร": (
-            human_base +
-            "เขียน Facebook caption แบบ ▪️ bullet narrative — ตั้งประเด็นความชอบ/เครื่องปรุงถกเถียงของอาหารไทย\n"
-            "ใช้ ▪️ นำหน้าทุก bullet — 6-8 จุด เล่าความเห็นต่างเชิงตลกขำขัน กระตุ้นการคอมเมนต์เถียงอย่างสร้างสรรค์\n"
-            "▪️ 1-2: Setup — แนะนำเมนูอาหารจานนี้และความอร่อยคลาสสิก\n"
-            "▪️ 3-4: Debate — จุดขัดแย้งประวัติศาสตร์ (เช่น กะเพราใส่ถั่วฝักยาว, ผัดวันธรรมดาไม่ปรุง, หอยทอดนิ่ม vs กรอบ)\n"
-            "▪️ 5-6: Perspective — จุดยืนของแต่ละทีมว่าทำไมสูตรของตัวเองถึงอร่อยที่สุด\n"
-            "▪️ 7-8: Engage — เปิดโหวตปลายเปิด คุณอยู่ทีมไหน เมนต์รายงานตัวใต้โพสต์ด่วน!\n"
-            "แต่ละ bullet: 1-2 ประโยค ภาษาพูดธรรมดาชวนคุย\n"
-            "จบด้วย hashtag 3 อัน ห้ามใช้ ** ตอบแค่ caption"
-        ),
-        "ช็อกเผ็ด": (
-            human_base +
-            "เขียน Facebook caption แบบ ▪️ bullet narrative — ฝรั่งกินแล้วโดนเผ็ดช็อก\n"
-            "ใช้ ▪️ นำหน้าทุก bullet — 6-8 จุด เล่าเรื่องมีความต่อเนื่อง\n"
-            "▪️ 1-2: Setup — เหตุการณ์ก่อนกิน ฝรั่งบอกยังไง\n"
-            "▪️ 3-4: Moment — ตอนกิน reaction ตลกๆ ที่เห็น\n"
-            "▪️ 5-6: Twist — แม้จะโดนเผ็ดแต่ยังตักต่อ ทำไม\n"
-            "▪️ 7-8: Engage — เคยเจอฝรั่งกินอาหารไทยแล้ว react แบบนี้ไหม\n"
-            "แต่ละ bullet: 1-2 ประโยค ภาษาพูดไม่ประดิษฐ์\n"
-            "จบด้วย hashtag 3 อัน ห้ามใช้ ** ตอบแค่ caption"
-        ),
-        "ติดใจ": (
-            human_base +
-            "เขียน Facebook caption แบบ ▪️ bullet narrative — ฝรั่งกินแล้วติดใจ อยากกลับมาอีก\n"
-            "ใช้ ▪️ นำหน้าทุก bullet — 6-8 จุด เล่าเรื่องมีความต่อเนื่อง\n"
-            "▪️ 1-2: Setup — ฝรั่งกินครั้งแรกท่าทางยังไง\n"
-            "▪️ 3-4: Hook — reaction ที่บอกว่าติดใจแน่ๆ\n"
-            "▪️ 5-6: Insight — ทำไมอาหารนี้ถึงทำให้ฝรั่งติด\n"
-            "▪️ 7-8: Engage — ควรแนะนำให้กินเมนูไหนต่อ\n"
-            "แต่ละ bullet: 1-2 ประโยค ภาษาพูดธรรมดา ความภูมิใจในอาหารไทย\n"
-            "จบด้วย hashtag 3 อัน ห้ามใช้ ** ตอบแค่ caption"
-        ),
-        "งงแต่กิน": (
-            human_base +
-            "เขียน Facebook caption แบบ ▪️ bullet narrative — ฝรั่งงงกับอาหารแต่กินจนหมด\n"
-            "ใช้ ▪️ นำหน้าทุก bullet — 6-8 จุด โทน: ตลก เห็นใจ 'เขาไม่รู้ว่าเจออะไรอยู่'\n"
-            "▪️ 1-2: Setup — หน้าตาอาหาร/กลิ่น ทำให้ฝรั่งงงยังไง\n"
-            "▪️ 3-4: Moment — ตอนกินครั้งแรก หน้าตาเป็นยังไง\n"
-            "▪️ 5-6: Twist — สุดท้ายกินจนหมด เพราะอะไร\n"
-            "▪️ 7-8: Engage — คนไทยดูแล้วรู้สึกยังไง\n"
-            "แต่ละ bullet: 1-2 ประโยค ภาษาพูดธรรมดา\n"
-            "จบด้วย hashtag 3 อัน ห้ามใช้ ** ตอบแค่ caption"
-        ),
-        "ไม่คาดหวัง": (
-            human_base +
-            "เขียน Facebook caption แบบ ▪️ bullet narrative — ฝรั่งไม่คิดว่าจะอร่อย สุดท้ายชอบมาก\n"
-            "ใช้ ▪️ นำหน้าทุก bullet — 6-8 จุด เล่าเรื่องมีความต่อเนื่อง\n"
-            "▪️ 1-2: Setup — ฝรั่งเห็นอาหารครั้งแรก มีหน้าตา/กลิ่นยังไง\n"
-            "▪️ 3-4: Moment — ลองกัด reaction ทันทีเป็นยังไง\n"
-            "▪️ 5-6: Surprise — สิ่งที่ทำให้เขา 'โอ้โห ไม่คาดคิด'\n"
-            "▪️ 7-8: Engage — อาหารไทยอะไรที่คุณคิดว่าฝรั่งจะงงแต่ชอบ\n"
-            "แต่ละ bullet: 1-2 ประโยค ภาษาพูดธรรมดา\n"
-            "จบด้วย hashtag 3 อัน ห้ามใช้ ** ตอบแค่ caption"
-        ),
-        "กลับมาอีก": (
-            human_base +
-            "เขียน Facebook caption แบบ ▪️ bullet narrative — ฝรั่งกินแล้วกลับมาหาซ้ำ กลายเป็น regular\n"
-            "ใช้ ▪️ นำหน้าทุก bullet — 6-8 จุด เล่าเรื่องมีความต่อเนื่อง\n"
-            "▪️ 1-2: Setup — ครั้งแรกที่กิน เขา react ยังไง\n"
-            "▪️ 3-4: Pattern — พฤติกรรมที่บอกว่าติดแล้ว กลับมากี่ครั้ง\n"
-            "▪️ 5-6: Why — อาหารนี้มีอะไรที่ทำให้ฝรั่งต้องกลับมา\n"
-            "▪️ 7-8: Engage — อาหารไทยเมนูไหนที่คิดว่าฝรั่งต้องติดใจ\n"
-            "แต่ละ bullet: 1-2 ประโยค ภาษาพูดธรรมดา\n"
-            "จบด้วย hashtag 3 อัน ห้ามใช้ ** ตอบแค่ caption"
-        ),
-    }
-    prompt = prompts.get(content_type, prompts["ติดใจ"])
-    for model in TEXT_MODELS:
-        try:
-            resp = client.models.generate_content(model=model, contents=prompt)
-            return clean_text(resp.text.strip())
-        except Exception as e:
-            print(f"[{model}] caption failed: {e}")
-    return f"{food_name} อร่อยมาก!\n#อาหาร #foodporn #อร่อย"
+            print(f"[{model}] content generation failed: {e}")
+            
+    # Fallback
+    return food_name[:20], "", f"{food_name} อร่อยมาก!\n#อาหาร #อร่อย"
 
 
 def clean_text(text):
@@ -431,16 +333,18 @@ def main():
     reddit_title = post["title"]
 
     # Vision วิเคราะห์รูป → food_name + foreigner reaction vibe + challenge level
-    food_name, vibe, genre = analyze_image(img_path, reddit_title=reddit_title)
+    image_type, food_name, has_foreigner, vibe, genre = analyze_image(img_path, reddit_title=reddit_title)
     if not food_name or "ไม่ใช่อาหาร" in food_name or "ไม่ตรงคอนเทน" in food_name:
         print("Not a food image, using Reddit title as fallback")
         food_name = reddit_title
+        image_type = "dish"
+        has_foreigner = False
         vibe      = "ถ่ายรูปก่อนกิน"
         genre     = "น่ากินเลย"
 
-    print(f"Food: {food_name} | Challenge: {genre} | Reaction: {vibe}")
+    print(f"Food: {food_name} | Type: {image_type} | Foreigner: {has_foreigner} | Challenge: {genre} | Reaction: {vibe}")
     content_type = random.choice(CONTENT_TYPES)
-    line1, line2 = generate_hook(food_name, vibe, genre, content_type, reddit_title=reddit_title)
+    line1, line2, caption = generate_post_content(img_path, image_type, food_name, vibe, genre, content_type, has_foreigner, reddit_title=reddit_title)
     print(f"Hook: {line1} | {line2}")
 
     # PIL overlay
@@ -452,7 +356,6 @@ def main():
     except Exception as e:
         print(f"Overlay failed (using original): {e}")
 
-    caption = generate_caption(food_name, vibe, genre, content_type, post["subreddit"], reddit_title=reddit_title)
     caption += f"\n📷 via Pexels"
     print(f"Caption:\n{caption}\n")
 
