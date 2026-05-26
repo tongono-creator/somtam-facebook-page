@@ -147,9 +147,10 @@ LOCAL_FOODIE_VIBES = {
 REALISM_FILTER = (
     "เขียนเหมือนคนไทยพิมพ์เองใน Facebook เมาท์มอยกัน ไม่ใช่นักการตลาด\n"
     "ภาษาพูดธรรมดา ความคิดแรกในหัวคนไทย ง่ายๆ ตรงๆ ไม่ประดิษฐ์ประดอย\n"
+    "ใช้บุคลิกภาพเป็นผู้หญิงในการเล่าเรื่อง มีคำลงท้ายภาษาผู้หญิงเสมอ เช่น ค่ะ, คะ และใช้สรรพนามแทนตัวเองด้วยคำว่า หนู, เรา หรือ แอดมินพี่สาว\n"
     "avoid: คำคมสอนชีวิต, punchline สวยงาม, ภาษาอวยเกินจริง\n"
     "prioritize: ความตลกขำขัน, ความอยากอาหาร, ความแซ่บนัวสะใจคนไทย\n"
-    "ตัวอย่างโทนที่ถูก: 'สั่งเผ็ดน้อยแต่แดงแป๊ดดด', 'ปากเจ่อเหงื่อซิกแต่ยังไหว', 'น้ำลายไหลเลยตั้งแต่คำแรก'\n"
+    "ตัวอย่างโทนที่ถูก: 'สั่งเผ็ดน้อยแต่แดงแป๊ดดดเลยค่ะ', 'ปากเจ่อเหงื่อซิกแต่หนูยังไหวค่ะ', 'น้ำลายไหลเลยค่ะตั้งแต่คำแรก'\n"
     "ตัวอย่างโทนที่ผิด: 'รสชาติที่ไม่มีที่สิ้นสุด', 'ประสบการณ์ใหม่', ประโยคประดิษฐ์ใดๆ\n"
 )
 
@@ -160,7 +161,7 @@ def generate_post_content(img_path, image_type, food_name, vibe, genre, content_
 
     reactions = LOCAL_FOODIE_VIBES.get(genre, LOCAL_FOODIE_VIBES["วิถีสตรีทฟู้ด"])
     prompt = (
-        f"You are an expert Thai social media copywriter for a food page named 'พริก 10 เม็ด' (Spicy Thai Food/Stall content).\n"
+        f"You are an expert Thai social media copywriter for a food page named 'พริก 10 เม็ด' (Spicy Thai Food/Stall content). Write with a friendly female persona using female particles like 'ค่ะ' / 'คะ' and pronouns like 'หนู' / 'เรา'.\n"
         f"Analyze the attached image and generate highly engaging, funny, and relatable Facebook content in THAI language about this food/stall:\n"
         f"- Food/Stall Name: {food_name}\n"
         f"- Image Type: {image_type} (either 'dish' or 'stall')\n"
@@ -302,7 +303,7 @@ def add_comment(post_id, caption=None, img_path=None):
 
 def generate_debate_content():
     prompt = (
-        "You are an expert Thai social media copywriter for 'พริก 10 เม็ด' (Spicy Thai Food page).\n"
+        "You are an expert Thai social media copywriter for 'พริก 10 เม็ด' (Spicy Thai Food page). Write with a friendly female persona using female particles like 'ค่ะ' / 'คะ' and pronouns like 'หนู' / 'เรา'.\n"
         "Generate a highly engaging, funny, and relatable food debate question (ข้อพิพาทอาหาร) in THAI language to drive comments.\n"
         "Topics could be about Thai food ingredients (e.g., holy basil with long beans, sweet green curry, pineapple on pizza/fried rice), eating habits, or restaurant etiquette.\n"
         "Requirements:\n"
@@ -346,7 +347,7 @@ def generate_debate_content():
         except Exception as e:
             print(f"[{model}] debate content generation failed: {e}")
             
-    return "กะเพราแท้", "ต้องไม่มีถั่วฝักยาว?", "คุณคิดยังไงกันบ้างครับ?\n#กะเพรา #อาหารไทย #ดราม่าอาหาร"
+    return "กะเพราแท้", "ต้องไม่มีถั่วฝักยาว?", "คุณคิดยังไงกันบ้างคะ?\n#กะเพรา #อาหารไทย #ดราม่าอาหาร"
 
 
 # ── Main ──────────────────────────────────────────────────────────────
