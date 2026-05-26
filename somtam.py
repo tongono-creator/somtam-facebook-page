@@ -220,7 +220,7 @@ def generate_post_content(img_path, image_type, food_name, vibe, genre, content_
                 caption = cap_match.group(1).strip()
             
             # Clean label prefixes if any
-            label_pattern = r'^(ข้อความในโพสต์\s*Facebook|ข้อความบนรูป|ข้อความในรูป|ข้อความ|คำบรรยาย|คำอธิบาย|บรรทัดที่\s*\d+|บรรทัด\s*\d+|ประโยคที่\s*\d+|ประโยค\s*\d+|Hook\s*text|Hook|Line\s*\d+|[L|l]ine\s*\d+|\d+)\s*[:\-\.\s]\s*'
+            label_pattern = r'^(ข้อความในโพสต์\s*Facebook|Facebook\s*Caption|Facebook\s*caption|Caption|caption|ข้อความบนรูป|ข้อความในรูป|ข้อความ|คำบรรยาย|คำอธิบาย|บรรทัดที่\s*\d+|บรรทัด\s*\d+|ประโยคที่\s*\d+|ประโยค\s*\d+|Hook\s*text|Hook|Line\s*\d+|[L|l]ine\s*\d+|\d+)\s*[:\-\.\s]\s*'
             line1 = re.sub(label_pattern, '', line1, flags=re.IGNORECASE).strip()
             line2 = re.sub(label_pattern, '', line2, flags=re.IGNORECASE).strip()
             line1 = line1.strip('"\'“”‘’')
@@ -335,7 +335,7 @@ def generate_debate_content():
                 caption = cap_match.group(1).strip()
             
             # Clean label prefixes if any
-            label_pattern = r'^(ข้อความในโพสต์\s*Facebook|ข้อความบนรูป|ข้อความในรูป|ข้อความ|คำบรรยาย|คำอธิบาย|บรรทัดที่\s*\d+|บรรทัด\s*\d+|ประโยคที่\s*\d+|ประโยค\s*\d+|Hook\s*text|Hook|Line\s*\d+|[L|l]ine\s*\d+|\d+)\s*[:\-\.\s]\s*'
+            label_pattern = r'^(ข้อความในโพสต์\s*Facebook|Facebook\s*Caption|Facebook\s*caption|Caption|caption|ข้อความบนรูป|ข้อความในรูป|ข้อความ|คำบรรยาย|คำอธิบาย|บรรทัดที่\s*\d+|บรรทัด\s*\d+|ประโยคที่\s*\d+|ประโยค\s*\d+|Hook\s*text|Hook|Line\s*\d+|[L|l]ine\s*\d+|\d+)\s*[:\-\.\s]\s*'
             line1 = re.sub(label_pattern, '', line1, flags=re.IGNORECASE).strip()
             line2 = re.sub(label_pattern, '', line2, flags=re.IGNORECASE).strip()
             line1 = line1.strip('"\'“”‘’')
