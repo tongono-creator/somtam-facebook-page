@@ -36,8 +36,8 @@ THAI_FOOD_QUERIES = [
 ]
 
 IMAGE_EXTS   = (".jpg", ".jpeg", ".png", ".gif", ".webp")
-# content types = reaction ของฝรั่งที่กินอาหารไทย/เผ็ด + ดราม่าการกิน
-CONTENT_TYPES = ["ช็อกเผ็ด", "ติดใจ", "งงแต่กิน", "ไม่คาดหวัง", "กลับมาอีก", "แกงกินผิดวิธี", "ข้อพิพาทอาหาร"]
+# content types = หมวดหมู่การเล่าเรื่องของสายกิน/สตรีทฟู้ด + ดราม่าและข้อพิพาทอาหารไทย
+CONTENT_TYPES = ["สายแซ่บสู้ชีวิต", "วิถีสตรีทฟู้ด", "รีวิวแซ่บจิกกัด", "ความหิวยามดึก", "ข้อพิพาทอาหาร"]
 
 
 # ── Pexels ───────────────────────────────────────────────────────────
@@ -98,21 +98,20 @@ def download_image(url):
 
 # ── Gemini Vision ─────────────────────────────────────────────────────
 def analyze_image(img_path, reddit_title=""):
-    """ดูรูปแล้วบอก image_type | food_name | is_foreigner_visible | foreigner_reaction | challenge_level"""
+    """ดูรูปแล้วบอก image_type | food_name | local_vibe | appeal_level"""
     with open(img_path, "rb") as f:
         img_data = f.read()
     title_ctx = f'ชื่อโพสต์ต้นฉบับ: "{reddit_title}"\n' if reddit_title else ""
     prompt = (
         f"{title_ctx}"
-        "Analyze this image and provide 5 fields separated by a vertical bar '|':\n"
+        "Analyze this image and provide 4 fields separated by a vertical bar '|':\n"
         "1. Image Type: Choose either 'dish' (if it's a close-up of a food dish), 'stall' (if it's a street food stall, market vendor, or shop front), or 'other'.\n"
         "2. Food Name: The Thai name of the food or the type of food stall (1-4 Thai words, e.g., 'ส้มตำ', 'ร้านต้มยำกุ้ง', 'แกงเขียวหวาน'). If it is not related to Thai/Asian food, output 'ไม่ตรงคอนเทน'.\n"
-        "3. Is Foreigner Visible: Choose 'yes' if there is a foreigner/tourist clearly visible in the image, otherwise 'no'.\n"
-        "4. Foreigner Reaction: A short realistic description in Thai (5-8 words) of how a foreigner would react to this food or stall (e.g., 'หน้าแดงน้ำตาไหลแต่สู้ต่อ', 'ยืนส่องผักสดหน้าร้านแบบงงๆ').\n"
-        "5. Challenge Level: Choose one of these categories: 'เผ็ดช็อก', 'กลิ่นแรง', 'หน้าตาแปลกตา', 'น่ากินเลย', 'เผ็ดพอดี', 'แกงกินผิดวิธี', 'ข้อพิพาทอาหาร'.\n\n"
-        "Format: Image Type | Food Name | Is Foreigner Visible | Foreigner Reaction | Challenge Level\n"
-        "Example: dish | ส้มตำ | no | หน้าแดงเหงื่อตกแต่ตักกินต่อ | เผ็ดช็อก\n"
-        "Example: stall | ร้านส้มตำรถเข็น | no | ยืนงงๆ กับกองผักสดหน้าร้าน | หน้าตาแปลกตา"
+        "3. Local Vibe Description: A short realistic description in Thai (5-8 words) of the local eating/food vibe (e.g., 'น้ำลายสอตั้งแต่เห็นพริกแดง', 'แม่ค้ากำลังตำส้มตำรัวสาก').\n"
+        "4. Appeal Level: Choose from these types: ['สายแซ่บสู้ชีวิต', 'วิถีสตรีทฟู้ด', 'รีวิวแซ่บจิกกัด', 'ความหิวยามดึก', 'ข้อพิพาทอาหาร'].\n\n"
+        "Format: Image Type | Food Name | Local Vibe Description | Appeal Level\n"
+        "Example: dish | ส้มตำ | เหงื่อซิกปากเจ่อแต่สู้ตายจิ้มข้าวเหนียวต่อ | สายแซ่บสู้ชีวิต\n"
+        "Example: stall | ร้านส้มตำรถเข็น | ยืนมุงหน้าร้านแย่งชิงเก้าอี้ดนตรีตอนเที่ยง | วิถีสตรีทฟู้ด"
     )
     for model in TEXT_MODELS:
         try:
@@ -128,58 +127,52 @@ def analyze_image(img_path, reddit_title=""):
             parts = result.split("|")
             image_type = parts[0].strip()
             food_name = parts[1].strip()
-            has_foreigner = parts[2].strip().lower() == "yes"
-            vibe      = parts[3].strip() if len(parts) > 3 else "ถ่ายรูปก่อนกิน"
-            genre     = parts[4].strip() if len(parts) > 4 else "น่ากินเลย"
-            return image_type, food_name, has_foreigner, vibe, genre
+            vibe      = parts[2].strip() if len(parts) > 2 else "น้ำลายสอตั้งแต่เห็นพริกแดง"
+            genre     = parts[3].strip() if len(parts) > 3 else "วิถีสตรีทฟู้ด"
+            return image_type, food_name, vibe, genre
         except Exception as e:
             print(f"[{model}] vision failed: {e}")
-    return "dish", reddit_title, False, "ถ่ายรูปก่อนกิน", "น่ากินเลย"
+    return "dish", reddit_title, "น้ำลายสอตั้งแต่เห็นพริกแดง", "วิถีสตรีทฟู้ด"
 
 
 # ── Gemini Caption & Hook (Combined for Consistency) ───────────────────
-FOREIGNER_REACTIONS = {
-    "เผ็ดช็อก":     "หน้าแดง น้ำตาไหล แต่ยังตักต่อ, 'it's fine' แต่เหงื่อแตกทั่วตัว, สั่งน้ำ 3 แก้วแต่ไม่ยอมหยุดกิน, กูเกิลว่า 'ส้มตำ addictive' ตอนกลางคืน",
-    "กลิ่นแรง":     "หยุดก่อนแล้วดมอีกครั้ง, หน้าเบ้แต่กัดต่อ, ถ่ายรูปส่งเพื่อน 'กินอะไรก็ไม่รู้', แปลกใจมากที่ตัวเองชอบ",
-    "หน้าตาแปลกตา": "ถ่ายรูปก่อนกินเสมอ, เปิด Google Translate ส่องเมนู, 'ไม่รู้ว่าคืออะไร แต่อร่อยมาก', TikTok reaction ทันที",
-    "น่ากินเลย":    "สั่งซ้ำรอบสอง, ถ่ายรูป post IG ก่อนกิน, เดินกลับหาร้านเดิมวันถัดไป, 'Thai food is the best cuisine I've ever had'",
-    "เผ็ดพอดี":     "'Perfect spice level', แนะนำเพื่อน, 'Now I understand why Thai people eat this every day', ยิ้มหลังกิน",
-    "แกงกินผิดวิธี": "ใช้ตะเกียบกินผัดไทย, เอาช้อนตักแกงต้มยำกุ้งราดลงบนข้าวมันไก่, เอาข้าวเหนียวไปกินกับส้อม, ราดซอสมะเขือเทศลงบนอาหารรสจัดของไทย",
-    "ข้อพิพาทอาหาร": "กะเพราใส่ถั่วฝักยาวเป็นตราบาปไหม, กินส้มตำไทยกับปูปลาร้าอะไรคือนิพพาน, ผัดไทยบีบมะนาวหรือไม่บีบดี",
+LOCAL_FOODIE_VIBES = {
+    "สายแซ่บสู้ชีวิต":   "สั่งส้มตำพริก 10 เม็ดแต่เตรียมยาลดกรดรอ, ปากเจ่อเหงื่อซิกแต่ซดน้ำส้มตำสู้ตาย, นวดสากคุมแม่ค้าแบบแซ่บๆ",
+    "วิถีสตรีทฟู้ด":    "ยืนต่อคิวรอโต๊ะกลางแดดตอนเที่ยง, เก้าอี้ดนตรีหน้าร้านส้มตำป้าเข็นรถ, ขอเหนียวปิ้งเพิ่มด่วน",
+    "รีวิวแซ่บจิกกัด":  "รีวิวส้มตำปลาร้าที่กลิ่นนัวสะกดใจคนข้างบ้าน, จิกกัดความปากสว่างตูดพังวันพรุ่งนี้, แซวเพื่อนสายกินคลีนที่ยอมจำนนให้ส้มตำ",
+    "ความหิวยามดึก":    "ไถฟีดเจอปลาดุกย่างตอนตีสองน้ำลายสอ, ความทรมานของการเห็นของกินแซ่บยามค่ำคืน, ต้มบะหมี่ประทังชีพแต่ยังนึกถึงส้มตำ",
+    "ข้อพิพาทอาหาร":   "กะเพราใส่ถั่วฝักยาวเป็นตราบาปไหม, ตำไทยกับตำปลาร้าอะไรคือนิพพาน, ผัดไทยบีบมะนาวหรือเปล่า",
 }
 
 REALISM_FILTER = (
-    "เขียนเหมือนคนไทยพิมพ์เองใน Facebook ขณะดูฝรั่งกินอาหาร ไม่ใช่นักการตลาด\n"
-    "ภาษาพูดธรรมดา ความคิดแรกในหัวคนไทย ง่ายๆ ตรงๆ มีความ 'เราดูอยู่นะ'\n"
-    "avoid: คำคม, punchline ประดิษฐ์, ภาษาสวย, อวยฝรั่งหรืออวยอาหาร\n"
-    "prioritize: ความตลกของ reaction, ความภูมิใจในอาหารไทย, ความ 'ฝรั่งยังสู้ไม่ได้'\n"
-    "ตัวอย่างโทนที่ถูก: 'บอกว่าไม่เผ็ด 555', 'ยังไหวไหมนะ', 'ติดใจแล้วสินะ', 'เขาไม่รู้หรอกว่านี่แค่เบาๆ'\n"
+    "เขียนเหมือนคนไทยพิมพ์เองใน Facebook เมาท์มอยกัน ไม่ใช่นักการตลาด\n"
+    "ภาษาพูดธรรมดา ความคิดแรกในหัวคนไทย ง่ายๆ ตรงๆ ไม่ประดิษฐ์ประดอย\n"
+    "avoid: คำคมสอนชีวิต, punchline สวยงาม, ภาษาอวยเกินจริง\n"
+    "prioritize: ความตลกขำขัน, ความอยากอาหาร, ความแซ่บนัวสะใจคนไทย\n"
+    "ตัวอย่างโทนที่ถูก: 'สั่งเผ็ดน้อยแต่แดงแป๊ดดด', 'ปากเจ่อเหงื่อซิกแต่ยังไหว', 'น้ำลายไหลเลยตั้งแต่คำแรก'\n"
     "ตัวอย่างโทนที่ผิด: 'รสชาติที่ไม่มีที่สิ้นสุด', 'ประสบการณ์ใหม่', ประโยคประดิษฐ์ใดๆ\n"
 )
 
 
-def generate_post_content(img_path, image_type, food_name, vibe, genre, content_type, has_foreigner, reddit_title=""):
+def generate_post_content(img_path, image_type, food_name, vibe, genre, content_type, reddit_title=""):
     with open(img_path, "rb") as f:
         img_data = f.read()
 
-    reactions = FOREIGNER_REACTIONS.get(genre, FOREIGNER_REACTIONS["น่ากินเลย"])
+    reactions = LOCAL_FOODIE_VIBES.get(genre, LOCAL_FOODIE_VIBES["วิถีสตรีทฟู้ด"])
     prompt = (
         f"You are an expert Thai social media copywriter for a food page named 'พริก 10 เม็ด' (Spicy Thai Food/Stall content).\n"
         f"Analyze the attached image and generate highly engaging, funny, and relatable Facebook content in THAI language about this food/stall:\n"
         f"- Food/Stall Name: {food_name}\n"
         f"- Image Type: {image_type} (either 'dish' or 'stall')\n"
-        f"- Challenge Level: {genre}\n"
-        f"- Foreigner Vibe: {vibe}\n"
+        f"- Appeal Level: {genre}\n"
+        f"- Eating Vibe: {vibe}\n"
         f"- Post Category: {content_type}\n"
-        f"- Is a foreigner visible in the image?: {'Yes' if has_foreigner else 'No'}\n"
         f"- Original Source Context: {reddit_title}\n\n"
         "Post Category descriptions:\n"
-        "  * 'ช็อกเผ็ด': Foreigner shocked/crying by Thai spiciness but keeps eating.\n"
-        "  * 'ติดใจ': Foreigner falls in love with the food and wants to eat it again.\n"
-        "  * 'งงแต่กิน': Foreigner is confused by the food's appearance or smell but ends up eating it all.\n"
-        "  * 'ไม่คาดหวัง': Foreigner had low expectations but is mind-blown by the taste.\n"
-        "  * 'กลับมาอีก': Foreigner becomes a regular customer at this stall/food.\n"
-        "  * 'แกงกินผิดวิธี': Foreigner eating Thai food in a hilariously wrong way (e.g., using chopsticks for Pad Thai, pouring soup on wrong dishes).\n"
+        "  * 'สายแซ่บสู้ชีวิต': Thai people eating ultra-spicy food, sweating, mouth burning, but refusing to give up.\n"
+        "  * 'วิถีสตรีทฟู้ด': Fun habits of street food lovers, queuing at stalls, lunch rush, fighting for tables.\n"
+        "  * 'รีวิวแซ่บจิกกัด': Sarcastic, funny, and direct review of the food, spicy cravings, or morning-after consequences.\n"
+        "  * 'ความหิวยามดึก': Sarcastic torture of late-night food cravings, eating instant noodles while dreaming of somtam.\n"
         "  * 'ข้อพิพาทอาหาร': Playful debate about Thai food recipes or ingredients (e.g., whether holy basil should have long beans, boat noodle soup thickness, crispy vs soft oyster omelet) to drive comments.\n\n"
         "Requirements:\n"
         "1. Output exactly 3 sections labeled with markers:\n"
@@ -188,12 +181,9 @@ def generate_post_content(img_path, image_type, food_name, vibe, genre, content_
         "   ===CAPTION=== (Facebook Caption: a short story structured as 6-8 bullet points. Start each bullet with a ▪️ emoji. 1-2 sentences per bullet.)\n\n"
         "2. Strict Constraints for Natural Thai Style and Spelling (AVOID TYPOS & TRANSLATION ERRORS):\n"
         "   - WRITE IN NATURAL, CASUAL THAI STREET/FACEBOOK STYLE (ภาษาพูดธรรมดา ท้องถิ่น สบายๆ ขำๆ เหมือนแชร์เรื่องฮาๆ ลงกลุ่ม).\n"
-        "   - AVOID ENGLISH LITERAL TRANSLATIONS:\n"
-        "     * DO NOT use 'ยินดีฝรั่งคนนึง' to mean 'a foreigner gladly...'. Instead use 'มีฝรั่งคนนึง', 'เห็นฝรั่งคนนึง', or 'วันก่อนเจอฝรั่งคนนึง'.\n"
-        "     * DO NOT translate literal sizes or English terms into gibberish like 'น้ำบิ๊กสวย'. Use real, common Thai drink names or packaging size words, e.g., 'น้ำแก้วใหญ่', 'น้ำอัดลม', 'น้ำเก๊กฮวย', 'แป๊ปซี่', 'น้ำเปล่า'.\n"
-        "     * AVOID spelling/typing errors. For example, use 'แต่ก็ยังตัก...' or 'แต่ก็ตัก...' instead of typos like 'แต่ข้อตัก...'.\n"
-        "   - STRICT LOGICAL CONSISTENCY between hooks and caption: Hook lines and caption MUST tell the exact same story. If the hook says 'เขาบอกเผ็ดน้อยนะ' (He said mild spicy), then in the caption story, the foreigner MUST have ordered 'mild spicy' (not 'local style extra spicy'). If he ordered extra spicy, then the hook should say 'สั่งเผ็ดๆ เลยนะ' or similar. There must be NO logical contradictions.\n"
-        "   - MATCH THE IMAGE VISUALS: Look closely at the image content. If there is no foreigner visible in the picture, DO NOT write a specific story about a fictional foreigner standing there doing things. Instead, write about the food/stall's vibe, or a general story about what foreigners usually do/feel when encountering this, or focus on the food/stall itself.\n"
+        "   - AVOID ENGLISH LITERAL TRANSLATIONS.\n"
+        "   - STRICT LOGICAL CONSISTENCY between hooks and caption: Hook lines and caption MUST tell the exact same story.\n"
+        "   - STRICT NEGATIVE CONSTRAINT: Absolutely NO mention of foreigners, tourists, westerners, or foreigners reacting to Thai food. Focus 100% on local Thai foodie humor, struggles, and everyday food experiences in Thailand. (ห้ามพูดถึงหรืออ้างอิงถึงชาวต่างชาติ, ฝรั่ง, นักท่องเที่ยว หรือปฏิกิริยาของคนต่างชาติต่ออาหารไทยเด็ดขาด เน้นเฉพาะวิถีชีวิตคนไทยและคนชอบกินเผ็ดในไทยเท่านั้น)\n"
         "   - Do not use markdown like ** or bolding in the caption.\n"
         "   - End the caption with 3 relevant hashtags.\n\n"
         f"Realism Guidelines:\n{REALISM_FILTER}\n"
@@ -320,7 +310,8 @@ def generate_debate_content():
         "   ===HOOK1=== (Hook Line 1: Main statement, very short, 4-6 Thai words. NO emojis)\n"
         "   ===HOOK2=== (Hook Line 2: Question or sub-hook, very short, 3-5 Thai words. NO emojis)\n"
         "   ===CAPTION=== (Facebook Caption: structured as 6-8 bullet points. Start each bullet with a ▪️ emoji. End with 3 relevant hashtags)\n\n"
-        "Ensure natural Thai street style, large font readability, and no emojis in the hooks (emojis are fine in the caption)."
+        "Ensure natural Thai street style, large font readability, and no emojis in the hooks (emojis are fine in the caption).\n"
+        "STRICT NEGATIVE CONSTRAINT: Absolutely NO mention of foreigners, tourists, westerners, or foreigners reacting to Thai food. Focus 100% on local Thai foodie humor, struggles, and everyday food experiences in Thailand. (ห้ามพูดถึงหรืออ้างอิงถึงชาวต่างชาติ, ฝรั่ง, นักท่องเที่ยว หรือปฏิกิริยาของคนต่างชาติต่ออาหารไทยเด็ดขาด เน้นเฉพาะวิถีชีวิตคนไทยและคนชอบกินเผ็ดในไทยเท่านั้น)"
     )
     for model in TEXT_MODELS:
         try:
@@ -405,18 +396,17 @@ def main():
 
         reddit_title = post["title"]
 
-        # Vision วิเคราะห์รูป → food_name + foreigner reaction vibe + challenge level
-        image_type, food_name, has_foreigner, vibe, genre = analyze_image(img_path, reddit_title=reddit_title)
+        # Vision วิเคราะห์รูป → food_name + local eating vibe + appeal level
+        image_type, food_name, vibe, genre = analyze_image(img_path, reddit_title=reddit_title)
         if not food_name or "ไม่ใช่อาหาร" in food_name or "ไม่ตรงคอนเทน" in food_name:
             print("Not a food image, using Reddit title as fallback")
             food_name = reddit_title
             image_type = "dish"
-            has_foreigner = False
-            vibe      = "ถ่ายรูปก่อนกิน"
-            genre     = "น่ากินเลย"
+            vibe      = "น้ำลายสอตั้งแต่เห็นพริกแดง"
+            genre     = "วิถีสตรีทฟู้ด"
 
-        print(f"Food: {food_name} | Type: {image_type} | Foreigner: {has_foreigner} | Challenge: {genre} | Reaction: {vibe}")
-        line1, line2, caption = generate_post_content(img_path, image_type, food_name, vibe, genre, content_type, has_foreigner, reddit_title=reddit_title)
+        print(f"Food: {food_name} | Type: {image_type} | Vibe: {vibe} | Appeal: {genre}")
+        line1, line2, caption = generate_post_content(img_path, image_type, food_name, vibe, genre, content_type, reddit_title=reddit_title)
         print(f"Hook: {line1} | {line2}")
 
         # PIL overlay
