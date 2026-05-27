@@ -22,9 +22,6 @@ HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; SomtamBot/1.0; +github)"}
 # ── Pexels Search Queries ────────────────────────────────────────────
 THAI_FOOD_QUERIES = [
     "thai food",
-    "thai food",
-    "thai food",
-    "thai street food",
     "thai street food",
     "som tam papaya salad",
     "pad thai noodles",
@@ -33,7 +30,35 @@ THAI_FOOD_QUERIES = [
     "thai curry",
     "mango sticky rice",
     "thai fried rice",
+    "moo ping pork",
+    "khao man gai chicken rice",
+    "pad kra pao pork",
+    "thai dessert sweet",
+    "bangkok street food",
+    "thai tea milk"
 ]
+
+HISTORY_FILE = "posted_photos.txt"
+
+def load_history():
+    if os.path.exists(HISTORY_FILE):
+        try:
+            with open(HISTORY_FILE, "r", encoding="utf-8") as f:
+                return [line.strip() for line in f if line.strip()]
+        except Exception:
+            return []
+    return []
+
+def save_to_history(url):
+    urls = load_history()
+    urls.append(url)
+    urls = urls[-150:]
+    try:
+        with open(HISTORY_FILE, "w", encoding="utf-8") as f:
+            for u in urls:
+                f.write(u + "\n")
+    except Exception as e:
+        print(f"Error saving history: {e}")
 
 IMAGE_EXTS   = (".jpg", ".jpeg", ".png", ".gif", ".webp")
 # content types = หมวดหมู่การเล่าเรื่องของสายกิน/สตรีทฟู้ด + ดราม่าและข้อพิพาทอาหารไทย
@@ -41,33 +66,41 @@ CONTENT_TYPES = ["สายแซ่บสู้ชีวิต", "วิถี�
 
 
 # ── Pexels ───────────────────────────────────────────────────────────
-def get_pexels_food_image():
+def get_pexels_food_image(history_urls):
     if not PEXELS_API_KEY:
         print("PEXELS_API_KEY not set")
         return None
 
-    query = random.choice(THAI_FOOD_QUERIES)
-    page  = random.randint(1, 15)
-    try:
-        resp = requests.get(
-            "https://api.pexels.com/v1/search",
-            headers={"Authorization": PEXELS_API_KEY},
-            params={"query": query, "per_page": 20, "page": page},
-            timeout=10,
-        )
-        resp.raise_for_status()
-        photos = resp.json().get("photos", [])
-        if not photos:
-            print(f"[Pexels] no results for '{query}' page {page}")
-            return None
-        photo   = random.choice(photos)
-        img_url = photo["src"].get("large2x") or photo["src"]["large"]
-        alt     = photo.get("alt", query)
-        print(f"[Pexels] query='{query}' | alt='{alt[:60]}'")
-        return {"url": img_url, "title": alt, "subreddit": query}
-    except Exception as e:
-        print(f"Pexels error: {e}")
-        return None
+    for _ in range(5):
+        query = random.choice(THAI_FOOD_QUERIES)
+        page  = random.randint(1, 15)
+        try:
+            resp = requests.get(
+                "https://api.pexels.com/v1/search",
+                headers={"Authorization": PEXELS_API_KEY},
+                params={"query": query, "per_page": 20, "page": page},
+                timeout=10,
+            )
+            resp.raise_for_status()
+            photos = resp.json().get("photos", [])
+            if not photos:
+                print(f"[Pexels] no results for '{query}' page {page}")
+                continue
+            
+            # Filter out photos that have already been posted
+            new_photos = [p for p in photos if (p["src"].get("large2x") or p["src"]["large"]) not in history_urls]
+            if not new_photos:
+                print(f"[Pexels] all photos on page {page} for query '{query}' already posted")
+                new_photos = photos  # fallback if all are already posted on this page
+                
+            photo   = random.choice(new_photos)
+            img_url = photo["src"].get("large2x") or photo["src"]["large"]
+            alt     = photo.get("alt", query)
+            print(f"[Pexels] query='{query}' | alt='{alt[:60]}'")
+            return {"url": img_url, "title": alt, "subreddit": query}
+        except Exception as e:
+            print(f"Pexels error: {e}")
+    return None
 
 
 # ── Download ──────────────────────────────────────────────────────────
@@ -379,9 +412,10 @@ def main():
 
     else:
         # Original Pexels flow
+        history_urls = load_history()
         post = None
         for attempt in range(5):
-            post = get_pexels_food_image()
+            post = get_pexels_food_image(history_urls)
             if post:
                 break
             print(f"Retry {attempt + 1}/5...")
@@ -424,7 +458,10 @@ def main():
     print(f"Caption:\n{caption}\n")
 
     success = post_photo(caption, img_path)
-    if not success:
+    if success:
+        if content_type != "ข้อพิพาทอาหาร" and 'post' in locals() and post:
+            save_to_history(post["url"])
+    else:
         print("FAILED")
 
 

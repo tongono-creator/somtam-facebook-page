@@ -17,8 +17,12 @@ on:
 jobs:
   post:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
@@ -30,3 +34,17 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
         run: python somtam.py
+
+      - name: Commit and push if history updated
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          if [ -f posted_photos.txt ]; then
+            git add posted_photos.txt
+            if git diff --cached --quiet; then
+              echo "No changes in posted_photos.txt"
+            else
+              git commit -m "chore: update posted_photos.txt history [skip ci]"
+              git push
+            fi
+          fi
