@@ -12,7 +12,7 @@ from overlay_utils import add_overlay
 GEMINI_API_KEY    = os.environ.get("GEMINI_API_KEY",    "")
 PAGE_ACCESS_TOKEN = os.environ.get("SOMTAM_PAGE_ACCESS_TOKEN", "")
 PAGE_ID           = os.environ.get("PAGE_ID", "554501167740603")
-TEXT_MODELS       = ["gemini-3.5-flash", "gemini-2.5-flash"]
+TEXT_MODELS       = ["gemini-2.5-flash", "gemini-3.5-flash"]
 OUTPUT_DIR        = "output"
 EXCEL_PATH        = os.path.join(os.path.dirname(__file__), "review_products.xlsx")
 ACCENT_COLOR      = (255, 107, 53) # ส้ม #FF6B35 สำหรับพริก 10 เม็ด
