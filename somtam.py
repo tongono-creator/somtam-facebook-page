@@ -13,12 +13,100 @@ from google.genai import types
 # ── Config ───────────────────────────────────────────────────────────
 PAGE_ID           = "554501167740603"
 PAGE_ACCESS_TOKEN = os.environ.get("SOMTAM_PAGE_ACCESS_TOKEN", "")
-GEMINI_API_KEY    = os.environ.get("GEMINI_API_KEY", "")
+GEMINI_API_KEY    = os.environ.get("GEMINI_API_KEY", "") or "DUMMY_KEY"
 PEXELS_API_KEY    = os.environ.get("PEXELS_API_KEY", "")
 
 client       = genai.Client(api_key=GEMINI_API_KEY, http_options={'timeout': 90.0})
 TEXT_MODELS  = ["gemini-2.5-flash", "gemini-3.5-flash"]
 ACCENT_COLOR = (255, 107, 53)  # ส้ม #FF6B35
+
+def contains_thai(text):
+    if not text:
+        return False
+    return bool(re.search(r'[\u0e00-\u0e7f]', text))
+
+def translate_to_thai(text):
+    if not text:
+        return ""
+    if contains_thai(text):
+        return text
+    prompt = f"Translate the following food-related English text to natural Thai food vocabulary. Only output the translation, no explanation:\n\n{text}"
+    for model in TEXT_MODELS:
+        try:
+            resp = client.models.generate_content(model=model, contents=prompt)
+            translated = resp.text.strip()
+            if contains_thai(translated):
+                return translated
+        except Exception as e:
+            print(f"[{model}] Translation failed: {e}")
+    return text  # Fallback to original text if translation fails
+
+FALLBACK_POSTS = {
+    "recipe": [
+        {
+            "title": "ส้มตำป่าทะเลครกแตก",
+            "desc": "เมนูสุดแซ่บจัดเต็มยกทะเลมาไว้ในครก เผ็ดร้อนถึงใจสะท้านทรวงค่ะ",
+            "ingredients": "• เส้นมะละกอดิบสับ 1 กำมือ\n• กุ้งสดแกะเปลือก 5 ตัว\n• ปลาหมึกหั่นแว่น 5 ชิ้น\n• พริกขี้หนูสวน 10 เม็ด\n• มะเขือเทศสีดา 2 ลูก\n• ผักกาดดองหั่น 1 ช้อนโต๊ะ\n• น้ำปลาร้าต้มสุก 2 ช้อนโต๊ะ\n• น้ำมะนาว 2 ช้อนโต๊ะ",
+            "steps": "1. โขลกพริกขี้หนูและกระเทียมให้พอแตก\n2. ใส่มะเขือเทศ ผักกาดดอง และเครื่องปรุงทั้งหมดโขลกเบาๆ\n3. ใส่เส้นมะละกอ กุ้งสด และปลาหมึกลวกสุก คลุกเคล้าให้เข้ากัน\n4. ตักใส่ถาดพร้อมแซ่บกับผักสดและแคบหมูค่ะ",
+            "caption": "▪️ ดึกแล้วท้องมันร้องหาความนัวระดับสิบใช่ไหมคะ\n▪️ วันนี้หนูพาสูตรส้มตำป่าทะเลครกแตกมาแจกค่ะ\n▪️ เครื่องแน่นล้นครก รสชาติเผ็ดแซ่บสะท้านทรวง\n▪️ ทำเองที่บ้านได้ง่ายๆ ไม่ต้องง้อร้านดัง\n▪️ มะนาวแท้ๆ ปลาร้านัวๆ กุ้งเด้งสู้ฟันสุดๆ ค่ะ\n▪️ เมนต์บอกหนูหน่อยว่าใครอยากชิมฝีมือหนูบ้างคะ\n#ส้มตำป่า #สูตรส้มตำ #พริก10เม็ด"
+        },
+        {
+            "title": "ตำหลวงพระบางนัวปลาร้า",
+            "desc": "ส้มตำเส้นแบนบางกรอบ ซึมซับน้ำปลาร้าเข้มข้นอร่อยนัวทุกคำค่ะ",
+            "ingredients": "• มะละกอฝานแผ่นบาง 1 กำมือ\n• พริกแห้งและพริกสด 10 เม็ด\n• น้ำปลาร้าปรุงรสเข้มข้น 2.5 ช้อนโต๊ะ\n• น้ำตาลปี๊บ 1 ช้อนโต๊ะ\n• กะปิแท้ 1/2 ช้อนชา\n• มะเขือเครือ 3 ลูก\n• มะนาวแป้น 2 ลูก",
+            "steps": "1. โขลกพริกแห้ง พริกสด และกะปิให้เข้ากัน\n2. ใส่น้ำตาลปี๊บ มะเขือเครือ บีบมะนาวใส่ทั้งเปลือกโขลกเบาๆ\n3. เติมน้ำปลาร้านัวๆ คนให้ละลายดี\n4. ใส่เส้นมะละกอแผ่นบาง คลุกเคล้าให้ซึมซับน้ำตำหลวงพระบาง\n5. โรยเม็ดกระถินตักเสิร์ฟพร้อมกากหมูเจียวค่ะ",
+            "caption": "▪️ ใครชอบกินส้มตำเส้นแบนบางกรอบเชิญทางนี้เลยค่ะ\n▪️ ตำหลวงพระบางสูตรนี้แอดมินพี่สาวคอนเฟิร์มว่านัวมาก\n▪️ เส้นบางๆ ซับน้ำปลาร้ากับกะปิหอมๆ เข้าเนื้อสุดๆ\n▪️ กลิ่นโชยไปถึงปากซอย ข้างบ้านต้องถามว่าตำอะไร\n▪️ ทานคู่กับกากหมูเจียวใหม่ๆ และเม็ดกระถินคือที่สุด\n▪️ เซฟสูตรนี้ไว้ทำตามด่วนๆ เลยนะคะสาวๆ\n#ตำหลวงพระบาง #ส้มตำปลาร้า #พริก10เม็ด"
+        },
+        {
+            "title": "กะเพราเนื้อสับพริกแห้ง",
+            "desc": "กะเพราแท้สูตรโบราณ เผ็ดร้อนแห้งสนิทไม่ใส่ผักกาดขาวค่ะ",
+            "ingredients": "• เนื้อวัวสับติดมัน 200 กรัม\n• พริกแห้งแดงและเขียว 10 เม็ด\n• กระเทียมไทย 1 หัว\n• ใบกะเพราป่าแดง 1 กำมือ\n• ซอสปรุงรส 1 ช้อนโต๊ะ\n• น้ำปลาแท้ 1 ช้อนโต๊ะ\n• น้ำตาลทรายปลายช้อนชา",
+            "steps": "1. โขลกพริกแห้งและกระเทียมให้ละเอียดพอประมาณ\n2. ตั้งกระทะร้อนจัด นำพริกกระเทียมลงผัดจนฉุนกระเจิง\n3. ใส่เนื้อสับลงผัด ยีให้กระจายตัวและผัดจนแห้งเข้าเนื้อ\n4. ปรุงรสด้วยน้ำปลา ซอสปรุงรส และน้ำตาลเล็กน้อย\n5. ใส่ใบกะเพราป่า ผัดเร็วๆ ด้วยไฟแรงแล้วยกลงทันทีค่ะ",
+            "caption": "▪️ เบื่อไหมคะกับการสั่งผัดกะเพราแล้วได้ถั่วฝักยาวแถมมา\n▪️ วันนี้แอดมินหนูขอแจกสูตรกะเพราเนื้อสับพริกแห้งแท้ๆ ค่ะ\n▪️ ผัดแบบแห้งๆ คั่วพริกหอมฉุนขึ้นจมูกจามกันทั้งบ้าน\n▪️ ใบกะเพราป่าแดงกลิ่นหอมแรงถึงใจไม่มีผักอื่นเจือปน\n▪️ โปะไข่ดาวกรอบๆ ขอบไหม้ไข่แดงเยิ้มๆ คือนิพพาน\n▪️ ไหนใครชอบกะเพราแห้งๆ เหมือนกันบ้าง มารายงานตัวด่วนค่ะ\n#กะเพราเนื้อสับ #กะเพราพริกแห้ง #พริก10เม็ด"
+        }
+    ],
+    "contrast_review": [
+        {
+            "line1": "สั่งเผ็ดน้อย",
+            "line2": "แต่แดงทั้งครก",
+            "caption": "▪️ สั่งแม่ค้าว่าเผ็ดน้อยทีไร ได้สีแดงแป๊ดมาตลอดเลยค่ะ\n▪️ ในใจแม่ค้าคงคิดว่าพริก 10 เม็ดคือเลเวลอนุบาล\n▪️ ปากเจ่อเหงื่อไหลยาลดกรดต้องเข้าแล้วค่ะงานนี้\n▪️ แต่ในฐานะนักสู้เรื่องกิน เราไม่มียอมแพ้แน่นอนค่ะ\n▪️ ใครเคยสั่งเผ็ดน้อยแล้วได้เผ็ดร้อนระเบิดรูทวารแบบนี้บ้างคะ\n#สั่งเผ็ดน้อย #แซ่บสู้ชีวิต #พริก10เม็ด"
+        },
+        {
+            "line1": "กินตอนนี้แซ่บปาก",
+            "line2": "พรุ่งนี้ลำบากตูด",
+            "caption": "▪️ วงการส้มตำเข้าแล้วออกยาก แต่เข้าห้องน้ำออกยากกว่าค่ะ\n▪️ ตอนกินคือนัวสะใจ พริกแห้งพริกสดจัดเต็มไม่มีกั๊ก\n▪️ พรุ่งนี้เช้าเตรียมตัวรับแรงกระแทกแบบสู้ชีวิตเลยค่ะ\n▪️ สัญญาณเตือนภัยในท้องเริ่มทำงานตั้งแต่ยังกินไม่หมดจาน\n▪️ แต่ถามว่าจะเข็ดไหม ตอบเลยว่าพรุ่งนี้เย็นเจอกันใหม่ค่ะ\n#อร่อยแซ่บ #เตือนภัยสายกิน #พริก10เม็ด"
+        },
+        {
+            "line1": "คิวยาวเป็นกิโล",
+            "line2": "แต่ยอมยืนรอ",
+            "caption": "▪️ วิถีคนหิวที่แท้จริงคือการยืนรอคิวหน้าร้านส้มตำค่ะ\n▪️ แดดจะร้อนลมจะแรงแค่ไหนก็ทำอะไรความอยากกินไม่ได้\n▪️ แย่งชิงเก้าอี้ดนตรีตอนเที่ยงวันเหมือนไปรบในสนามรบ\n▪️ พอได้กินคำแรกปลาร้านัวๆ เท่านั้นแหละ หายเหนื่อยทันทีค่ะ\n▪️ ใครยอมยืนต่อคิวเพื่อของอร่อยบ้างคะรายงานตัวด่วน\n#รีวิวสตรีทฟู้ด #ส้มตำคิวยาว #พริก10เม็ด"
+        }
+    ],
+    "debate": [
+        {
+            "left_label": "ส้มตำปลาร้า",
+            "right_label": "ส้มตำไทย",
+            "line1": "ตำไทย หรือ ตำปลาร้า",
+            "line2": "อะไรคือนิพพาน?",
+            "caption": "▪️ ศึกวันดวลเดือดแห่งวงการส้มตำไทยเลยค่ะทุกคน\n▪️ ฝั่งส้มตำปลาร้านัวสะใจ กลิ่นหอมฟุ้งแซ่บถึงทรวง\n▪️ หรือฝั่งส้มตำไทยเปรี้ยวหวานเคี้ยวมันถั่วลิสงคั่วเกลือ\n▪️ แต่ละทีมคือน่าอร่อยกินกันไม่ลงจริงๆ นะคะสาวๆ\n▪️ เมนต์บอกหนูหน่อยว่ามื้อเที่ยงนี้ทุกคนอยู่ทีมไหนกันคะ\n#ตำไทย #ตำปลาร้า #ศึกส้มตำ"
+        },
+        {
+            "left_label": "กะเพราแท้",
+            "right_label": "ใส่ถั่วฝักยาว",
+            "line1": "กะเพราแท้มีแค่ใบ",
+            "line2": "หรือมีผักร่วมด้วย?",
+            "caption": "▪️ ประเด็นร้อนถกเถียงกันมาทุกยุคทุกสมัยไม่เคยจบค่ะ\n▪️ กะเพราแท้ที่ผัดแห้งๆ มีแค่เนื้อสัตว์กับใบกะเพราฉุนๆ\n▪️ ปะทะ กะเพราใส่ถั่วฝักยาว หัวหอมใหญ่ หรือข้าวโพดอ่อนเพื่อเพิ่มปริมาณ\n▪️ สำหรับหนูคือขอแบบแห้งๆ พริกแห้งใบกะเพราป่าเท่านั้นค่ะ\n▪️ แล้วทุกคนล่ะคะ รับได้ไหมถ้ากะเพรามีถั่วฝักยาวปนมา\n#ผัดกะเพรา #กะเพราแท้ #ถกเถียงอาหาร"
+        },
+        {
+            "left_label": "ชาไทยสีส้ม",
+            "right_label": "ชาเขียวนม",
+            "line1": "ส้มหรือเขียว",
+            "line2": "แก้วไหนเยียวยาใจ?",
+            "caption": "▪️ บ่ายสามแล้วร่างกายต้องการคาเฟอีนและน้ำตาลด่วนๆ ค่ะ\n▪️ ระหว่างชาไทยสีส้มเข้มข้นกลิ่นหอมเอกลักษณ์ไทยแท้\n▪️ กับชาเขียวนมรสชาตินัวๆ หอมละมุนสไตล์มัทฉะยอดฮิต\n▪️ ตัดใจเลือกยากมากจนบางทีต้องสั่งมากินทั้งสองแก้วเลยค่ะ\n▪️ ชาไหนคือที่หนึ่งในใจของทุกคนคะวันนี้ เมนต์ด่วนค่ะ\n#ชาไทย #ชาเขียว #บ่ายนี้ดื่มอะไรดี"
+        }
+    ]
+}
+
 
 HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; SomtamBot/1.0; +github)"}
 
@@ -160,7 +248,10 @@ def analyze_image(img_path, reddit_title=""):
     """ดูรูปแล้วบอก image_type | food_name | local_vibe | appeal_level"""
     with open(img_path, "rb") as f:
         img_data = f.read()
-    title_ctx = f'ชื่อโพสต์ต้นฉบับ: "{reddit_title}"\n' if reddit_title else ""
+    
+    # Translate reddit_title to Thai first before using in vision prompt!
+    reddit_title_thai = translate_to_thai(reddit_title)
+    title_ctx = f'ชื่อโพสต์ต้นฉบับ: "{reddit_title_thai}"\n' if reddit_title_thai else ""
     prompt = (
         f"{title_ctx}"
         "Analyze this image and provide 4 fields separated by a vertical bar '|':\n"
@@ -188,10 +279,16 @@ def analyze_image(img_path, reddit_title=""):
             food_name = parts[1].strip()
             vibe      = parts[2].strip() if len(parts) > 2 else "น้ำลายสอตั้งแต่เห็นพริกแดง"
             genre     = parts[3].strip() if len(parts) > 3 else "วิถีสตรีทฟู้ด"
+            
+            if not contains_thai(food_name):
+                food_name = translate_to_thai(food_name)
+            if not contains_thai(vibe):
+                vibe = translate_to_thai(vibe)
+                
             return image_type, food_name, vibe, genre
         except Exception as e:
             print(f"[{model}] vision failed: {e}")
-    return "dish", reddit_title, "น้ำลายสอตั้งแต่เห็นพริกแดง", "วิถีสตรีทฟู้ด"
+    return "dish", translate_to_thai(reddit_title), "น้ำลายสอตั้งแต่เห็นพริกแดง", "วิถีสตรีทฟู้ด"
 
 
 # ── Gemini Caption & Hook (Combined for Consistency) ───────────────────
@@ -377,12 +474,6 @@ def generate_recipe_content(history_recipes):
         "Ensure all details are in THAI. Do not use English words. Keep ingredients and steps concise so they fit perfectly in a card layout.\n"
         "STRICT NEGATIVE CONSTRAINT: Absolutely NO mention of foreigners, tourists, westerners, or foreigners reacting to Thai food. Focus 100% on local Thai foodie humor, struggles, and everyday food experiences in Thailand. (ห้ามพูดถึงหรืออ้างอิงถึงชาวต่างชาติ, ฝรั่ง, นักท่องเที่ยว หรือปฏิกิริยาของคนต่างชาติต่ออาหารไทยเด็ดขาด เน้นเฉพาะวิถีชีวิตคนไทยและคนชอบกินเผ็ดในไทยเท่านั้น)"
     )
-    title = "ยำมาม่ารสแซ่บ"
-    desc = "เมนูทำง่ายยามดึก แซ่บนัวจี๊ดจ๊าดถึงใจแน่นอนค่ะ"
-    ingredients = "บะหมี่กึ่งสำเร็จรูป 1 ซอง\nหมูสับลวก 100 กรัม\nพริกขี้หนูโขลก 10 เม็ด\nน้ำมะนาว 2 ช้อนโต๊ะ\nน้ำปลา 2 ช้อนโต๊ะ\nหอมแดงซอย 2 หัว"
-    steps = "1. ลวกเส้นบะหมี่ให้เหนียวนุ่มแล้วตักพักไว้\n2. ลวกหมูสับให้สุกเตรียมใส่ชามผสม\n3. ปรุงน้ำยำด้วยพริก มะนาว น้ำปลา น้ำตาล\n4. ใส่เส้น หมูสับ หอมแดงซอย คลุกเคล้าให้เข้ากัน\n5. ตักใส่จานพร้อมแซ่บได้เลยค่ะ"
-    caption = "▪️ ดึกแล้วท้องมันร้องหาของแซ่บๆ ใช่ไหมคะ\n▪️ วันนี้หนูพาสูตรยำมาม่ารสแซ่บนัวมาแจกค่ะ\n▪️ วัตถุดิบมีไม่เยอะ ทำแป๊บเดียวเสร็จ\n▪️ ลวกเส้นให้นุ่มลวกหมูสับให้เด้ง\n▪️ ปรุงน้ำยำจี๊ดจ๊าดแบบพริก 10 เม็ดสะใจ\n▪️ ใครนอนไม่หลับรีบลุกไปเปิดครัวด่วนเลย\n#ยำมาม่า #แจกสูตร #พริก10เม็ด"
-
     for model in TEXT_MODELS:
         try:
             resp = client.models.generate_content(model=model, contents=prompt)
@@ -395,42 +486,52 @@ def generate_recipe_content(history_recipes):
             s_match = re.search(r'===STEPS===\s*(.*?)(?===\w+===|$)', result, re.DOTALL | re.IGNORECASE)
             cap_match = re.search(r'===CAPTION===\s*(.*)', result, re.DOTALL | re.IGNORECASE)
             
-            if t_match:
-                title = t_match.group(1).split('\n')[0].strip()
-            if d_match:
-                desc = d_match.group(1).split('\n')[0].strip()
-            if i_match:
-                ingredients = i_match.group(1).strip()
-            if s_match:
-                steps = s_match.group(1).strip()
-            if cap_match:
-                caption = cap_match.group(1).strip()
+            title = t_match.group(1).split('\n')[0].strip() if t_match else ""
+            desc = d_match.group(1).split('\n')[0].strip() if d_match else ""
+            ingredients = i_match.group(1).strip() if i_match else ""
+            steps = s_match.group(1).strip() if s_match else ""
+            caption = cap_match.group(1).strip() if cap_match else ""
                 
             title = title.strip('"\'“”‘’')
             desc = desc.strip('"\'“”‘’')
             
-            if not caption:
-                caption = f"แจกสูตร {title} ค่ะ!\n#สูตรอาหาร #ทำอาหาร #พริก10เม็ด"
+            if title and not contains_thai(title):
+                title = translate_to_thai(title)
+            if desc and not contains_thai(desc):
+                desc = translate_to_thai(desc)
+            if ingredients and not contains_thai(ingredients):
+                ingredients = translate_to_thai(ingredients)
+            if steps and not contains_thai(steps):
+                steps = translate_to_thai(steps)
+            if caption and not contains_thai(caption):
+                caption = translate_to_thai(caption)
             
-            if title and ingredients and steps:
-                break
+            if title and ingredients and steps and caption and contains_thai(title) and contains_thai(caption):
+                return title, desc, ingredients, steps, caption
         except Exception as e:
             print(f"[{model}] recipe content generation failed: {e}")
             
-    return title, desc, ingredients, steps, caption
+    print("Using recipe fallback post.")
+    fb = random.choice(FALLBACK_POSTS["recipe"])
+    return fb["title"], fb["desc"], fb["ingredients"], fb["steps"], fb["caption"]
 
 
 def generate_contrast_review_content(img_path, image_type, food_name, vibe, reddit_title=""):
     with open(img_path, "rb") as f:
         img_data = f.read()
 
+    # Pre-translate food_name, vibe, and reddit_title before using them in the prompt!
+    food_name_thai = translate_to_thai(food_name)
+    vibe_thai = translate_to_thai(vibe)
+    reddit_title_thai = translate_to_thai(reddit_title)
+
     prompt = (
         f"You are an expert Thai social media copywriter for a food page named 'พริก 10 เม็ด' (Spicy Thai Food/Stall content). Write with a friendly female persona using female particles like 'ค่ะ' / 'คะ' and pronouns like 'หนู' / 'เรา'.\n"
         f"Analyze the attached image and generate a highly engaging, SARCASTIC contrast review about this food/stall:\n"
-        f"- Food/Stall Name: {food_name}\n"
+        f"- Food/Stall Name: {food_name_thai}\n"
         f"- Image Type: {image_type} (either 'dish' or 'stall')\n"
-        f"- Eating Vibe: {vibe}\n"
-        f"- Context: {reddit_title}\n\n"
+        f"- Eating Vibe: {vibe_thai}\n"
+        f"- Context: {reddit_title_thai}\n\n"
         "Focus on a common food-related PAIN-POINT or contrast (e.g., ordering 'slightly spicy' but getting a volcano, late-night hunger vs diet plans, eating delicious food now vs paying the price tomorrow on the toilet, long queues, expectations vs reality).\n"
         "Requirements:\n"
         "1. Output exactly 3 sections labeled with markers:\n"
@@ -446,9 +547,6 @@ def generate_contrast_review_content(img_path, image_type, food_name, vibe, redd
         "===HOOK2=== [Hook Line 2]\n"
         "===CAPTION=== [Facebook Caption]"
     )
-    line1 = "สั่งเผ็ดน้อย"
-    line2 = "แต่แดงทั้งครก"
-    caption = "▪️ สั่งแม่ค้าเผ็ดน้อยทีไรได้พริก 10 เม็ดทุกทีค่ะ\n▪️ ปากเจ่อเหงื่อไหลแต่เราเป็นนักสู้ไม่มียอมแพ้\n▪️ จิ้มข้าวเหนียวซดน้ำส้มตำสู้ตายกันต่อไปค่ะ\n▪️ พรุ่งนี้ตื่นเช้ามาเข้าห้องน้ำน้ำตาไหลแน่นอน\n#ส้มตำ #สั่งเผ็ดน้อย #พริก10เม็ด"
 
     for model in TEXT_MODELS:
         try:
@@ -466,12 +564,9 @@ def generate_contrast_review_content(img_path, image_type, food_name, vibe, redd
             h2_match = re.search(r'===HOOK2===\s*(.*)', result, re.IGNORECASE)
             cap_match = re.search(r'===CAPTION===\s*(.*)', result, re.DOTALL | re.IGNORECASE)
             
-            if h1_match:
-                line1 = h1_match.group(1).split('\n')[0].strip()
-            if h2_match:
-                line2 = h2_match.group(1).split('\n')[0].strip()
-            if cap_match:
-                caption = cap_match.group(1).strip()
+            line1 = h1_match.group(1).split('\n')[0].strip() if h1_match else ""
+            line2 = h2_match.group(1).split('\n')[0].strip() if h2_match else ""
+            caption = cap_match.group(1).strip() if cap_match else ""
             
             label_pattern = r'^(ข้อความในโพสต์\s*Facebook|Facebook\s*Caption|Facebook\s*caption|Caption|caption|ข้อความบนรูป|ข้อความในรูป|ข้อความ|คำบรรยาย|คำอธิบาย|บรรทัดที่\s*\d+|บรรทัด\s*\d+|ประโยคที่\s*\d+|ประโยค\s*\d+|Hook\s*text|Hook|Line\s*\d+|[L|l]ine\s*\d+|\d+)\s*[:\-\.\s]\s*'
             line1 = re.sub(label_pattern, '', line1, flags=re.IGNORECASE).strip()
@@ -479,12 +574,21 @@ def generate_contrast_review_content(img_path, image_type, food_name, vibe, redd
             line1 = line1.strip('"\'“”‘’')
             line2 = line2.strip('"\'“”‘’')
             
-            if caption:
-                break
+            if line1 and not contains_thai(line1):
+                line1 = translate_to_thai(line1)
+            if line2 and not contains_thai(line2):
+                line2 = translate_to_thai(line2)
+            if caption and not contains_thai(caption):
+                caption = translate_to_thai(caption)
+                
+            if line1 and caption and contains_thai(line1) and contains_thai(caption):
+                return line1, line2, caption
         except Exception as e:
             print(f"[{model}] contrast review content generation failed: {e}")
             
-    return line1, line2, caption
+    print("Using contrast review fallback post.")
+    fb = random.choice(FALLBACK_POSTS["contrast_review"])
+    return fb["line1"], fb["line2"], fb["caption"]
 
 
 def generate_debate_topic_and_queries(history_debates):
@@ -505,14 +609,6 @@ def generate_debate_topic_and_queries(history_debates):
         "Ensure all labels and hooks are in THAI. English queries should be standard, generic food terms that Pexels has images for (e.g. 'papaya salad', 'pad thai', 'green curry', 'spring rolls', 'fried rice', 'thai milk tea').\n"
         "STRICT NEGATIVE CONSTRAINT: Absolutely NO mention of foreigners, tourists, westerners, or foreigners reacting to Thai food. Focus 100% on local Thai foodie humor and everyday debates."
     )
-    left_label = "ส้มตำปลาร้า"
-    right_label = "ส้มตำไทย"
-    left_query = "thai papaya salad"
-    right_query = "papaya salad"
-    line1 = "ตำไทย หรือ ตำปลาร้า"
-    line2 = "อะไรคือนิพพาน?"
-    caption = "▪️ ข้อถกเถียงระดับชาติวันนี้เลยค่ะทุกคน\n▪️ ส้มตำปลาร้านัวสะใจกลิ่นหอมชวนน้ำลายสอ\n▪️ หรือว่าส้มตำไทยหวานเปรี้ยวเคี้ยวมะม่วงหิมพานต์\n▪️ แต่ละทีมคือน่าอร่อยกันไปคนละแบบนะคะ\n▪️ เมนต์บอกหนูหน่อยว่าทุกคนอยู่ทีมไหน\n#ส้มตำ #ตำปลาร้า #ตำไทย"
-
     for model in TEXT_MODELS:
         try:
             resp = client.models.generate_content(model=model, contents=prompt)
@@ -527,13 +623,13 @@ def generate_debate_topic_and_queries(history_debates):
             h2_match = re.search(r'===HOOK2===\s*(.*)', result, re.IGNORECASE)
             cap_match = re.search(r'===CAPTION===\s*(.*)', result, re.DOTALL | re.IGNORECASE)
             
-            if ll_match: left_label = ll_match.group(1).split('\n')[0].strip()
-            if rl_match: right_label = rl_match.group(1).split('\n')[0].strip()
-            if lq_match: left_query = lq_match.group(1).split('\n')[0].strip()
-            if rq_match: right_query = rq_match.group(1).split('\n')[0].strip()
-            if h1_match: line1 = h1_match.group(1).split('\n')[0].strip()
-            if h2_match: line2 = h2_match.group(1).split('\n')[0].strip()
-            if cap_match: caption = cap_match.group(1).strip()
+            left_label = ll_match.group(1).split('\n')[0].strip() if ll_match else ""
+            right_label = rl_match.group(1).split('\n')[0].strip() if rl_match else ""
+            left_query = lq_match.group(1).split('\n')[0].strip() if lq_match else ""
+            right_query = rq_match.group(1).split('\n')[0].strip() if rq_match else ""
+            line1 = h1_match.group(1).split('\n')[0].strip() if h1_match else ""
+            line2 = h2_match.group(1).split('\n')[0].strip() if h2_match else ""
+            caption = cap_match.group(1).strip() if cap_match else ""
             
             label_pattern = r'^(ข้อความในโพสต์\s*Facebook|Facebook\s*Caption|Facebook\s*caption|Caption|caption|ข้อความบนรูป|ข้อความในรูป|ข้อความ|คำบรรยาย|คำอธิบาย|บรรทัดที่\s*\d+|บรรทัด\s*\d+|ประโยคที่\s*\d+|ประโยค\s*\d+|Hook\s*text|Hook|Line\s*\d+|[L|l]ine\s*\d+|\d+)\s*[:\-\.\s]\s*'
             left_label = re.sub(label_pattern, '', left_label, flags=re.IGNORECASE).strip()
@@ -545,12 +641,35 @@ def generate_debate_topic_and_queries(history_debates):
             line1 = line1.strip('"\'“”‘’')
             line2 = line2.strip('"\'“”‘’')
             
-            if caption:
-                break
+            if left_label and not contains_thai(left_label):
+                left_label = translate_to_thai(left_label)
+            if right_label and not contains_thai(right_label):
+                right_label = translate_to_thai(right_label)
+            if line1 and not contains_thai(line1):
+                line1 = translate_to_thai(line1)
+            if line2 and not contains_thai(line2):
+                line2 = translate_to_thai(line2)
+            if caption and not contains_thai(caption):
+                caption = translate_to_thai(caption)
+                
+            if left_label and right_label and line1 and caption and contains_thai(left_label) and contains_thai(line1) and contains_thai(caption):
+                return left_label, right_label, left_query, right_query, line1, line2, caption
         except Exception as e:
             print(f"[{model}] debate topic & queries generation failed: {e}")
             
-    return left_label, right_label, left_query, right_query, line1, line2, caption
+    print("Using debate fallback post.")
+    fb = random.choice(FALLBACK_POSTS["debate"])
+    mock_queries = {
+        "ส้มตำปลาร้า": "thai papaya salad",
+        "ส้มตำไทย": "papaya salad",
+        "กะเพราแท้": "pad kra pao",
+        "ใส่ถั่วฝักยาว": "stir fried basil",
+        "ชาไทยสีส้ม": "thai tea",
+        "ชาเขียวนม": "green tea latte"
+    }
+    l_q = mock_queries.get(fb["left_label"], "thai food")
+    r_q = mock_queries.get(fb["right_label"], "thai food")
+    return fb["left_label"], fb["right_label"], l_q, r_q, fb["line1"], fb["line2"], fb["caption"]
 
 
 def search_pexels_single_image(query, history_urls):
