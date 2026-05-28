@@ -254,14 +254,16 @@ def analyze_image(img_path, reddit_title=""):
     title_ctx = f'ชื่อโพสต์ต้นฉบับ: "{reddit_title_thai}"\n' if reddit_title_thai else ""
     prompt = (
         f"{title_ctx}"
-        "Analyze this image and provide 4 fields separated by a vertical bar '|':\n"
+        "Analyze this image carefully. Read the context title (ชื่อโพสต์ต้นฉบับ) first, but prioritize what is ACTUALLY visible in the image.\n"
+        "Compare the context title with the image: If the title is about 'papaya salad/ส้มตำ' but the image actually depicts another dish like curry (แกงเขียวหวาน), grilled pork, or a general food market stall (ร้านข้าวแกงถาด), you MUST specify the actual food/stall name visible in the image. Do not make assumptions or default to 'ส้มตำ' unless it is actually there.\n\n"
+        "Provide 4 fields separated by a vertical bar '|':\n"
         "1. Image Type: Choose either 'dish' (if it's a close-up of a food dish), 'stall' (if it's a street food stall, market vendor, or shop front), or 'other'.\n"
-        "2. Food Name: The Thai name of the food or the type of food stall (1-4 Thai words, e.g., 'ส้มตำ', 'ร้านต้มยำกุ้ง', 'แกงเขียวหวาน'). If it is not related to Thai/Asian food, output 'ไม่ตรงคอนเทน'.\n"
-        "3. Local Vibe Description: A short realistic description in Thai (5-8 words) of the local eating/food vibe (e.g., 'น้ำลายสอตั้งแต่เห็นพริกแดง', 'แม่ค้ากำลังตำส้มตำรัวสาก').\n"
+        "2. Food Name: The actual Thai name of the food or the type of food stall visible in the picture (1-4 Thai words, e.g., 'ร้านข้าวแกงถาด', 'ก๋วยเตี๋ยวเรือ', 'ส้มตำ', 'แกงเขียวหวาน'). If it is not related to Thai/Asian food, output 'ไม่ตรงคอนเทน'.\n"
+        "3. Local Vibe Description: A short realistic description in Thai (5-8 words) of the local eating/food vibe based strictly on visual details (e.g., 'ตักแกงถาดเรียงรายในตลาด', 'แม่ค้ากำลังตักน้ำแกงร้อนๆ').\n"
         "4. Appeal Level: Choose from these types: ['สายแซ่บสู้ชีวิต', 'วิถีสตรีทฟู้ด', 'รีวิวแซ่บจิกกัด', 'ความหิวยามดึก', 'ข้อพิพาทอาหาร'].\n\n"
         "Format: Image Type | Food Name | Local Vibe Description | Appeal Level\n"
         "Example: dish | ส้มตำ | เหงื่อซิกปากเจ่อแต่สู้ตายจิ้มข้าวเหนียวต่อ | สายแซ่บสู้ชีวิต\n"
-        "Example: stall | ร้านส้มตำรถเข็น | ยืนมุงหน้าร้านแย่งชิงเก้าอี้ดนตรีตอนเที่ยง | วิถีสตรีทฟู้ด"
+        "Example: stall | ร้านข้าวแกงถาด | กับข้าวเรียงรายในถาดละลานตาในตลาดสด | วิถีสตรีทฟู้ด"
     )
     for model in TEXT_MODELS:
         try:
@@ -293,11 +295,11 @@ def analyze_image(img_path, reddit_title=""):
 
 # ── Gemini Caption & Hook (Combined for Consistency) ───────────────────
 LOCAL_FOODIE_VIBES = {
-    "สายแซ่บสู้ชีวิต":   "สั่งส้มตำพริก 10 เม็ดแต่เตรียมยาลดกรดรอ, ปากเจ่อเหงื่อซิกแต่ซดน้ำส้มตำสู้ตาย, นวดสากคุมแม่ค้าแบบแซ่บๆ",
-    "วิถีสตรีทฟู้ด":    "ยืนต่อคิวรอโต๊ะกลางแดดตอนเที่ยง, เก้าอี้ดนตรีหน้าร้านส้มตำป้าเข็นรถ, ขอเหนียวปิ้งเพิ่มด่วน",
-    "รีวิวแซ่บจิกกัด":  "รีวิวส้มตำปลาร้าที่กลิ่นนัวสะกดใจคนข้างบ้าน, จิกกัดความปากสว่างตูดพังวันพรุ่งนี้, แซวเพื่อนสายกินคลีนที่ยอมจำนนให้ส้มตำ",
-    "ความหิวยามดึก":    "ไถฟีดเจอปลาดุกย่างตอนตีสองน้ำลายสอ, ความทรมานของการเห็นของกินแซ่บยามค่ำคืน, ต้มบะหมี่ประทังชีพแต่ยังนึกถึงส้มตำ",
-    "ข้อพิพาทอาหาร":   "กะเพราใส่ถั่วฝักยาวเป็นตราบาปไหม, ตำไทยกับตำปลาร้าอะไรคือนิพพาน, ผัดไทยบีบมะนาวหรือเปล่า",
+    "สายแซ่บสู้ชีวิต":   "สั่งแบบเผ็ดน้อยแต่ได้พริกสิบเม็ด, ปากเจ่อเหงื่อซิกแต่สู้ตายไม่ยอมแพ้, จัดจ้านแซ่บสะใจกันไปเลย",
+    "วิถีสตรีทฟู้ด":    "ยืนต่อคิวรอโต๊ะกลางแดดตอนเที่ยง, เก้าอี้ดนตรีหน้าร้านอาหารป้าเข็นรถ, ขอของเคียงเพิ่มด่วน",
+    "รีวิวแซ่บจิกกัด":  "รีวิวรสชาตินัวสะกดใจคนข้างบ้าน, จิกกัดความปากสว่างตูดพังวันพรุ่งนี้, แซวเพื่อนสายกินคลีนที่ยอมจำนนให้ของแซ่บ",
+    "ความหิวยามดึก":    "ไถฟีดเจอของกินตอนตีสองน้ำลายสอ, ความทรมานของการเห็นของกินแซ่บยามค่ำคืน, ต้มบะหมี่ประทังชีพแต่ยังนึกถึงจานเด็ดในรูป",
+    "ข้อพิพาทอาหาร":   "กะเพราใส่ถั่วฝักยาวเป็นตราบาปไหม, ความนัวของน้ำปลาร้าคือนิพพาน, การบีบมะนาวลงในอาหาร",
 }
 
 REALISM_FILTER = (
@@ -306,7 +308,7 @@ REALISM_FILTER = (
     "ใช้บุคลิกภาพเป็นผู้หญิงในการเล่าเรื่อง มีคำลงท้ายภาษาผู้หญิงเสมอ เช่น ค่ะ, คะ และใช้สรรพนามแทนตัวเองด้วยคำว่า หนู, เรา หรือ แอดมินพี่สาว\n"
     "avoid: คำคมสอนชีวิต, punchline สวยงาม, ภาษาอวยเกินจริง\n"
     "prioritize: ความตลกขำขัน, ความอยากอาหาร, ความแซ่บนัวสะใจคนไทย\n"
-    "ตัวอย่างโทนที่ถูก: 'สั่งเผ็ดน้อยแต่แดงแป๊ดดดเลยค่ะ', 'ปากเจ่อเหงื่อซิกแต่หนูยังไหวค่ะ', 'น้ำลายไหลเลยค่ะตั้งแต่คำแรก'\n"
+    "ตัวอย่างโทนที่ถูก: 'สั่งเผ็ดน้อยแต่สีแดงแป๊ดเลยค่ะ', 'ปากเจ่อเหงื่อซิกแต่หนูยังไหวค่ะ', 'น้ำลายไหลเลยค่ะตั้งแต่คำแรก'\n"
     "ตัวอย่างโทนที่ผิด: 'รสชาติที่ไม่มีที่สิ้นสุด', 'ประสบการณ์ใหม่', ประโยคประดิษฐ์ใดๆ\n"
 )
 
@@ -325,21 +327,25 @@ def generate_post_content(img_path, image_type, food_name, vibe, genre, content_
         f"- Eating Vibe: {vibe}\n"
         f"- Post Category: {content_type}\n"
         f"- Original Source Context: {reddit_title}\n\n"
+        "Strict Chain of Thought (CoT) Caption Consistency:\n"
+        "  1. Read the Original Source Context to understand what this post is historically about.\n"
+        "  2. Look at the attached image carefully: Identify what food, ingredients, objects, and environment are ACTUALLY present in the picture. Do not assume or hallucinate dishes that are not there (e.g., if there is curry/rice, DO NOT write about papaya salad or mortars. If it's a general food stall, write about general market stalls).\n"
+        "  3. Write the Hooks and Caption ensuring they match the ACTUAL visual elements shown in the image.\n\n"
         "Post Category descriptions:\n"
         "  * 'สายแซ่บสู้ชีวิต': Thai people eating ultra-spicy food, sweating, mouth burning, but refusing to give up.\n"
         "  * 'วิถีสตรีทฟู้ด': Fun habits of street food lovers, queuing at stalls, lunch rush, fighting for tables.\n"
         "  * 'รีวิวแซ่บจิกกัด': Sarcastic, funny, and direct review of the food, spicy cravings, or morning-after consequences.\n"
-        "  * 'ความหิวยามดึก': Sarcastic torture of late-night food cravings, eating instant noodles while dreaming of somtam.\n"
+        "  * 'ความหิวยามดึก': Sarcastic torture of late-night food cravings, eating instant noodles while dreaming of the food shown in the image.\n"
         "  * 'ข้อพิพาทอาหาร': Playful debate about Thai food recipes or ingredients (e.g., whether holy basil should have long beans, boat noodle soup thickness, crispy vs soft oyster omelet) to drive comments.\n\n"
         "Requirements:\n"
         "1. Output exactly 3 sections labeled with markers:\n"
-        "   ===HOOK1=== (Hook Line 1: to be written on the image. Very short, 3-6 Thai words. Must feel like a casual first thought)\n"
-        "   ===HOOK2=== (Hook Line 2: to be written on the image. Very short, 3-5 Thai words)\n"
-        "   ===CAPTION=== (Facebook Caption: a short story structured as 6-8 bullet points. Start each bullet with a ▪️ emoji. 1-2 sentences per bullet.)\n\n"
+        "   ===HOOK1=== (Hook Line 1: to be written on the image. Very short, 3-6 Thai words. Must feel like a casual first thought. Write strictly about the actual dish/stall in the image. e.g. if the image shows a curry shop, Hook must be about curry or market food)\n"
+        "   ===HOOK2=== (Hook Line 2: to be written on the image. Very short, 3-5 Thai words. No placeholders or irrelevant context)\n"
+        "   ===CAPTION=== (Facebook Caption: a short story structured as 6-8 bullet points. Start each bullet with a ▪️ emoji. 1-2 sentences per bullet. Must strictly describe the food/stall shown in the image)\n\n"
         "2. Strict Constraints for Natural Thai Style and Spelling (AVOID TYPOS & TRANSLATION ERRORS):\n"
         "   - WRITE IN NATURAL, CASUAL THAI STREET/FACEBOOK STYLE (ภาษาพูดธรรมดา ท้องถิ่น สบายๆ ขำๆ เหมือนแชร์เรื่องฮาๆ ลงกลุ่ม).\n"
         "   - AVOID ENGLISH LITERAL TRANSLATIONS.\n"
-        "   - STRICT LOGICAL CONSISTENCY between hooks and caption: Hook lines and caption MUST tell the exact same story.\n"
+        "   - STRICT LOGICAL CONSISTENCY between hooks and caption: Hook lines and caption MUST tell the exact same story as the image.\n"
         "   - STRICT NEGATIVE CONSTRAINT: Absolutely NO mention of foreigners, tourists, westerners, or foreigners reacting to Thai food. Focus 100% on local Thai foodie humor, struggles, and everyday food experiences in Thailand. (ห้ามพูดถึงหรืออ้างอิงถึงชาวต่างชาติ, ฝรั่ง, นักท่องเที่ยว หรือปฏิกิริยาของคนต่างชาติต่ออาหารไทยเด็ดขาด เน้นเฉพาะวิถีชีวิตคนไทยและคนชอบกินเผ็ดในไทยเท่านั้น)\n"
         "   - Do not use markdown like ** or bolding in the caption.\n"
         "   - End the caption with 3 relevant hashtags.\n\n"
@@ -532,14 +538,19 @@ def generate_contrast_review_content(img_path, image_type, food_name, vibe, redd
         f"- Image Type: {image_type} (either 'dish' or 'stall')\n"
         f"- Eating Vibe: {vibe_thai}\n"
         f"- Context: {reddit_title_thai}\n\n"
-        "Focus on a common food-related PAIN-POINT or contrast (e.g., ordering 'slightly spicy' but getting a volcano, late-night hunger vs diet plans, eating delicious food now vs paying the price tomorrow on the toilet, long queues, expectations vs reality).\n"
+        "Strict Chain of Thought (CoT) Caption Consistency:\n"
+        "  1. Read the Context to understand what this post is historically about.\n"
+        "  2. Look at the attached image carefully: Identify what food, ingredients, objects, and environment are ACTUALLY present in the picture. Do not assume or hallucinate dishes that are not there (e.g., if there is curry/rice, DO NOT write about papaya salad or mortars. If it's a general food stall, write about general market stalls).\n"
+        "  3. Focus on a common food-related PAIN-POINT or contrast (e.g., ordering 'slightly spicy' but getting a volcano, late-night hunger vs diet plans, eating delicious food now vs paying the price tomorrow on the toilet, long queues, expectations vs reality) related SPECIFICALLY to the food/stall shown in the image.\n"
+        "  4. Write the Hooks and Caption ensuring they match the ACTUAL visual elements shown in the image.\n\n"
         "Requirements:\n"
         "1. Output exactly 3 sections labeled with markers:\n"
-        "   ===HOOK1=== (Hook Line 1: Sarcastic/pain-point statement to be written on the image. Very short, 3-6 Thai words. Must feel like a casual first thought, NO emojis)\n"
-        "   ===HOOK2=== (Hook Line 2: Sarcastic follow-up, very short, 3-5 Thai words, NO emojis)\n"
-        "   ===CAPTION=== (Facebook Caption: a funny, sarcastic story structured as 6-8 bullet points. Start each bullet with a ▪️ emoji. End with 3 relevant hashtags)\n\n"
+        "   ===HOOK1=== (Hook Line 1: Sarcastic/pain-point statement to be written on the image. Very short, 3-6 Thai words. Must feel like a casual first thought, NO emojis. Write strictly about the actual dish/stall in the image)\n"
+        "   ===HOOK2=== (Hook Line 2: Sarcastic follow-up, very short, 3-5 Thai words, NO emojis. No placeholders or irrelevant context)\n"
+        "   ===CAPTION=== (Facebook Caption: a funny, sarcastic story structured as 6-8 bullet points. Start each bullet with a ▪️ emoji. End with 3 relevant hashtags. Must strictly describe the food/stall shown in the image)\n\n"
         "2. Strict Constraints for Natural Thai Style and Spelling:\n"
         "   - WRITE IN NATURAL, CASUAL THAI STREET/FACEBOOK STYLE.\n"
+        "   - STRICT LOGICAL CONSISTENCY between hooks and caption: Hook lines and caption MUST tell the exact same story as the image.\n"
         "   - STRICT NEGATIVE CONSTRAINT: Absolutely NO mention of foreigners, tourists, westerners, or foreigners reacting to Thai food. Focus 100% on local Thai foodie humor and everyday struggles.\n"
         f"Realism Guidelines:\n{REALISM_FILTER}\n"
         "Format of Response:\n"
