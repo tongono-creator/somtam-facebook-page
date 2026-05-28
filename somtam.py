@@ -63,6 +63,29 @@ def save_to_history(url):
     except Exception as e:
         print(f"Error saving history: {e}")
 
+RECIPE_HISTORY_FILE = "posted_recipes.txt"
+
+def load_recipe_history():
+    if os.path.exists(RECIPE_HISTORY_FILE):
+        try:
+            with open(RECIPE_HISTORY_FILE, "r", encoding="utf-8") as f:
+                return [line.strip() for line in f if line.strip()]
+        except Exception:
+            return []
+    return []
+
+def save_recipe_to_history(title):
+    titles = load_recipe_history()
+    titles.append(title)
+    titles = titles[-100:]  # Cap at 100
+    try:
+        with open(RECIPE_HISTORY_FILE, "w", encoding="utf-8") as f:
+            for t in titles:
+                f.write(t + "\n")
+    except Exception as e:
+        print(f"Error saving recipe history: {e}")
+
+
 IMAGE_EXTS   = (".jpg", ".jpeg", ".png", ".gif", ".webp")
 # content types = หมวดหมู่การเล่าเรื่องของสายกิน/สตรีทฟู้ด + ดราม่าและข้อพิพาทอาหารไทย
 CONTENT_TYPES = ["สายแซ่บสู้ชีวิต", "วิถีสตรีทฟู้ด", "รีวิวแซ่บจิกกัด", "ความหิวยามดึก", "ข้อพิพาทอาหาร"]
@@ -337,10 +360,12 @@ def add_comment(post_id, caption=None, img_path=None):
             time.sleep(random.uniform(30, 90))
 
 
-def generate_recipe_content():
+def generate_recipe_content(history_recipes):
+    history_str = ", ".join(history_recipes) if history_recipes else "ไม่มี"
     prompt = (
         "You are an expert Thai social media copywriter for 'พริก 10 เม็ด' (Spicy Thai Food page). Write with a friendly female persona using female particles like 'ค่ะ' / 'คะ' and pronouns like 'หนู' / 'เรา'.\n"
         "Generate a mouth-watering, easy-to-follow Thai recipe (สูตรอาหารไทยแซ่บๆ) that local Thai readers will love (e.g. ตำป่ารสเด็ด, ยำมาม่าหมูสับ, กะเพราพริกแห้งสูตรโบราณ, น้ำตกคอหมูย่าง).\n"
+        f"STRICT NEGATIVE CONSTRAINT: Do NOT generate a recipe for any of the following menus/titles: {history_str}.\n"
         "Requirements:\n"
         "1. Output exactly 5 sections labeled with markers:\n"
         "   ===TITLE=== (Recipe Title, 2-4 Thai words, e.g., 'ตำป่าทะเลเดือด')\n"
@@ -461,10 +486,12 @@ def generate_contrast_review_content(img_path, image_type, food_name, vibe, redd
     return line1, line2, caption
 
 
-def generate_debate_topic_and_queries():
+def generate_debate_topic_and_queries(history_debates):
+    history_str = ", ".join(history_debates) if history_debates else "ไม่มี"
     prompt = (
         "You are an expert Thai social media copywriter for 'พริก 10 เม็ด' (Spicy Thai Food page). Write with a friendly female persona using female particles like 'ค่ะ' / 'คะ' and pronouns like 'หนู' / 'เรา'.\n"
         "Select a fun, engaging, and controversial Thai food debate topic (e.g. กะเพราใส่ถั่วฝักยาว vs กะเพราแท้, ส้มตำปลาร้า vs ส้มตำไทย, ชาไทยสีส้ม vs ชาเขียว, บะหมี่แห้งเส้นเล็ก vs บะหมี่แห้งเส้นบะหมี่, ก๋วยเตี๋ยวเรือน้ำตก vs ก๋วยเตี๋ยวต้มยำ).\n"
+        f"STRICT NEGATIVE CONSTRAINT: Do NOT generate a debate about any of the following topics/titles: {history_str}.\n"
         "Requirements:\n"
         "1. Output exactly 7 fields labeled with markers:\n"
         "   ===LEFT_LABEL=== (Label for left option, 1-3 Thai words, e.g., 'ใส่ถั่วฝักยาว')\n"
@@ -577,7 +604,8 @@ def main():
 
     if mode == "recipe":
         print("Generating Recipe Content...")
-        title, desc, ingredients, steps, caption = generate_recipe_content()
+        history_recipes = load_recipe_history()
+        title, desc, ingredients, steps, caption = generate_recipe_content(history_recipes)
         print(f"Recipe Title: {title}")
         print(f"Description: {desc}")
         
@@ -647,7 +675,8 @@ def main():
 
     elif mode == "debate":
         print("Generating Debate Content...")
-        left_label, right_label, left_query, right_query, line1, line2, caption = generate_debate_topic_and_queries()
+        history_recipes = load_recipe_history()
+        left_label, right_label, left_query, right_query, line1, line2, caption = generate_debate_topic_and_queries(history_recipes)
         print(f"Debate Topic: {line1} | {line2}")
         print(f"Options: {left_label} ({left_query}) vs {right_label} ({right_query})")
 
@@ -720,6 +749,14 @@ def main():
         if success:
             if mode == "contrast_review" and 'post' in locals() and post:
                 save_to_history(post["url"])
+            elif mode == "recipe":
+                save_recipe_to_history(title)
+            elif mode == "debate":
+                save_recipe_to_history(f"{left_label} vs {right_label}")
+                if 'left_img_url' in locals() and left_img_url:
+                    save_to_history(left_img_url)
+                if 'right_img_url' in locals() and right_img_url:
+                    save_to_history(right_img_url)
             print("Successfully posted to Facebook!")
         else:
             print("Post to Facebook FAILED")
