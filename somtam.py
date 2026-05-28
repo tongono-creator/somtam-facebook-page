@@ -24,21 +24,21 @@ HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; SomtamBot/1.0; +github)"}
 
 # ── Pexels Search Queries ────────────────────────────────────────────
 THAI_FOOD_QUERIES = [
-    "thai food",
-    "thai street food",
-    "som tam papaya salad",
-    "pad thai noodles",
-    "tom yum soup",
-    "thai spicy food",
-    "thai curry",
-    "mango sticky rice",
-    "thai fried rice",
-    "moo ping pork",
-    "khao man gai chicken rice",
-    "pad kra pao pork",
-    "thai dessert sweet",
-    "bangkok street food",
-    "thai tea milk"
+    "thai food photography",
+    "thai food photography",
+    "thai street food photography",
+    "thai street food photography",
+    "som tam papaya salad food photography",
+    "pad thai noodles food photography",
+    "tom yum soup food styling",
+    "thai spicy food photography",
+    "thai curry food photography",
+    "mango sticky rice food styling",
+    "thai fried rice food photography",
+    "moo ping grilled pork street food",
+    "pad kra pao thai basil food photography",
+    "bangkok street food photography",
+    "thai food close up appetizing",
 ]
 
 HISTORY_FILE = "posted_photos.txt"
