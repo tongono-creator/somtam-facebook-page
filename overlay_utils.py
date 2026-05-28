@@ -364,3 +364,300 @@ def create_acid_debate_card(line1, line2, out_path):
         
     img.save(out_path, "JPEG", quality=92)
     return out_path
+
+
+def _crop_to_size(img, target_w, target_h):
+    w, h = img.size
+    scale = max(target_w / w, target_h / h)
+    new_w = int(w * scale)
+    new_h = int(h * scale)
+    img_resized = img.resize((new_w, new_h), Image.Resampling.LANCZOS)
+    left = (new_w - target_w) // 2
+    top = (new_h - target_h) // 2
+    right = left + target_w
+    bottom = top + target_h
+    return img_resized.crop((left, top, right, bottom))
+
+
+def _draw_lines_centered(draw, lines, font, line_h, gap, y_start, x_center, fill, shadow=(0, 0, 0)):
+    y = y_start
+    for line in lines:
+        bw = draw.textbbox((0, 0), line, font=font)[2]
+        x  = x_center - bw // 2
+        for dx, dy in [(-3,-3),(-3,0),(-3,3),(0,-3),(0,3),(3,-3),(3,0),(3,3)]:
+            draw.text((x + dx, y + dy), line, font=font, fill=shadow)
+        draw.text((x, y), line, font=font, fill=fill)
+        y += line_h + gap
+    return y
+
+
+def create_split_debate_card(left_img_path, right_img_path, left_label, right_label, out_path):
+    """
+    Crops two images to 540x1080, stitches them side-by-side,
+    draws a divider line, a circular central 'VS' badge, and labels at the bottom.
+    """
+    W, H = 1080, 1080
+    left_w = 540
+    right_w = 540
+
+    if left_img_path and os.path.exists(left_img_path):
+        left_img = Image.open(left_img_path).convert("RGB")
+        left_img = _remove_black_bars(left_img)
+        left_cropped = _crop_to_size(left_img, left_w, H)
+    else:
+        left_cropped = Image.new("RGB", (left_w, H), (40, 30, 30))
+
+    if right_img_path and os.path.exists(right_img_path):
+        right_img = Image.open(right_img_path).convert("RGB")
+        right_img = _remove_black_bars(right_img)
+        right_cropped = _crop_to_size(right_img, right_w, H)
+    else:
+        right_cropped = Image.new("RGB", (right_w, H), (30, 30, 40))
+
+    img = Image.new("RGB", (W, H))
+    img.paste(left_cropped, (0, 0))
+    img.paste(right_cropped, (left_w, 0))
+
+    start_y = 650
+    img = _apply_bottom_gradient(img, start_y, H, max_alpha=230)
+
+    draw = ImageDraw.Draw(img)
+
+    divider_color = (255, 255, 255)
+    divider_width = 6
+    draw.line([(left_w, 0), (left_w, H)], fill=divider_color, width=divider_width)
+
+    vs_r = 60
+    vs_cx, vs_cy = W // 2, H // 2
+    draw.ellipse([vs_cx - vs_r - 2, vs_cy - vs_r - 2, vs_cx + vs_r + 2, vs_cy + vs_r + 2], fill=(40, 40, 40))
+    draw.ellipse([vs_cx - vs_r, vs_cy - vs_r, vs_cx + vs_r, vs_cy + vs_r], fill=(255, 107, 53))
+    draw.ellipse([vs_cx - vs_r + 4, vs_cy - vs_r + 4, vs_cx + vs_r - 4, vs_cy + vs_r - 4], outline=(255, 255, 255), width=2)
+    
+    vs_font = ImageFont.truetype(FONT_PATH, 48)
+    vs_text = "VS"
+    vs_bbox = draw.textbbox((0, 0), vs_text, font=vs_font)
+    vs_tw = vs_bbox[2] - vs_bbox[0]
+    vs_th = vs_bbox[3] - vs_bbox[1]
+    vs_tx = vs_cx - vs_tw // 2 - vs_bbox[0]
+    vs_ty = vs_cy - vs_th // 2 - vs_bbox[1]
+    draw.text((vs_tx, vs_ty), vs_text, font=vs_font, fill=(255, 255, 255))
+
+    left_label_clean = clean_image_text(left_label)
+    right_label_clean = clean_image_text(right_label)
+
+    label_max_w = 460
+    
+    def fit_label_text(text, max_w, max_h):
+        size = 54
+        while size >= 24:
+            font = ImageFont.truetype(FONT_PATH, size)
+            lines = _wrap_text(draw, text, font, max_w)
+            lines = _balance_wrap(draw, lines, font, max_w)
+            line_h = draw.textbbox((0, 0), "ก A", font=font)[3]
+            gap = max(4, size // 8)
+            total_h = line_h * len(lines) + gap * (len(lines) - 1)
+            if total_h <= max_h and all(draw.textbbox((0, 0), l, font=font)[2] <= max_w for l in lines):
+                return font, lines, line_h, gap, total_h
+            size -= 2
+        font = ImageFont.truetype(FONT_PATH, 24)
+        lines = _wrap_text(draw, text, font, max_w)
+        line_h = draw.textbbox((0, 0), "ก A", font=font)[3]
+        gap = 4
+        total_h = line_h * len(lines) + gap * (len(lines) - 1)
+        return font, lines, line_h, gap, total_h
+
+    l_font, l_lines, l_lh, l_gap, l_total_h = fit_label_text(left_label_clean, label_max_w, 200)
+    r_font, r_lines, r_lh, r_gap, r_total_h = fit_label_text(right_label_clean, label_max_w, 200)
+
+    y_start_l = 650 + (430 - l_total_h) // 2
+    y_start_r = 650 + (430 - r_total_h) // 2
+
+    _draw_lines_centered(draw, l_lines, l_font, l_lh, l_gap, y_start_l, 270, fill=(255, 255, 255))
+    _draw_lines_centered(draw, r_lines, r_font, r_lh, r_gap, y_start_r, 810, fill=(255, 255, 255))
+
+    img.save(out_path, "JPEG", quality=92)
+    return out_path
+
+
+def create_recipe_card(title, desc, ingredients, steps, out_path):
+    """
+    Draws a beautiful dark-mode recipe card with a grid, an orange/gold border,
+    a branding capsule, and two columns: ingredients list (left) and steps list (right).
+    """
+    W, H = 1080, 1080
+    bg_color1 = (18, 18, 24)
+    bg_color2 = (28, 28, 38)
+    
+    img = create_diagonal_gradient(W, H, bg_color1, bg_color2)
+    
+    overlay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    draw_ol = ImageDraw.Draw(overlay)
+    
+    grid_color = (255, 255, 255, 10)
+    for gx in range(100, 980, 40):
+        for gy in range(100, 980, 40):
+            draw_ol.ellipse([gx-1.5, gy-1.5, gx+1.5, gy+1.5], fill=grid_color)
+            
+    border_color = (255, 107, 53)
+    border_inset = 45
+    draw_ol.rectangle([border_inset, border_inset, W - border_inset, H - border_inset], outline=border_color, width=4)
+    
+    img = Image.alpha_composite(img.convert("RGBA"), overlay).convert("RGB")
+    draw = ImageDraw.Draw(img)
+    
+    capsule_font = ImageFont.truetype(FONT_PATH, 24)
+    draw_capsule(
+        draw=draw,
+        x_center=W // 2,
+        y_center=95,
+        text=clean_image_text("พริก 10 เม็ด • สูตรแซ่บ"),
+        font=capsule_font,
+        fill_color=(255, 107, 53),
+        text_color=(255, 255, 255)
+    )
+    
+    title_clean = clean_image_text(title)
+    title_sz = 60
+    while title_sz >= 32:
+        t_font = ImageFont.truetype(FONT_PATH, title_sz)
+        t_lines = _wrap_text(draw, title_clean, t_font, W - 160)
+        t_lh = draw.textbbox((0, 0), "ก A", font=t_font)[3]
+        t_gap = max(4, title_sz // 8)
+        t_h = t_lh * len(t_lines) + t_gap * (len(t_lines) - 1)
+        if t_h <= 120:
+            break
+        title_sz -= 4
+        
+    y = 140
+    for line in t_lines:
+        t_bbox = draw.textbbox((0, 0), line, font=t_font)
+        tw = t_bbox[2] - t_bbox[0]
+        tx = (W - tw) // 2 - t_bbox[0]
+        draw.text((tx + 2, y + 2), line, font=t_font, fill=(0, 0, 0, 80))
+        draw.text((tx, y), line, font=t_font, fill=(255, 180, 50))
+        y += t_lh + t_gap
+        
+    desc_clean = clean_image_text(desc) if desc else ""
+    desc_lines = []
+    desc_lh = 0
+    desc_gap = 0
+    desc_h = 0
+    if desc_clean:
+        desc_font = ImageFont.truetype(FONT_PATH, 26)
+        desc_lines = _wrap_text(draw, desc_clean, desc_font, W - 160)
+        desc_lh = draw.textbbox((0, 0), "ก A", font=desc_font)[3]
+        desc_gap = 6
+        desc_h = desc_lh * len(desc_lines) + desc_gap * (len(desc_lines) - 1)
+        
+    y_desc = y + 10
+    for line in desc_lines:
+        d_bbox = draw.textbbox((0, 0), line, font=desc_font)
+        dw = d_bbox[2] - d_bbox[0]
+        dx = (W - dw) // 2 - d_bbox[0]
+        draw.text((dx, y_desc), line, font=desc_font, fill=(220, 220, 220))
+        y_desc += desc_lh + desc_gap
+        
+    y_content_start = max(310, y_desc + 20)
+    
+    # Column divider line
+    draw.line([(540, y_content_start + 10), (540, 1000)], fill=(255, 107, 53, 150), width=2)
+    
+    hdr_font = ImageFont.truetype(FONT_PATH, 34)
+    lh_text = "วัตถุดิบ"
+    lh_bbox = draw.textbbox((0, 0), lh_text, font=hdr_font)
+    lh_tw = lh_bbox[2] - lh_bbox[0]
+    lh_th = lh_bbox[3] - lh_bbox[1]
+    
+    # Rounded rectangles for headers
+    overlay_hdr = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    draw_oh = ImageDraw.Draw(overlay_hdr)
+    draw_oh.rounded_rectangle([295 - lh_tw//2 - 20, y_content_start - 6, 295 + lh_tw//2 + 20, y_content_start + lh_th + 10], radius=8, fill=(255, 107, 53, 50), outline=(255, 107, 53), width=2)
+    
+    rh_text = "ขั้นตอนการทำ"
+    rh_bbox = draw.textbbox((0, 0), rh_text, font=hdr_font)
+    rh_tw = rh_bbox[2] - rh_bbox[0]
+    rh_th = rh_bbox[3] - rh_bbox[1]
+    draw_oh.rounded_rectangle([785 - rh_tw//2 - 20, y_content_start - 6, 785 + rh_tw//2 + 20, y_content_start + rh_th + 10], radius=8, fill=(255, 180, 50, 50), outline=(255, 180, 50), width=2)
+    
+    img = Image.alpha_composite(img.convert("RGBA"), overlay_hdr).convert("RGB")
+    draw = ImageDraw.Draw(img)
+    
+    draw.text((295 - lh_tw//2 - lh_bbox[0], y_content_start - lh_bbox[1]), lh_text, font=hdr_font, fill=(255, 255, 255))
+    draw.text((785 - rh_tw//2 - rh_bbox[0], y_content_start - rh_bbox[1]), rh_text, font=hdr_font, fill=(255, 255, 255))
+    
+    y_list_start = y_content_start + lh_th + 30
+    list_h = 1000 - y_list_start
+    
+    if isinstance(ingredients, str):
+        ingredients_list = [line.strip() for line in ingredients.split("\n") if line.strip()]
+    else:
+        ingredients_list = [str(i).strip() for i in ingredients if str(i).strip()]
+
+    if isinstance(steps, str):
+        steps_list = [line.strip() for line in steps.split("\n") if line.strip()]
+    else:
+        steps_list = [str(s).strip() for s in steps if str(s).strip()]
+        
+    cleaned_ingredients = []
+    for ing in ingredients_list:
+        ing_text = re.sub(r'^[•\-\*\s]+', '', ing).strip()
+        cleaned_ingredients.append(f"• {ing_text}")
+        
+    cleaned_steps = []
+    for idx, step in enumerate(steps_list, 1):
+        step_text = re.sub(r'^\d+[\.\-\s\u2013]+', '', step).strip()
+        cleaned_steps.append(f"{idx}. {step_text}")
+        
+    item_sz = 26
+    col_w = 400
+    
+    while item_sz >= 16:
+        font = ImageFont.truetype(FONT_PATH, item_sz)
+        line_h = draw.textbbox((0, 0), "ก A", font=font)[3]
+        item_gap = max(4, item_sz // 4)
+        line_gap = max(2, item_sz // 8)
+        
+        left_h = 0
+        left_wrapped = []
+        for ing in cleaned_ingredients:
+            lines = _wrap_text(draw, ing, font, col_w)
+            left_wrapped.append(lines)
+            ing_h = len(lines) * line_h + (len(lines) - 1) * line_gap
+            left_h += ing_h + item_gap
+        left_h -= item_gap
+        
+        right_h = 0
+        right_wrapped = []
+        for step in cleaned_steps:
+            lines = _wrap_text(draw, step, font, col_w)
+            right_wrapped.append(lines)
+            step_h = len(lines) * line_h + (len(lines) - 1) * line_gap
+            right_h += step_h + item_gap
+        right_h -= item_gap
+        
+        if left_h <= list_h and right_h <= list_h:
+            break
+        item_sz -= 2
+        
+    font = ImageFont.truetype(FONT_PATH, max(16, item_sz))
+    line_h = draw.textbbox((0, 0), "ก A", font=font)[3]
+    item_gap = max(4, font.size // 4)
+    line_gap = max(2, font.size // 8)
+    
+    y = y_list_start
+    for lines in left_wrapped:
+        for line in lines:
+            draw.text((85, y), line, font=font, fill=(245, 245, 245))
+            y += line_h + line_gap
+        y += item_gap - line_gap
+
+    y = y_list_start
+    for lines in right_wrapped:
+        for line in lines:
+            draw.text((575, y), line, font=font, fill=(245, 245, 245))
+            y += line_h + line_gap
+        y += item_gap - line_gap
+        
+    img.save(out_path, "JPEG", quality=92)
+    return out_path
+

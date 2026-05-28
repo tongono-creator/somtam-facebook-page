@@ -4,12 +4,15 @@ import random
 import time
 import requests
 import tempfile
+import sys
+import io
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 from google import genai
 from google.genai import types
 
 # ── Config ───────────────────────────────────────────────────────────
 PAGE_ID           = "554501167740603"
-PAGE_ACCESS_TOKEN = os.environ["SOMTAM_PAGE_ACCESS_TOKEN"]
+PAGE_ACCESS_TOKEN = os.environ.get("SOMTAM_PAGE_ACCESS_TOKEN", "")
 GEMINI_API_KEY    = os.environ.get("GEMINI_API_KEY", "")
 PEXELS_API_KEY    = os.environ.get("PEXELS_API_KEY", "")
 
@@ -334,28 +337,104 @@ def add_comment(post_id, caption=None, img_path=None):
             time.sleep(random.uniform(30, 90))
 
 
-def generate_debate_content():
+def generate_recipe_content():
     prompt = (
         "You are an expert Thai social media copywriter for 'พริก 10 เม็ด' (Spicy Thai Food page). Write with a friendly female persona using female particles like 'ค่ะ' / 'คะ' and pronouns like 'หนู' / 'เรา'.\n"
-        "Generate a highly engaging, funny, and relatable food debate question (ข้อพิพาทอาหาร) in THAI language to drive comments.\n"
-        "Topics could be about Thai food ingredients (e.g., holy basil with long beans, sweet green curry, pineapple on pizza/fried rice), eating habits, or restaurant etiquette.\n"
+        "Generate a mouth-watering, easy-to-follow Thai recipe (สูตรอาหารไทยแซ่บๆ) that local Thai readers will love (e.g. ตำป่ารสเด็ด, ยำมาม่าหมูสับ, กะเพราพริกแห้งสูตรโบราณ, น้ำตกคอหมูย่าง).\n"
         "Requirements:\n"
-        "1. Output exactly 3 sections labeled with markers:\n"
-        "   ===HOOK1=== (Hook Line 1: Main statement, very short, 4-6 Thai words. NO emojis)\n"
-        "   ===HOOK2=== (Hook Line 2: Question or sub-hook, very short, 3-5 Thai words. NO emojis)\n"
-        "   ===CAPTION=== (Facebook Caption: structured as 6-8 bullet points. Start each bullet with a ▪️ emoji. End with 3 relevant hashtags)\n\n"
-        "Ensure natural Thai street style, large font readability, and no emojis in the hooks (emojis are fine in the caption).\n"
+        "1. Output exactly 5 sections labeled with markers:\n"
+        "   ===TITLE=== (Recipe Title, 2-4 Thai words, e.g., 'ตำป่าทะเลเดือด')\n"
+        "   ===DESC=== (Short delicious summary/description of the dish, 1-2 sentences. Keep it short!)\n"
+        "   ===INGREDIENTS=== (List of ingredients, one per line. Keep each line short and clean, max 5-7 words, e.g., '• มะละกอดิบสับ 1 กำมือ')\n"
+        "   ===STEPS=== (Numbered steps to cook/prepare the dish, one per line. Keep each line short and clean, max 10-15 words. Maximum 5-6 steps, e.g., '1. โขลกพริกกับกระเทียมให้พอแตก')\n"
+        "   ===CAPTION=== (A funny, engaging Facebook caption introducing the recipe, structured as 6-8 bullet points starting with ▪️ and ending with 3 hashtags)\n\n"
+        "Ensure all details are in THAI. Do not use English words. Keep ingredients and steps concise so they fit perfectly in a card layout.\n"
         "STRICT NEGATIVE CONSTRAINT: Absolutely NO mention of foreigners, tourists, westerners, or foreigners reacting to Thai food. Focus 100% on local Thai foodie humor, struggles, and everyday food experiences in Thailand. (ห้ามพูดถึงหรืออ้างอิงถึงชาวต่างชาติ, ฝรั่ง, นักท่องเที่ยว หรือปฏิกิริยาของคนต่างชาติต่ออาหารไทยเด็ดขาด เน้นเฉพาะวิถีชีวิตคนไทยและคนชอบกินเผ็ดในไทยเท่านั้น)"
     )
+    title = "ยำมาม่ารสแซ่บ"
+    desc = "เมนูทำง่ายยามดึก แซ่บนัวจี๊ดจ๊าดถึงใจแน่นอนค่ะ"
+    ingredients = "บะหมี่กึ่งสำเร็จรูป 1 ซอง\nหมูสับลวก 100 กรัม\nพริกขี้หนูโขลก 10 เม็ด\nน้ำมะนาว 2 ช้อนโต๊ะ\nน้ำปลา 2 ช้อนโต๊ะ\nหอมแดงซอย 2 หัว"
+    steps = "1. ลวกเส้นบะหมี่ให้เหนียวนุ่มแล้วตักพักไว้\n2. ลวกหมูสับให้สุกเตรียมใส่ชามผสม\n3. ปรุงน้ำยำด้วยพริก มะนาว น้ำปลา น้ำตาล\n4. ใส่เส้น หมูสับ หอมแดงซอย คลุกเคล้าให้เข้ากัน\n5. ตักใส่จานพร้อมแซ่บได้เลยค่ะ"
+    caption = "▪️ ดึกแล้วท้องมันร้องหาของแซ่บๆ ใช่ไหมคะ\n▪️ วันนี้หนูพาสูตรยำมาม่ารสแซ่บนัวมาแจกค่ะ\n▪️ วัตถุดิบมีไม่เยอะ ทำแป๊บเดียวเสร็จ\n▪️ ลวกเส้นให้นุ่มลวกหมูสับให้เด้ง\n▪️ ปรุงน้ำยำจี๊ดจ๊าดแบบพริก 10 เม็ดสะใจ\n▪️ ใครนอนไม่หลับรีบลุกไปเปิดครัวด่วนเลย\n#ยำมาม่า #แจกสูตร #พริก10เม็ด"
+
     for model in TEXT_MODELS:
         try:
             resp = client.models.generate_content(model=model, contents=prompt)
             result = resp.text.strip()
-            print(f"Debate Content Generation [{model}]:\n{result[:300]}...\n")
+            print(f"Recipe Content Generation [{model}]:\n{result[:300]}...\n")
             
-            line1 = "กะเพราแท้"
-            line2 = "ต้องไม่มีถั่วฝักยาว?"
-            caption = ""
+            t_match = re.search(r'===TITLE===\s*(.*)', result, re.IGNORECASE)
+            d_match = re.search(r'===DESC===\s*(.*)', result, re.IGNORECASE)
+            i_match = re.search(r'===INGREDIENTS===\s*(.*?)(?===\w+===|$)', result, re.DOTALL | re.IGNORECASE)
+            s_match = re.search(r'===STEPS===\s*(.*?)(?===\w+===|$)', result, re.DOTALL | re.IGNORECASE)
+            cap_match = re.search(r'===CAPTION===\s*(.*)', result, re.DOTALL | re.IGNORECASE)
+            
+            if t_match:
+                title = t_match.group(1).split('\n')[0].strip()
+            if d_match:
+                desc = d_match.group(1).split('\n')[0].strip()
+            if i_match:
+                ingredients = i_match.group(1).strip()
+            if s_match:
+                steps = s_match.group(1).strip()
+            if cap_match:
+                caption = cap_match.group(1).strip()
+                
+            title = title.strip('"\'“”‘’')
+            desc = desc.strip('"\'“”‘’')
+            
+            if not caption:
+                caption = f"แจกสูตร {title} ค่ะ!\n#สูตรอาหาร #ทำอาหาร #พริก10เม็ด"
+            
+            if title and ingredients and steps:
+                break
+        except Exception as e:
+            print(f"[{model}] recipe content generation failed: {e}")
+            
+    return title, desc, ingredients, steps, caption
+
+
+def generate_contrast_review_content(img_path, image_type, food_name, vibe, reddit_title=""):
+    with open(img_path, "rb") as f:
+        img_data = f.read()
+
+    prompt = (
+        f"You are an expert Thai social media copywriter for a food page named 'พริก 10 เม็ด' (Spicy Thai Food/Stall content). Write with a friendly female persona using female particles like 'ค่ะ' / 'คะ' and pronouns like 'หนู' / 'เรา'.\n"
+        f"Analyze the attached image and generate a highly engaging, SARCASTIC contrast review about this food/stall:\n"
+        f"- Food/Stall Name: {food_name}\n"
+        f"- Image Type: {image_type} (either 'dish' or 'stall')\n"
+        f"- Eating Vibe: {vibe}\n"
+        f"- Context: {reddit_title}\n\n"
+        "Focus on a common food-related PAIN-POINT or contrast (e.g., ordering 'slightly spicy' but getting a volcano, late-night hunger vs diet plans, eating delicious food now vs paying the price tomorrow on the toilet, long queues, expectations vs reality).\n"
+        "Requirements:\n"
+        "1. Output exactly 3 sections labeled with markers:\n"
+        "   ===HOOK1=== (Hook Line 1: Sarcastic/pain-point statement to be written on the image. Very short, 3-6 Thai words. Must feel like a casual first thought, NO emojis)\n"
+        "   ===HOOK2=== (Hook Line 2: Sarcastic follow-up, very short, 3-5 Thai words, NO emojis)\n"
+        "   ===CAPTION=== (Facebook Caption: a funny, sarcastic story structured as 6-8 bullet points. Start each bullet with a ▪️ emoji. End with 3 relevant hashtags)\n\n"
+        "2. Strict Constraints for Natural Thai Style and Spelling:\n"
+        "   - WRITE IN NATURAL, CASUAL THAI STREET/FACEBOOK STYLE.\n"
+        "   - STRICT NEGATIVE CONSTRAINT: Absolutely NO mention of foreigners, tourists, westerners, or foreigners reacting to Thai food. Focus 100% on local Thai foodie humor and everyday struggles.\n"
+        f"Realism Guidelines:\n{REALISM_FILTER}\n"
+        "Format of Response:\n"
+        "===HOOK1=== [Hook Line 1]\n"
+        "===HOOK2=== [Hook Line 2]\n"
+        "===CAPTION=== [Facebook Caption]"
+    )
+    line1 = "สั่งเผ็ดน้อย"
+    line2 = "แต่แดงทั้งครก"
+    caption = "▪️ สั่งแม่ค้าเผ็ดน้อยทีไรได้พริก 10 เม็ดทุกทีค่ะ\n▪️ ปากเจ่อเหงื่อไหลแต่เราเป็นนักสู้ไม่มียอมแพ้\n▪️ จิ้มข้าวเหนียวซดน้ำส้มตำสู้ตายกันต่อไปค่ะ\n▪️ พรุ่งนี้ตื่นเช้ามาเข้าห้องน้ำน้ำตาไหลแน่นอน\n#ส้มตำ #สั่งเผ็ดน้อย #พริก10เม็ด"
+
+    for model in TEXT_MODELS:
+        try:
+            resp = client.models.generate_content(
+                model=model,
+                contents=[
+                    types.Part.from_bytes(data=img_data, mime_type="image/jpeg"),
+                    types.Part.from_text(text=prompt),
+                ],
+            )
+            result = resp.text.strip()
+            print(f"Contrast Review Generation [{model}]:\n{result[:300]}...\n")
             
             h1_match = re.search(r'===HOOK1===\s*(.*)', result, re.IGNORECASE)
             h2_match = re.search(r'===HOOK2===\s*(.*)', result, re.IGNORECASE)
@@ -368,7 +447,6 @@ def generate_debate_content():
             if cap_match:
                 caption = cap_match.group(1).strip()
             
-            # Clean label prefixes if any
             label_pattern = r'^(ข้อความในโพสต์\s*Facebook|Facebook\s*Caption|Facebook\s*caption|Caption|caption|ข้อความบนรูป|ข้อความในรูป|ข้อความ|คำบรรยาย|คำอธิบาย|บรรทัดที่\s*\d+|บรรทัด\s*\d+|ประโยคที่\s*\d+|ประโยค\s*\d+|Hook\s*text|Hook|Line\s*\d+|[L|l]ine\s*\d+|\d+)\s*[:\-\.\s]\s*'
             line1 = re.sub(label_pattern, '', line1, flags=re.IGNORECASE).strip()
             line2 = re.sub(label_pattern, '', line2, flags=re.IGNORECASE).strip()
@@ -376,42 +454,149 @@ def generate_debate_content():
             line2 = line2.strip('"\'“”‘’')
             
             if caption:
-                return line1, line2, caption
+                break
         except Exception as e:
-            print(f"[{model}] debate content generation failed: {e}")
+            print(f"[{model}] contrast review content generation failed: {e}")
             
-    return "กะเพราแท้", "ต้องไม่มีถั่วฝักยาว?", "คุณคิดยังไงกันบ้างคะ?\n#กะเพรา #อาหารไทย #ดราม่าอาหาร"
+    return line1, line2, caption
 
 
-# ── Main ──────────────────────────────────────────────────────────────
+def generate_debate_topic_and_queries():
+    prompt = (
+        "You are an expert Thai social media copywriter for 'พริก 10 เม็ด' (Spicy Thai Food page). Write with a friendly female persona using female particles like 'ค่ะ' / 'คะ' and pronouns like 'หนู' / 'เรา'.\n"
+        "Select a fun, engaging, and controversial Thai food debate topic (e.g. กะเพราใส่ถั่วฝักยาว vs กะเพราแท้, ส้มตำปลาร้า vs ส้มตำไทย, ชาไทยสีส้ม vs ชาเขียว, บะหมี่แห้งเส้นเล็ก vs บะหมี่แห้งเส้นบะหมี่, ก๋วยเตี๋ยวเรือน้ำตก vs ก๋วยเตี๋ยวต้มยำ).\n"
+        "Requirements:\n"
+        "1. Output exactly 7 fields labeled with markers:\n"
+        "   ===LEFT_LABEL=== (Label for left option, 1-3 Thai words, e.g., 'ใส่ถั่วฝักยาว')\n"
+        "   ===RIGHT_LABEL=== (Label for right option, 1-3 Thai words, e.g., 'กะเพราแท้')\n"
+        "   ===LEFT_QUERY=== (English search query for Pexels to find left image, 1-3 English words, e.g., 'stir fried basil long beans' or 'thai basil chicken')\n"
+        "   ===RIGHT_QUERY=== (English search query for Pexels to find right image, 1-3 English words, e.g., 'pad kra pao' or 'spicy chicken basil')\n"
+        "   ===HOOK1=== (Hook Line 1: Main statement, very short, 4-6 Thai words. NO emojis)\n"
+        "   ===HOOK2=== (Hook Line 2: Question or sub-hook, very short, 3-5 Thai words. NO emojis)\n"
+        "   ===CAPTION=== (A funny, engaging Facebook caption initiating the debate, structured as 6-8 bullet points starting with ▪️ and ending with 3 hashtags)\n\n"
+        "Ensure all labels and hooks are in THAI. English queries should be standard, generic food terms that Pexels has images for (e.g. 'papaya salad', 'pad thai', 'green curry', 'spring rolls', 'fried rice', 'thai milk tea').\n"
+        "STRICT NEGATIVE CONSTRAINT: Absolutely NO mention of foreigners, tourists, westerners, or foreigners reacting to Thai food. Focus 100% on local Thai foodie humor and everyday debates."
+    )
+    left_label = "ส้มตำปลาร้า"
+    right_label = "ส้มตำไทย"
+    left_query = "thai papaya salad"
+    right_query = "papaya salad"
+    line1 = "ตำไทย หรือ ตำปลาร้า"
+    line2 = "อะไรคือนิพพาน?"
+    caption = "▪️ ข้อถกเถียงระดับชาติวันนี้เลยค่ะทุกคน\n▪️ ส้มตำปลาร้านัวสะใจกลิ่นหอมชวนน้ำลายสอ\n▪️ หรือว่าส้มตำไทยหวานเปรี้ยวเคี้ยวมะม่วงหิมพานต์\n▪️ แต่ละทีมคือน่าอร่อยกันไปคนละแบบนะคะ\n▪️ เมนต์บอกหนูหน่อยว่าทุกคนอยู่ทีมไหน\n#ส้มตำ #ตำปลาร้า #ตำไทย"
+
+    for model in TEXT_MODELS:
+        try:
+            resp = client.models.generate_content(model=model, contents=prompt)
+            result = resp.text.strip()
+            print(f"Debate Topic & Queries Generation [{model}]:\n{result[:400]}...\n")
+            
+            ll_match = re.search(r'===LEFT_LABEL===\s*(.*)', result, re.IGNORECASE)
+            rl_match = re.search(r'===RIGHT_LABEL===\s*(.*)', result, re.IGNORECASE)
+            lq_match = re.search(r'===LEFT_QUERY===\s*(.*)', result, re.IGNORECASE)
+            rq_match = re.search(r'===RIGHT_QUERY===\s*(.*)', result, re.IGNORECASE)
+            h1_match = re.search(r'===HOOK1===\s*(.*)', result, re.IGNORECASE)
+            h2_match = re.search(r'===HOOK2===\s*(.*)', result, re.IGNORECASE)
+            cap_match = re.search(r'===CAPTION===\s*(.*)', result, re.DOTALL | re.IGNORECASE)
+            
+            if ll_match: left_label = ll_match.group(1).split('\n')[0].strip()
+            if rl_match: right_label = rl_match.group(1).split('\n')[0].strip()
+            if lq_match: left_query = lq_match.group(1).split('\n')[0].strip()
+            if rq_match: right_query = rq_match.group(1).split('\n')[0].strip()
+            if h1_match: line1 = h1_match.group(1).split('\n')[0].strip()
+            if h2_match: line2 = h2_match.group(1).split('\n')[0].strip()
+            if cap_match: caption = cap_match.group(1).strip()
+            
+            label_pattern = r'^(ข้อความในโพสต์\s*Facebook|Facebook\s*Caption|Facebook\s*caption|Caption|caption|ข้อความบนรูป|ข้อความในรูป|ข้อความ|คำบรรยาย|คำอธิบาย|บรรทัดที่\s*\d+|บรรทัด\s*\d+|ประโยคที่\s*\d+|ประโยค\s*\d+|Hook\s*text|Hook|Line\s*\d+|[L|l]ine\s*\d+|\d+)\s*[:\-\.\s]\s*'
+            left_label = re.sub(label_pattern, '', left_label, flags=re.IGNORECASE).strip()
+            right_label = re.sub(label_pattern, '', right_label, flags=re.IGNORECASE).strip()
+            left_query = left_query.strip('"\'“”‘’')
+            right_query = right_query.strip('"\'“”‘’')
+            line1 = re.sub(label_pattern, '', line1, flags=re.IGNORECASE).strip()
+            line2 = re.sub(label_pattern, '', line2, flags=re.IGNORECASE).strip()
+            line1 = line1.strip('"\'“”‘’')
+            line2 = line2.strip('"\'“”‘’')
+            
+            if caption:
+                break
+        except Exception as e:
+            print(f"[{model}] debate topic & queries generation failed: {e}")
+            
+    return left_label, right_label, left_query, right_query, line1, line2, caption
+
+
+def search_pexels_single_image(query, history_urls):
+    if not PEXELS_API_KEY:
+        print("PEXELS_API_KEY not set")
+        return None
+
+    for page in [1, 2, 3]:
+        try:
+            resp = requests.get(
+                "https://api.pexels.com/v1/search",
+                headers={"Authorization": PEXELS_API_KEY},
+                params={"query": query, "per_page": 10, "page": page},
+                timeout=10,
+            )
+            resp.raise_for_status()
+            photos = resp.json().get("photos", [])
+            if not photos:
+                continue
+            
+            new_photos = [p for p in photos if (p["src"].get("large2x") or p["src"]["large"]) not in history_urls]
+            if not new_photos:
+                new_photos = photos
+                
+            photo = random.choice(new_photos)
+            img_url = photo["src"].get("large2x") or photo["src"]["large"]
+            return img_url
+        except Exception as e:
+            print(f"Pexels search error for '{query}': {e}")
+    return None
+
+
 def main():
+    import sys
+    dry_run = "--dry-run" in sys.argv
+    forced_mode = None
+    for arg in sys.argv:
+        if arg.startswith("--mode="):
+            forced_mode = arg.split("=")[1]
+
     print("=== พริก 10 เม็ด Bot ===")
 
-    content_type = random.choice(CONTENT_TYPES)
-    print(f"Selected Category: {content_type}")
+    if forced_mode in ["recipe", "contrast_review", "debate"]:
+        mode = forced_mode
+    else:
+        mode = random.choices(["recipe", "contrast_review", "debate"], weights=[35, 35, 30])[0]
+    print(f"Selected Mode: {mode} (Forced: {forced_mode})")
 
-    if content_type == "ข้อพิพาทอาหาร":
-        # 1. Generate text-only debate content
-        line1, line2, caption = generate_debate_content()
-        print(f"Debate Hooks: {line1} | {line2}")
+    os.makedirs("output", exist_ok=True)
+    img_path = None
+    caption = ""
 
-        # Create temporary file path
+    if mode == "recipe":
+        print("Generating Recipe Content...")
+        title, desc, ingredients, steps, caption = generate_recipe_content()
+        print(f"Recipe Title: {title}")
+        print(f"Description: {desc}")
+        
         import tempfile
         tmp = tempfile.NamedTemporaryFile(suffix=".jpg", delete=False)
         img_path = tmp.name
         tmp.close()
-
-        # 2. Render Gradient Card
+        
         try:
-            from overlay_utils import create_acid_debate_card
-            img_path = create_acid_debate_card(line1, line2, img_path)
-            print(f"Gradient Card generated: {img_path}")
+            from overlay_utils import create_recipe_card
+            img_path = create_recipe_card(title, desc, ingredients, steps, img_path)
+            print(f"Recipe Card generated: {img_path}")
         except Exception as e:
-            print(f"Gradient Card generation failed: {e}")
+            print(f"Recipe Card generation failed: {e}")
+            if os.path.exists(img_path):
+                os.unlink(img_path)
             return
 
-    else:
-        # Original Pexels flow
+    elif mode == "contrast_review":
         history_urls = load_history()
         post = None
         for attempt in range(5):
@@ -419,6 +604,14 @@ def main():
             if post:
                 break
             print(f"Retry {attempt + 1}/5...")
+
+        if not post and dry_run:
+            print("[Dry-Run] Pexels failed or key missing. Using mock image post.")
+            post = {
+                "url": "https://images.pexels.com/photos/2067423/pexels-photo-2067423.jpeg",
+                "title": "ส้มตำถาดรสแซ่บเผ็ดจัดจ้านสะใจคนกิน",
+                "subreddit": "thai food"
+            }
 
         if not post:
             print("No suitable post found after 5 attempts")
@@ -430,39 +623,106 @@ def main():
             return
 
         reddit_title = post["title"]
-
-        # Vision วิเคราะห์รูป → food_name + local eating vibe + appeal level
         image_type, food_name, vibe, genre = analyze_image(img_path, reddit_title=reddit_title)
         if not food_name or "ไม่ใช่อาหาร" in food_name or "ไม่ตรงคอนเทน" in food_name:
-            print("Not a food image, using Reddit title as fallback")
             food_name = reddit_title
             image_type = "dish"
-            vibe      = "น้ำลายสอตั้งแต่เห็นพริกแดง"
-            genre     = "วิถีสตรีทฟู้ด"
+            vibe = "น้ำลายสอตั้งแต่เห็นพริกแดง"
+            genre = "วิถีสตรีทฟู้ด"
 
-        print(f"Food: {food_name} | Type: {image_type} | Vibe: {vibe} | Appeal: {genre}")
-        line1, line2, caption = generate_post_content(img_path, image_type, food_name, vibe, genre, content_type, reddit_title=reddit_title)
-        print(f"Hook: {line1} | {line2}")
+        print(f"Food: {food_name} | Type: {image_type} | Vibe: {vibe}")
+        line1, line2, caption = generate_contrast_review_content(img_path, image_type, food_name, vibe, reddit_title=reddit_title)
+        print(f"Contrast Hook: {line1} | {line2}")
 
-        # PIL overlay
         try:
             from overlay_utils import add_overlay
             overlaid = add_overlay(img_path, line1, line2, ACCENT_COLOR)
             os.unlink(img_path)
             img_path = overlaid
+            print(f"Contrast Review Overlay generated: {img_path}")
         except Exception as e:
-            print(f"Overlay failed (using original): {e}")
+            print(f"Overlay failed: {e}")
 
         caption += f"\n📷 via Pexels"
 
-    print(f"Caption:\n{caption}\n")
+    elif mode == "debate":
+        print("Generating Debate Content...")
+        left_label, right_label, left_query, right_query, line1, line2, caption = generate_debate_topic_and_queries()
+        print(f"Debate Topic: {line1} | {line2}")
+        print(f"Options: {left_label} ({left_query}) vs {right_label} ({right_query})")
 
-    success = post_photo(caption, img_path)
-    if success:
-        if content_type != "ข้อพิพาทอาหาร" and 'post' in locals() and post:
-            save_to_history(post["url"])
+        history_urls = load_history()
+        
+        left_img_url = search_pexels_single_image(left_query, history_urls)
+        if not left_img_url and dry_run:
+            print("[Dry-Run] Left image search failed or key missing. Using mock image.")
+            left_img_url = "https://images.pexels.com/photos/5638527/pexels-photo-5638527.jpeg"
+        left_img_path = None
+        if left_img_url:
+            left_img_path = download_image(left_img_url)
+            
+        right_img_url = search_pexels_single_image(right_query, history_urls)
+        if not right_img_url and dry_run:
+            print("[Dry-Run] Right image search failed or key missing. Using mock image.")
+            right_img_url = "https://images.pexels.com/photos/2067423/pexels-photo-2067423.jpeg"
+        right_img_path = None
+        if right_img_url:
+            right_img_path = download_image(right_img_url)
+
+        import tempfile
+        tmp = tempfile.NamedTemporaryFile(suffix=".jpg", delete=False)
+        img_path = tmp.name
+        tmp.close()
+
+        try:
+            from overlay_utils import create_split_debate_card
+            img_path = create_split_debate_card(left_img_path, right_img_path, left_label, right_label, img_path)
+            print(f"Split Debate Card generated: {img_path}")
+        except Exception as e:
+            print(f"Split Debate Card generation failed: {e}")
+            if os.path.exists(img_path):
+                os.unlink(img_path)
+            return
+        finally:
+            if left_img_path and os.path.exists(left_img_path):
+                os.unlink(left_img_path)
+            if right_img_path and os.path.exists(right_img_path):
+                os.unlink(right_img_path)
+
+        caption += f"\n📷 via Pexels"
+
+    print(f"Generated Caption:\n{caption}\n")
+
+    if dry_run:
+        dry_out_path = f"output/dryrun_{mode}.jpg"
+        import shutil
+        shutil.copy(img_path, dry_out_path)
+        print(f"[Dry-Run] Saved card image to: {dry_out_path}")
+        
+        print("[Dry-Run] Testing affiliate comment matching...")
+        try:
+            from affiliate_utils import get_all_comments
+            comments = get_all_comments(caption=caption, img_path=img_path)
+            print(f"[Dry-Run] Generated Affiliate Comments ({len(comments)} total):")
+            for idx, c in enumerate(comments, 1):
+                if isinstance(c, dict):
+                    print(f"  Comment {idx}: {c['message']} (Attachment: {c.get('picture_url')})")
+                else:
+                    print(f"  Comment {idx}: {c}")
+        except Exception as e:
+            print(f"[Dry-Run] Affiliate comment test failed: {e}")
+            
+        if os.path.exists(img_path):
+            os.unlink(img_path)
+        print("[Dry-Run] Completed successfully.")
     else:
-        print("FAILED")
+        success = post_photo(caption, img_path)
+        if success:
+            if mode == "contrast_review" and 'post' in locals() and post:
+                save_to_history(post["url"])
+            print("Successfully posted to Facebook!")
+        else:
+            print("Post to Facebook FAILED")
 
 
 if __name__ == "__main__":
