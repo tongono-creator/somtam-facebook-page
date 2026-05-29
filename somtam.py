@@ -154,6 +154,19 @@ THAI_FOOD_QUERIES = [
     "thai food close up appetizing",
 ]
 
+def extract_pexels_id(url):
+    if not url:
+        return None
+    # Matches /photos/12345/ or /photo/12345/
+    match = re.search(r'/photos?/(\d+)/', url)
+    if match:
+        return match.group(1)
+    # Matches pexels-photo-12345.jpeg
+    match = re.search(r'pexels-photo-(\d+)', url)
+    if match:
+        return match.group(1)
+    return url.split('?')[0]
+
 HISTORY_FILE = "posted_photos.txt"
 
 def load_history():
@@ -210,7 +223,10 @@ def get_pexels_food_image(history_urls):
         print("PEXELS_API_KEY not set")
         return None
 
-    for _ in range(5):
+    history_ids = {extract_pexels_id(url) for url in history_urls if extract_pexels_id(url)}
+    last_photos = []
+
+    for attempt in range(5):
         query = random.choice(THAI_FOOD_QUERIES)
         page  = random.randint(1, 15)
         try:
@@ -226,19 +242,34 @@ def get_pexels_food_image(history_urls):
                 print(f"[Pexels] no results for '{query}' page {page}")
                 continue
             
-            # Filter out photos that have already been posted
-            new_photos = [p for p in photos if (p["src"].get("large2x") or p["src"]["large"]) not in history_urls]
-            if not new_photos:
-                print(f"[Pexels] all photos on page {page} for query '{query}' already posted")
-                new_photos = photos  # fallback if all are already posted on this page
-                
-            photo   = random.choice(new_photos)
-            img_url = photo["src"].get("large2x") or photo["src"]["large"]
-            alt     = photo.get("alt", query)
-            print(f"[Pexels] query='{query}' | alt='{alt[:60]}'")
-            return {"url": img_url, "title": alt, "subreddit": query}
+            last_photos = photos
+            
+            # Filter out photos by Pexels ID robustly
+            new_photos = []
+            for p in photos:
+                url = p["src"].get("large2x") or p["src"]["large"]
+                pid = extract_pexels_id(url)
+                if pid not in history_ids:
+                    new_photos.append(p)
+            
+            if new_photos:
+                photo   = random.choice(new_photos)
+                img_url = photo["src"].get("large2x") or photo["src"]["large"]
+                alt     = photo.get("alt", query)
+                print(f"[Pexels] query='{query}' | alt='{alt[:60]}'")
+                return {"url": img_url, "title": alt, "subreddit": query}
+            else:
+                print(f"[Pexels] all photos on page {page} for query '{query}' already posted. Retrying...")
         except Exception as e:
             print(f"Pexels error: {e}")
+
+    # Last resort fallback: choose from the last query's results
+    if last_photos:
+        print("[Pexels] Absolute last resort fallback to already posted photo")
+        photo = random.choice(last_photos)
+        img_url = photo["src"].get("large2x") or photo["src"]["large"]
+        alt = photo.get("alt", "thai food")
+        return {"url": img_url, "title": alt, "subreddit": "thai food"}
     return None
 
 
@@ -715,6 +746,10 @@ def search_pexels_single_image(query, history_urls, block_urls=None):
     if block_urls is None:
         block_urls = set()
 
+    history_ids = {extract_pexels_id(url) for url in history_urls if extract_pexels_id(url)}
+    block_ids = {extract_pexels_id(url) for url in block_urls if extract_pexels_id(url)}
+    last_photos = []
+
     for page in [1, 2, 3]:
         try:
             resp = requests.get(
@@ -728,21 +763,33 @@ def search_pexels_single_image(query, history_urls, block_urls=None):
             if not photos:
                 continue
             
+            last_photos = photos
+            
             new_photos = []
             for p in photos:
                 url = p["src"].get("large2x") or p["src"]["large"]
-                if url not in history_urls and url not in block_urls:
+                pid = extract_pexels_id(url)
+                if pid not in history_ids and pid not in block_ids:
                     new_photos.append(p)
-            if not new_photos:
-                new_photos = [p for p in photos if (p["src"].get("large2x") or p["src"]["large"]) not in block_urls]
-                if not new_photos:
-                    new_photos = photos
-                
-            photo = random.choice(new_photos)
-            img_url = photo["src"].get("large2x") or photo["src"]["large"]
-            return img_url
+            
+            if new_photos:
+                photo = random.choice(new_photos)
+                img_url = photo["src"].get("large2x") or photo["src"]["large"]
+                return img_url
+            else:
+                print(f"[Pexels] all photos on page {page} for query '{query}' already posted or blocked. Retrying next page...")
         except Exception as e:
             print(f"Pexels search error for '{query}': {e}")
+
+    # Last resort fallback
+    if last_photos:
+        non_blocked = [p for p in last_photos if extract_pexels_id(p["src"].get("large2x") or p["src"]["large"]) not in block_ids]
+        if non_blocked:
+            photo = random.choice(non_blocked)
+        else:
+            photo = random.choice(last_photos)
+        img_url = photo["src"].get("large2x") or photo["src"]["large"]
+        return img_url
     return None
 
 
