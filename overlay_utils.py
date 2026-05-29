@@ -460,8 +460,8 @@ def create_split_debate_card(left_img_path, right_img_path, left_label, right_la
     draw.ellipse([vs_cx - vs_r, vs_cy - vs_r, vs_cx + vs_r, vs_cy + vs_r], fill=(255, 107, 53))
     draw.ellipse([vs_cx - vs_r + 4, vs_cy - vs_r + 4, vs_cx + vs_r - 4, vs_cy + vs_r - 4], outline=(255, 255, 255), width=2)
     
-    vs_font = ImageFont.truetype(FONT_PATH, 48)
-    vs_text = "VS"
+    vs_font = ImageFont.truetype(FONT_PATH, 38)
+    vs_text = "ปะทะ"
     vs_bbox = draw.textbbox((0, 0), vs_text, font=vs_font)
     vs_tw = vs_bbox[2] - vs_bbox[0]
     vs_th = vs_bbox[3] - vs_bbox[1]

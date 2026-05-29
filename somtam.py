@@ -41,9 +41,9 @@ def segment_thai_text(text, client=client):
     for model in TEXT_MODELS:
         try:
             resp = client.models.generate_content(model=model, contents=prompt)
-            segmented = resp.text.strip()
-            clean_orig = text.replace('\\u200b', '')
-            clean_seg = segmented.replace('\\u200b', '')
+            segmented = resp.text.strip().replace('\\u200b', '\u200b')
+            clean_orig = text.replace('\u200b', '').replace('\\u200b', '')
+            clean_seg = segmented.replace('\u200b', '').replace('\\u200b', '')
             if len(clean_orig) == len(clean_seg):
                 return segmented
         except Exception as e:
@@ -837,7 +837,7 @@ def main():
         except Exception as e:
             print(f"Overlay failed: {e}")
 
-        caption += f"\n📷 via Pexels"
+        caption += f"\n📷 ภาพจาก Pexels"
 
     elif mode == "debate":
         print("Generating Debate Content...")
@@ -888,7 +888,7 @@ def main():
             if right_img_path and os.path.exists(right_img_path):
                 os.unlink(right_img_path)
 
-        caption += f"\n📷 via Pexels"
+        caption += f"\n📷 ภาพจาก Pexels"
 
     print(f"Generated Caption:\n{caption}\n")
 
