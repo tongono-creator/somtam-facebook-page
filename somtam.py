@@ -25,6 +25,31 @@ def contains_thai(text):
         return False
     return bool(re.search(r'[\u0e00-\u0e7f]', text))
 
+def segment_thai_text(text, client=client):
+    if not text or not contains_thai(text):
+        return text
+    prompt = (
+        "You are an expert Thai word segmentation tool. "
+        "Your task is to insert a zero-width space character (\\u200b) at every natural word boundary in the provided Thai text. "
+        "Strict rules:\n"
+        "1. Do NOT modify, delete, or add any words, characters, punctuation, spaces, or newlines of the original text. "
+        "Keep the exact same characters and layout.\n"
+        "2. Do NOT add any introductory or concluding remarks. Output ONLY the segmented text.\n"
+        "3. Ensure words like 'หวยออก', 'เงินเก็บ', 'แสนแรก', 'ทำงาน' are segmented at their natural boundaries (e.g., 'หวย\\u200bออก' or left as 'หวยออก', but never break syllables awkwardly).\n\n"
+        f"Text to segment:\n{text}"
+    )
+    for model in TEXT_MODELS:
+        try:
+            resp = client.models.generate_content(model=model, contents=prompt)
+            segmented = resp.text.strip()
+            clean_orig = text.replace('\\u200b', '')
+            clean_seg = segmented.replace('\\u200b', '')
+            if len(clean_orig) == len(clean_seg):
+                return segmented
+        except Exception as e:
+            print(f"[{model}] segment_thai_text failed: {e}")
+    return text
+
 def translate_to_thai(text):
     if not text:
         return ""
@@ -683,10 +708,12 @@ def generate_debate_topic_and_queries(history_debates):
     return fb["left_label"], fb["right_label"], l_q, r_q, fb["line1"], fb["line2"], fb["caption"]
 
 
-def search_pexels_single_image(query, history_urls):
+def search_pexels_single_image(query, history_urls, block_urls=None):
     if not PEXELS_API_KEY:
         print("PEXELS_API_KEY not set")
         return None
+    if block_urls is None:
+        block_urls = set()
 
     for page in [1, 2, 3]:
         try:
@@ -701,9 +728,15 @@ def search_pexels_single_image(query, history_urls):
             if not photos:
                 continue
             
-            new_photos = [p for p in photos if (p["src"].get("large2x") or p["src"]["large"]) not in history_urls]
+            new_photos = []
+            for p in photos:
+                url = p["src"].get("large2x") or p["src"]["large"]
+                if url not in history_urls and url not in block_urls:
+                    new_photos.append(p)
             if not new_photos:
-                new_photos = photos
+                new_photos = [p for p in photos if (p["src"].get("large2x") or p["src"]["large"]) not in block_urls]
+                if not new_photos:
+                    new_photos = photos
                 
             photo = random.choice(new_photos)
             img_url = photo["src"].get("large2x") or photo["src"]["large"]
@@ -791,6 +824,8 @@ def main():
 
         print(f"Food: {food_name} | Type: {image_type} | Vibe: {vibe}")
         line1, line2, caption = generate_contrast_review_content(img_path, image_type, food_name, vibe, reddit_title=reddit_title)
+        line1 = segment_thai_text(line1, client)
+        line2 = segment_thai_text(line2, client)
         print(f"Contrast Hook: {line1} | {line2}")
 
         try:
@@ -808,6 +843,10 @@ def main():
         print("Generating Debate Content...")
         history_recipes = load_recipe_history()
         left_label, right_label, left_query, right_query, line1, line2, caption = generate_debate_topic_and_queries(history_recipes)
+        left_label = segment_thai_text(left_label, client)
+        right_label = segment_thai_text(right_label, client)
+        line1 = segment_thai_text(line1, client)
+        line2 = segment_thai_text(line2, client)
         print(f"Debate Topic: {line1} | {line2}")
         print(f"Options: {left_label} ({left_query}) vs {right_label} ({right_query})")
 
@@ -821,7 +860,7 @@ def main():
         if left_img_url:
             left_img_path = download_image(left_img_url)
             
-        right_img_url = search_pexels_single_image(right_query, history_urls)
+        right_img_url = search_pexels_single_image(right_query, history_urls, block_urls={left_img_url})
         if not right_img_url and dry_run:
             print("[Dry-Run] Right image search failed or key missing. Using mock image.")
             right_img_url = "https://images.pexels.com/photos/2067423/pexels-photo-2067423.jpeg"
