@@ -397,20 +397,26 @@ def analyze_image(img_path, reddit_title=""):
     with open(img_path, "rb") as f:
         img_data = f.read()
     
-    # Translate reddit_title to Thai first before using in vision prompt!
-    reddit_title_thai = translate_to_thai(reddit_title)
-    title_ctx = f'ชื่อโพสต์ต้นฉบับ: "{reddit_title_thai}"\n' if reddit_title_thai else ""
+    # Pass alt text as hint only — do NOT translate, keep English to reduce bias
+    title_ctx = (
+        f'[Pexels alt text — auto-generated, may NOT match actual dish]: "{reddit_title}"\n'
+        if reddit_title else ""
+    )
     prompt = (
         f"{title_ctx}"
-        "Analyze this image carefully. Read the context title (ชื่อโพสต์ต้นฉบับ) first, but prioritize what is ACTUALLY visible in the image.\n"
-        "Compare the context title with the image: If the title is about 'papaya salad/ส้มตำ' but the image actually depicts another dish like curry (แกงเขียวหวาน), grilled pork, or a general food market stall (ร้านข้าวแกงถาด), you MUST specify the actual food/stall name visible in the image. Do not make assumptions or default to 'ส้มตำ' unless it is actually there.\n\n"
+        "CRITICAL: The Pexels alt text above is auto-generated SEO text and frequently describes the wrong dish or uses generic ingredient names. "
+        "Your food identification MUST come from visual analysis of the image ONLY. IGNORE the alt text if it conflicts with what you actually see.\n\n"
+        "Look at the actual dish: identify the COOKING METHOD (ยำ, ต้ม, ผัด, แกง, ทอด, ลาบ, etc.) AND the main ingredient together. "
+        "Do NOT name just an ingredient — name the complete dish.\n\n"
         "Provide 4 fields separated by a vertical bar '|':\n"
-        "1. Image Type: Choose either 'dish' (if it's a close-up of a food dish), 'stall' (if it's a street food stall, market vendor, or shop front), or 'other'.\n"
-        "2. Food Name: The actual Thai name of the food or the type of food stall visible in the picture (1-4 Thai words, e.g., 'ร้านข้าวแกงถาด', 'ก๋วยเตี๋ยวเรือ', 'ส้มตำ', 'แกงเขียวหวาน'). If it is not related to Thai/Asian food, output 'ไม่ตรงคอนเทน'.\n"
-        "3. Local Vibe Description: A short realistic description in Thai (5-8 words) of the local eating/food vibe based strictly on visual details (e.g., 'ตักแกงถาดเรียงรายในตลาด', 'แม่ค้ากำลังตักน้ำแกงร้อนๆ').\n"
-        "4. Appeal Level: Choose from these types: ['สายแซ่บสู้ชีวิต', 'วิถีสตรีทฟู้ด', 'รีวิวแซ่บจิกกัด', 'ความหิวยามดึก', 'ข้อพิพาทอาหาร'].\n\n"
-        "Format: Image Type | Food Name | Local Vibe Description | Appeal Level\n"
-        "Example: dish | ส้มตำ | เหงื่อซิกปากเจ่อแต่สู้ตายจิ้มข้าวเหนียวต่อ | สายแซ่บสู้ชีวิต\n"
+        "1. Image Type: Choose either 'dish' (close-up food dish), 'stall' (street food stall/market vendor), or 'other'.\n"
+        "2. Food Name: Full Thai dish name including cooking method (2-5 Thai words). "
+        "Examples: 'ยำมะพร้าวอ่อน' (NOT just 'มะพร้าว'), 'ต้มยำกุ้ง' (NOT just 'กุ้ง'), 'ผัดกะเพราหมู', 'ส้มตำปูปลาร้า', 'ร้านข้าวแกงถาด'. "
+        "If not Thai/Asian food output 'ไม่ตรงคอนเทน'.\n"
+        "3. Local Vibe: Short Thai description 5-8 words based strictly on visual details.\n"
+        "4. Appeal Level: One of ['สายแซ่บสู้ชีวิต', 'วิถีสตรีทฟู้ด', 'รีวิวแซ่บจิกกัด', 'ความหิวยามดึก', 'ข้อพิพาทอาหาร'].\n\n"
+        "Format: Image Type | Food Name | Local Vibe | Appeal Level\n"
+        "Example: dish | ยำมะพร้าวอ่อนทะเล | น้ำยำเปรี้ยวแซ่บหอมมะนาวสดๆ | สายแซ่บสู้ชีวิต\n"
         "Example: stall | ร้านข้าวแกงถาด | กับข้าวเรียงรายในถาดละลานตาในตลาดสด | วิถีสตรีทฟู้ด"
     )
     for model in TEXT_MODELS:
