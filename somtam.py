@@ -16,7 +16,8 @@ PAGE_ACCESS_TOKEN = os.environ.get("SOMTAM_PAGE_ACCESS_TOKEN", "")
 GEMINI_API_KEY    = os.environ.get("GEMINI_API_KEY", "") or "DUMMY_KEY"
 PEXELS_API_KEY    = os.environ.get("PEXELS_API_KEY", "")
 
-client       = genai.Client(api_key=GEMINI_API_KEY, http_options={'timeout': 90.0})
+API_ENABLED = True
+client       = genai.Client(api_key=GEMINI_API_KEY, http_options={'timeout': 15000.0})
 TEXT_MODELS  = ["gemini-2.5-flash", "gemini-3.5-flash"]
 ACCENT_COLOR = (255, 107, 53)  # ส้ม #FF6B35
 
@@ -25,9 +26,107 @@ def contains_thai(text):
         return False
     return bool(re.search(r'[\u0e00-\u0e7f]', text))
 
+_LEADING_VOWELS  = set('เแโใไ')
+_COMBINING_CHARS = set('่้๊๋์ิีึืุูัํ็')
+
+THAI_WORDS = [
+    "รายละเอียด", "โปรโมชั่น", "เครื่องมือ", "คอมพิวเตอร์", "แอปพลิเคชัน", "เก็บเงินปลายทาง",
+    "โทรศัพท์", "แบตเตอรี่", "บัตรเครดิต", "พร้อมส่ง", "จัดส่ง", "ต่างประเทศ",
+    "พรีออเดอร์", "ประหยัด", "ปลอดภัย", "คุ้มค่า", "สะดวกสบาย", "ธรรมชาติ",
+    "คุณภาพ", "ภาพถ่าย", "พลาสติก", "ของแท้", "รับประกัน", "ลิขสิทธิ์",
+    "แนะนำ", "สินค้า", "รีวิว", "สุดยอด", "ดีที่สุด", "สะดวก", "สบาย", "ง่ายดาย",
+    "รวดเร็ว", "โปรโมชั่", "ส่วนลด", "คูปอง", "จัดส่ง", "ประกัน",
+    "ชาร์จ", "หน้าจอ", "ลำโพง", "หูฟัง", "กล้อง", "เลนส์", "มือถือ", "ปุ่มกด",
+    "สำหรับ", "เกี่ยวกับ", "อย่างไร", "เมื่อไหร่", "ที่ไหน", "เท่าไหร่",
+    "ทุกคน", "ทุกวัน", "ทุกคืน", "สุดท้าย", "แรกเริ่ม", "จริงจัง",
+    "สวัสดี", "ขอบคุณ", "ขอโทษ", "ยินดี", "หัวเราะ", "ร้องไห้",
+    "ทำงาน", "พักผ่อน", "ออกกำลัง", "ท่องเที่ยว", "เดินทาง",
+    "เก้าอี้", "โต๊ะทำงาน", "เบาะรอง", "พิงหลัง", "สายรัด", "การ์ตูน",
+    "กระเป๋า", "รองเท้า", "เสื้อผ้า", "กางเกง", "นาฬิกา", "แว่นตา", "เครื่อง", "ระบบ",
+    "ความสุข", "ร่างกาย", "สุขภาพ", "ออกกำลัง", "อาหาร", "ผลไม้", "น้ำดื่ม", "กาแฟ",
+    "ราคา", "พิเศษ", "ทั่วไป", "ส่งฟรี", "ลดราคา", "ของแถม", "ปลายทาง",
+    "ชั่วโมง", "นาที", "วินาที", "สัปดาห์", "ปีใหม่", "วันนี้", "พรุ่งนี้", "เมื่อวาน",
+    "ใครก็ตาม", "สิ่งใด", "ทั้งหมด", "บางส่วน", "ประเภท", "รูปแบบ",
+    "ติดตาม", "กดไลก์", "แชร์โพส", "คอมเมนต์", "คลิกลิงก์", "พิกัด", "ชี้เป้า",
+    "ค่ะ", "ครับ", "ผม", "เรา", "คุณ", "ท่าน",
+    "พี่", "น้อง", "พ่อ", "แม่", "เพื่อน", "บ้าน", "เมือง", "เวลา", "ดีใจ", "เสียใจ", 
+    "รัก", "ชอบ", "เกลียด", "กลัว", "โกรธ", "ทำ", "กิน", "นอน", "เดิน", "วิ่ง", "นั่ง", 
+    "ยืน", "พูด", "ฟัง", "ดู", "เห็น", "คิด", "รู้", "จำ", "ลืม", "เรียน", "เล่น", "ซื้อ", 
+    "ขาย", "ราคา", "ถูก", "แพง", "ลด", "แถม", "ส่ง", "ด่วน", "ฟรี", "รับ", "ศูนย์",
+    "แท้", "ใหม่", "เก่า", "แรก", "นี้", "นั้น", "โน้น", "นี่", "นั่น", "โน่น", "อะไร", 
+    "ใคร", "กี่", "บ้าง", "ทุก", "บาง", "จริง", "จัง", "แท้", "เทียม", "ปลอม", "สาย", 
+    "เคส", "ฟิล์ม", "ภาพ", "รูป", "เสียง", "เพลง", "หนัง", "เกม", "แอป", "เว็บ", "เน็ต", 
+    "โค้ด", "โอน", "หวย", "ออก", "เงิน", "เก็บ", "แสน", "แรก", "งาน", "การ", "ช่วย", 
+    "บอก", "ให้", "คน", "ทอง", "ร้อย", "พัน", "หมื่น", "ล้าน", "มาก", "น้อย", "ดี", 
+    "เลว", "ชั่ว", "สูง", "ต่ำ", "ดำ", "ขาว", "แดง", "เขียว", "เหลือง", "ฟ้า", "ส้ม", 
+    "ชมพู", "ม่วง", "เทา", "สวย", "หล่อ", "และ", "หรือ", "แต่", "ที่", "ซึ่ง", "อัน", 
+    "ของ", "เพื่อ", "ใน", "จาก", "โดย", "ตาม", "กับ", "มี", "เป็น", "จะ", "ต้อง", 
+    "อยาก", "นุ่ม", "แข็ง", "ใหญ่", "เล็ก", "ยาว", "สั้น", "กว้าง", "แคบ", "หนา", 
+    "บาง", "ร้อน", "เย็น", "อุ่น", "หนาว", "ง่าย", "ยาก", "เร็ว", "ช้า", "ได้", 
+    "เลย", "ด้วย", "จาก", "ถึง", "จน", "กว่า", "ก็", "ยัง", "อีก", "แล้ว", "นะ", 
+    "สิ", "ละ", "หน่อย", "นิด", "ชิ้น", "กล่อง", "อัน", "ตัว", "ใบ", "คู่", "ชุด", 
+    "แผ่น", "ม้วน"
+]
+
+def local_segment_thai(text):
+    if not text:
+        return ""
+    word_set = set(THAI_WORDS)
+    max_len = max(len(w) for w in THAI_WORDS)
+    
+    result = []
+    i = 0
+    n = len(text)
+    
+    while i < n:
+        if not contains_thai(text[i]):
+            result.append(text[i])
+            i += 1
+            continue
+            
+        matched = False
+        for l in range(min(max_len, n - i), 0, -1):
+            substr = text[i:i+l]
+            if substr in word_set:
+                result.append(substr)
+                i += l
+                matched = True
+                break
+        
+        if not matched:
+            start = i
+            while i < n and contains_thai(text[i]):
+                word_matched_here = False
+                if i > start:
+                    for l in range(min(max_len, n - i), 0, -1):
+                        if text[i:i+l] in word_set:
+                            word_matched_here = True
+                            break
+                if word_matched_here:
+                    break
+                i += 1
+            result.append(text[start:i])
+            
+    output = []
+    for idx, part in enumerate(result):
+        if idx > 0:
+            prev_char = result[idx-1][-1]
+            curr_char = part[0]
+            if (contains_thai(prev_char) and contains_thai(curr_char) and 
+                prev_char != '\u200b' and curr_char != '\u200b' and
+                curr_char not in _COMBINING_CHARS and
+                prev_char not in _LEADING_VOWELS):
+                output.append('\u200b')
+        output.append(part)
+        
+    return "".join(output)
+
 def segment_thai_text(text, client=client):
+    global API_ENABLED
     if not text or not contains_thai(text):
         return text
+    if not API_ENABLED:
+        return local_segment_thai(text)
     prompt = (
         "You are an expert Thai word segmentation tool. "
         "Your task is to insert a zero-width space character (\\u200b) at every natural word boundary in the provided Thai text. "
@@ -48,7 +147,10 @@ def segment_thai_text(text, client=client):
                 return segmented
         except Exception as e:
             print(f"[{model}] segment_thai_text failed: {e}")
-    return text
+            
+    print("[Warning] segment_thai_text failed on all models. Disabling API calls for this run.")
+    API_ENABLED = False
+    return local_segment_thai(text)
 
 def translate_to_thai(text):
     if not text:
@@ -107,27 +209,16 @@ FALLBACK_POSTS = {
             "caption": "▪️ วิถีคนหิวที่แท้จริงคือการยืนรอคิวหน้าร้านส้มตำค่ะ\n▪️ แดดจะร้อนลมจะแรงแค่ไหนก็ทำอะไรความอยากกินไม่ได้\n▪️ แย่งชิงเก้าอี้ดนตรีตอนเที่ยงวันเหมือนไปรบในสนามรบ\n▪️ พอได้กินคำแรกปลาร้านัวๆ เท่านั้นแหละ หายเหนื่อยทันทีค่ะ\n▪️ ใครยอมยืนต่อคิวเพื่อของอร่อยบ้างคะรายงานตัวด่วน\n#รีวิวสตรีทฟู้ด #ส้มตำคิวยาว #พริก10เม็ด"
         }
     ],
-    "debate": [
+    "trivia": [
         {
-            "left_label": "ส้มตำปลาร้า",
-            "right_label": "ส้มตำไทย",
-            "line1": "ตำไทย หรือ ตำปลาร้า",
-            "line2": "อะไรคือนิพพาน?",
-            "caption": "▪️ ศึกวันดวลเดือดแห่งวงการส้มตำไทยเลยค่ะทุกคน\n▪️ ฝั่งส้มตำปลาร้านัวสะใจ กลิ่นหอมฟุ้งแซ่บถึงทรวง\n▪️ หรือฝั่งส้มตำไทยเปรี้ยวหวานเคี้ยวมันถั่วลิสงคั่วเกลือ\n▪️ แต่ละทีมคือน่าอร่อยกินกันไม่ลงจริงๆ นะคะสาวๆ\n▪️ เมนต์บอกหนูหน่อยว่ามื้อเที่ยงนี้ทุกคนอยู่ทีมไหนกันคะ\n#ตำไทย #ตำปลาร้า #ศึกส้มตำ"
+            "line1": "กำเนิดส้มตำไทย",
+            "line2": "มะละกอมาจากไหน?",
+            "caption": "▪️ รู้ไหมคะว่าส้มตำที่เรากินกันแซ่บๆ ทุกวันนี้ มะละกอไม่ได้มีต้นกำเนิดในไทยนะ!\n▪️ จริงๆ มะละกอเป็นพืชพื้นเมืองของอเมริกากลางค่ะ นำเข้ามาโดยพ่อค้าชาวโปรตุเกสตั้งแต่สมัยอยุธยาตอนปลาย\n▪️ คนไทยเราสมัยก่อนเอามาต้มแกงกิน จนกระทั่งเริ่มมีคนลองเอามาโขลกใส่น้ำปลา พริก และมะนาวจนกลายเป็นส้มตำแซ่บๆ\n▪️ กลายมาเป็นเมนูระดับชาติต้องมีติดไว้ทุกมื้อแซ่บแบบนี้แหละค่ะ\n▪️ ใครเป็นมะละกอเลิฟเวอร์ยกมือขึ้นด่วนๆ เลยนะคะสาวๆ\n#ประวัติส้มตำ #มะละกอแซ่บ #พริก10เม็ด"
         },
         {
-            "left_label": "กะเพราแท้",
-            "right_label": "ใส่ถั่วฝักยาว",
-            "line1": "กะเพราแท้มีแค่ใบ",
-            "line2": "หรือมีผักร่วมด้วย?",
-            "caption": "▪️ ประเด็นร้อนถกเถียงกันมาทุกยุคทุกสมัยไม่เคยจบค่ะ\n▪️ กะเพราแท้ที่ผัดแห้งๆ มีแค่เนื้อสัตว์กับใบกะเพราฉุนๆ\n▪️ ปะทะ กะเพราใส่ถั่วฝักยาว หัวหอมใหญ่ หรือข้าวโพดอ่อนเพื่อเพิ่มปริมาณ\n▪️ สำหรับหนูคือขอแบบแห้งๆ พริกแห้งใบกะเพราป่าเท่านั้นค่ะ\n▪️ แล้วทุกคนล่ะคะ รับได้ไหมถ้ากะเพรามีถั่วฝักยาวปนมา\n#ผัดกะเพรา #กะเพราแท้ #ถกเถียงอาหาร"
-        },
-        {
-            "left_label": "ชาไทยสีส้ม",
-            "right_label": "ชาเขียวนม",
-            "line1": "ส้มหรือเขียว",
-            "line2": "แก้วไหนเยียวยาใจ?",
-            "caption": "▪️ บ่ายสามแล้วร่างกายต้องการคาเฟอีนและน้ำตาลด่วนๆ ค่ะ\n▪️ ระหว่างชาไทยสีส้มเข้มข้นกลิ่นหอมเอกลักษณ์ไทยแท้\n▪️ กับชาเขียวนมรสชาตินัวๆ หอมละมุนสไตล์มัทฉะยอดฮิต\n▪️ ตัดใจเลือกยากมากจนบางทีต้องสั่งมากินทั้งสองแก้วเลยค่ะ\n▪️ ชาไหนคือที่หนึ่งในใจของทุกคนคะวันนี้ เมนต์ด่วนค่ะ\n#ชาไทย #ชาเขียว #บ่ายนี้ดื่มอะไรดี"
+            "line1": "ผัดกะเพราโบราณ",
+            "line2": "ใส่ซีอิ๊วดำไหม?",
+            "caption": "▪️ กะเพราแท้สูตรโบราณดั้งเดิมจริงๆ เขาใส่ซีอิ๊วดำกันไหมคะสาวๆ\n▪️ จากสูตรดั้งเดิมสมัยก่อน กะเพราจะเน้นผัดกับพริกแห้งและกระเทียมให้หอมฉุนแบบแห้งๆ และไม่ใส่ซีอิ๊วดำเลยค่ะ\n▪️ ส่วนซีอิ๊วดำพึ่งเริ่มมานิยมใส่กันยุคหลังๆ เพื่อปรับสีให้ดูเข้มขึ้นและรสชาติออกหวานนิดหน่อย\n▪️ ไม่ว่าจะเป็นกะเพราสูตรไหน ขอแค่รสชาติจัดจ้านและใบกะเพราป่ากลิ่นหอมก็ถือว่าดีต่อใจแล้วค่ะ\n▪️ ไหนใครชอบกะเพราแบบใส่ซีอิ๊วดำหรือแบบโบราณมากกว่ากัน คอมเมนต์บอกหนูหน่อยนะคะ\n#กะเพราโบราณ #อาหารไทย #พริก10เม็ด"
         }
     ]
 }
@@ -578,6 +669,74 @@ def generate_recipe_content(history_recipes):
     return fb["title"], fb["desc"], fb["ingredients"], fb["steps"], fb["caption"]
 
 
+def generate_trivia_content(img_path, query, history_trivias):
+    with open(img_path, "rb") as f:
+        img_data = f.read()
+        
+    history_str = ", ".join(history_trivias) if history_trivias else "ไม่มี"
+    prompt = (
+        "You are an expert Thai social media copywriter for 'พริก 10 เม็ด' (Spicy Thai Food page). Write with a friendly female persona using female particles like 'ค่ะ' / 'คะ' and pronouns like 'หนู' / 'เรา'.\n"
+        "Analyze the attached image and generate a highly engaging, funny, and fascinating Thai food trivia fact (สาระสายกิน) related to the food shown in the image.\n"
+        f"STRICT NEGATIVE CONSTRAINT: Do NOT generate trivia for any of the following topics/titles: {history_str}.\n"
+        "Requirements:\n"
+        "1. Output exactly 3 sections labeled with markers:\n"
+        "   ===HOOK1=== (Hook Line 1: Sarcastic/fascinating fact statement to be written on the image. Very short, 3-6 Thai words. NO emojis. Write strictly about the actual food/dish in the image)\n"
+        "   ===HOOK2=== (Hook Line 2: Hook continuation or question, very short, 3-5 Thai words, NO emojis)\n"
+        "   ===CAPTION=== (Facebook Caption: a funny, fascinating food trivia story structured as 6-8 bullet points. Start each bullet with a ▪️ emoji. End with 3 relevant hashtags. Must strictly describe the food/stall shown in the image)\n\n"
+        "2. Strict Constraints for Natural Thai Style and Spelling:\n"
+        "   - WRITE IN NATURAL, CASUAL THAI STREET/FACEBOOK STYLE.\n"
+        "   - STRICT LOGICAL CONSISTENCY between hooks and caption: Hook lines and caption MUST tell the exact same story as the image.\n"
+        "   - STRICT NEGATIVE CONSTRAINT: Absolutely NO mention of foreigners, tourists, westerners, or foreigners reacting to Thai food. Focus 100% on local Thai foodie humor and everyday struggles.\n"
+        f"Realism Guidelines:\n{REALISM_FILTER}\n"
+        "Format of Response:\n"
+        "===HOOK1=== [Hook Line 1]\n"
+        "===HOOK2=== [Hook Line 2]\n"
+        "===CAPTION=== [Facebook Caption]"
+    )
+    for model in TEXT_MODELS:
+        try:
+            resp = client.models.generate_content(
+                model=model,
+                contents=[
+                    types.Part.from_bytes(data=img_data, mime_type="image/jpeg"),
+                    types.Part.from_text(text=prompt),
+                ],
+                generation_config=types.GenerateContentConfig(timeout=60)
+            )
+            result = resp.text.strip()
+            print(f"Trivia Content Generation [{model}]:\n{result[:300]}...\n")
+            
+            h1_match = re.search(r'===HOOK1===\s*(.*)', result, re.IGNORECASE)
+            h2_match = re.search(r'===HOOK2===\s*(.*)', result, re.IGNORECASE)
+            cap_match = re.search(r'===CAPTION===\s*(.*)', result, re.DOTALL | re.IGNORECASE)
+            
+            line1 = h1_match.group(1).split('\n')[0].strip() if h1_match else ""
+            line2 = h2_match.group(1).split('\n')[0].strip() if h2_match else ""
+            caption = cap_match.group(1).strip() if cap_match else ""
+            
+            label_pattern = r'^(ข้อความในโพสต์\s*Facebook|Facebook\s*Caption|Facebook\s*caption|Caption|caption|ข้อความบนรูป|ข้อความในรูป|ข้อความ|คำบรรยาย|คำอธิบาย|บรรทัดที่\s*\d+|บรรทัด\s*\d+|ประโยคที่\s*\d+|ประโยค\s*\d+|Hook\s*text|Hook|Line\s*\d+|[L|l]ine\s*\d+|\d+)\s*[:\-\.\s]\s*'
+            line1 = re.sub(label_pattern, '', line1, flags=re.IGNORECASE).strip()
+            line2 = re.sub(label_pattern, '', line2, flags=re.IGNORECASE).strip()
+            line1 = line1.strip('"\'“”‘’')
+            line2 = line2.strip('"\'“”‘’')
+            
+            if line1 and not contains_thai(line1):
+                line1 = translate_to_thai(line1)
+            if line2 and not contains_thai(line2):
+                line2 = translate_to_thai(line2)
+            if caption and not contains_thai(caption):
+                caption = translate_to_thai(caption)
+                
+            if line1 and caption and contains_thai(line1) and contains_thai(caption):
+                return line1, line2, caption
+        except Exception as e:
+            print(f"[{model}] trivia content generation failed: {e}")
+            
+    print("Using trivia fallback post.")
+    fb = random.choice(FALLBACK_POSTS["trivia"])
+    return fb["line1"], fb["line2"], fb["caption"]
+
+
 def generate_contrast_review_content(img_path, image_type, food_name, vibe, reddit_title=""):
     with open(img_path, "rb") as f:
         img_data = f.read()
@@ -658,60 +817,56 @@ def generate_contrast_review_content(img_path, image_type, food_name, vibe, redd
     return fb["line1"], fb["line2"], fb["caption"]
 
 
-def generate_debate_topic_and_queries(history_debates):
-    history_str = ", ".join(history_debates) if history_debates else "ไม่มี"
+def generate_trivia_content(img_path, query, history_trivias):
+    with open(img_path, "rb") as f:
+        img_data = f.read()
+        
+    history_str = ", ".join(history_trivias) if history_trivias else "ไม่มี"
     prompt = (
         "You are an expert Thai social media copywriter for 'พริก 10 เม็ด' (Spicy Thai Food page). Write with a friendly female persona using female particles like 'ค่ะ' / 'คะ' and pronouns like 'หนู' / 'เรา'.\n"
-        "Select a fun, engaging, and controversial Thai food debate topic (e.g. กะเพราใส่ถั่วฝักยาว vs กะเพราแท้, ส้มตำปลาร้า vs ส้มตำไทย, ชาไทยสีส้ม vs ชาเขียว, บะหมี่แห้งเส้นเล็ก vs บะหมี่แห้งเส้นบะหมี่, ก๋วยเตี๋ยวเรือน้ำตก vs ก๋วยเตี๋ยวต้มยำ).\n"
-        f"STRICT NEGATIVE CONSTRAINT: Do NOT generate a debate about any of the following topics/titles: {history_str}.\n"
+        "Analyze the attached image and generate a highly engaging, funny, and fascinating Thai food trivia fact (สาระสายกิน) related to the food shown in the image.\n"
+        f"STRICT NEGATIVE CONSTRAINT: Do NOT generate trivia for any of the following topics/titles: {history_str}.\n"
         "Requirements:\n"
-        "1. Output exactly 7 fields labeled with markers:\n"
-        "   ===LEFT_LABEL=== (Label for left option, 1-3 Thai words, e.g., 'ใส่ถั่วฝักยาว')\n"
-        "   ===RIGHT_LABEL=== (Label for right option, 1-3 Thai words, e.g., 'กะเพราแท้')\n"
-        "   ===LEFT_QUERY=== (English search query for Pexels to find left image, 1-3 English words, e.g., 'stir fried basil long beans' or 'thai basil chicken')\n"
-        "   ===RIGHT_QUERY=== (English search query for Pexels to find right image, 1-3 English words, e.g., 'pad kra pao' or 'spicy chicken basil')\n"
-        "   ===HOOK1=== (Hook Line 1: Main statement, very short, 4-6 Thai words. NO emojis)\n"
-        "   ===HOOK2=== (Hook Line 2: Question or sub-hook, very short, 3-5 Thai words. NO emojis)\n"
-        "   ===CAPTION=== (A funny, engaging Facebook caption initiating the debate, structured as 6-8 bullet points starting with ▪️ and ending with 3 hashtags)\n\n"
-        "Ensure all labels and hooks are in THAI. English queries should be standard, generic food terms that Pexels has images for (e.g. 'papaya salad', 'pad thai', 'green curry', 'spring rolls', 'fried rice', 'thai milk tea').\n"
-        "STRICT NEGATIVE CONSTRAINT: Absolutely NO mention of foreigners, tourists, westerners, or foreigners reacting to Thai food. Focus 100% on local Thai foodie humor and everyday debates."
+        "1. Output exactly 3 sections labeled with markers:\n"
+        "   ===HOOK1=== (Hook Line 1: Sarcastic/fascinating fact statement to be written on the image. Very short, 3-6 Thai words. NO emojis. Write strictly about the actual food/dish in the image)\n"
+        "   ===HOOK2=== (Hook Line 2: Hook continuation or question, very short, 3-5 Thai words, NO emojis)\n"
+        "   ===CAPTION=== (Facebook Caption: a funny, fascinating food trivia story structured as 6-8 bullet points. Start each bullet with a ▪️ emoji. End with 3 relevant hashtags. Must strictly describe the food/stall shown in the image)\n\n"
+        "2. Strict Constraints for Natural Thai Style and Spelling:\n"
+        "   - WRITE IN NATURAL, CASUAL THAI STREET/FACEBOOK STYLE.\n"
+        "   - STRICT LOGICAL CONSISTENCY between hooks and caption: Hook lines and caption MUST tell the exact same story as the image.\n"
+        "   - STRICT NEGATIVE CONSTRAINT: Absolutely NO mention of foreigners, tourists, westerners, or foreigners reacting to Thai food. Focus 100% on local Thai foodie humor and everyday struggles.\n"
+        f"Realism Guidelines:\n{REALISM_FILTER}\n"
+        "Format of Response:\n"
+        "===HOOK1=== [Hook Line 1]\n"
+        "===HOOK2=== [Hook Line 2]\n"
+        "===CAPTION=== [Facebook Caption]"
     )
     for model in TEXT_MODELS:
         try:
-            resp = client.models.generate_content(model=model, contents=prompt)
+            resp = client.models.generate_content(
+                model=model,
+                contents=[
+                    types.Part.from_bytes(data=img_data, mime_type="image/jpeg"),
+                    types.Part.from_text(text=prompt),
+                ],
+            )
             result = resp.text.strip()
-            print(f"Debate Topic & Queries Generation [{model}]:\n{result[:400]}...\n")
+            print(f"Trivia Content Generation [{model}]:\n{result[:300]}...\n")
             
-            ll_match = re.search(r'===LEFT_LABEL===\s*(.*)', result, re.IGNORECASE)
-            rl_match = re.search(r'===RIGHT_LABEL===\s*(.*)', result, re.IGNORECASE)
-            lq_match = re.search(r'===LEFT_QUERY===\s*(.*)', result, re.IGNORECASE)
-            rq_match = re.search(r'===RIGHT_QUERY===\s*(.*)', result, re.IGNORECASE)
             h1_match = re.search(r'===HOOK1===\s*(.*)', result, re.IGNORECASE)
             h2_match = re.search(r'===HOOK2===\s*(.*)', result, re.IGNORECASE)
             cap_match = re.search(r'===CAPTION===\s*(.*)', result, re.DOTALL | re.IGNORECASE)
             
-            left_label = ll_match.group(1).split('\n')[0].strip() if ll_match else ""
-            right_label = rl_match.group(1).split('\n')[0].strip() if rl_match else ""
-            left_query = lq_match.group(1).split('\n')[0].strip() if lq_match else ""
-            right_query = rq_match.group(1).split('\n')[0].strip() if rq_match else ""
             line1 = h1_match.group(1).split('\n')[0].strip() if h1_match else ""
             line2 = h2_match.group(1).split('\n')[0].strip() if h2_match else ""
             caption = cap_match.group(1).strip() if cap_match else ""
             
             label_pattern = r'^(ข้อความในโพสต์\s*Facebook|Facebook\s*Caption|Facebook\s*caption|Caption|caption|ข้อความบนรูป|ข้อความในรูป|ข้อความ|คำบรรยาย|คำอธิบาย|บรรทัดที่\s*\d+|บรรทัด\s*\d+|ประโยคที่\s*\d+|ประโยค\s*\d+|Hook\s*text|Hook|Line\s*\d+|[L|l]ine\s*\d+|\d+)\s*[:\-\.\s]\s*'
-            left_label = re.sub(label_pattern, '', left_label, flags=re.IGNORECASE).strip()
-            right_label = re.sub(label_pattern, '', right_label, flags=re.IGNORECASE).strip()
-            left_query = left_query.strip('"\'“”‘’')
-            right_query = right_query.strip('"\'“”‘’')
             line1 = re.sub(label_pattern, '', line1, flags=re.IGNORECASE).strip()
             line2 = re.sub(label_pattern, '', line2, flags=re.IGNORECASE).strip()
             line1 = line1.strip('"\'“”‘’')
             line2 = line2.strip('"\'“”‘’')
             
-            if left_label and not contains_thai(left_label):
-                left_label = translate_to_thai(left_label)
-            if right_label and not contains_thai(right_label):
-                right_label = translate_to_thai(right_label)
             if line1 and not contains_thai(line1):
                 line1 = translate_to_thai(line1)
             if line2 and not contains_thai(line2):
@@ -719,24 +874,14 @@ def generate_debate_topic_and_queries(history_debates):
             if caption and not contains_thai(caption):
                 caption = translate_to_thai(caption)
                 
-            if left_label and right_label and line1 and caption and contains_thai(left_label) and contains_thai(line1) and contains_thai(caption):
-                return left_label, right_label, left_query, right_query, line1, line2, caption
+            if line1 and caption and contains_thai(line1) and contains_thai(caption):
+                return line1, line2, caption
         except Exception as e:
-            print(f"[{model}] debate topic & queries generation failed: {e}")
+            print(f"[{model}] trivia content generation failed: {e}")
             
-    print("Using debate fallback post.")
-    fb = random.choice(FALLBACK_POSTS["debate"])
-    mock_queries = {
-        "ส้มตำปลาร้า": "thai papaya salad",
-        "ส้มตำไทย": "papaya salad",
-        "กะเพราแท้": "pad kra pao",
-        "ใส่ถั่วฝักยาว": "stir fried basil",
-        "ชาไทยสีส้ม": "thai tea",
-        "ชาเขียวนม": "green tea latte"
-    }
-    l_q = mock_queries.get(fb["left_label"], "thai food")
-    r_q = mock_queries.get(fb["right_label"], "thai food")
-    return fb["left_label"], fb["right_label"], l_q, r_q, fb["line1"], fb["line2"], fb["caption"]
+    print("Using trivia fallback post.")
+    fb = random.choice(FALLBACK_POSTS["trivia"])
+    return fb["line1"], fb["line2"], fb["caption"]
 
 
 def search_pexels_single_image(query, history_urls, block_urls=None):
@@ -803,10 +948,10 @@ def main():
 
     print("=== พริก 10 เม็ด Bot ===")
 
-    if forced_mode in ["recipe", "contrast_review", "debate"]:
+    if forced_mode in ["recipe", "contrast_review", "trivia"]:
         mode = forced_mode
     else:
-        mode = random.choices(["recipe", "contrast_review", "debate"], weights=[35, 35, 30])[0]
+        mode = random.choices(["recipe", "contrast_review", "trivia"], weights=[35, 35, 30])[0]
     print(f"Selected Mode: {mode} (Forced: {forced_mode})")
 
     os.makedirs("output", exist_ok=True)
@@ -886,55 +1031,40 @@ def main():
 
         caption += f"\n📷 ภาพจาก Pexels"
 
-    elif mode == "debate":
-        print("Generating Debate Content...")
+    elif mode == "trivia":
+        print("Generating Trivia Content...")
         history_recipes = load_recipe_history()
-        left_label, right_label, left_query, right_query, line1, line2, caption = generate_debate_topic_and_queries(history_recipes)
-        left_label = segment_thai_text(left_label, client)
-        right_label = segment_thai_text(right_label, client)
+        query = random.choice(THAI_FOOD_QUERIES)
+        history_urls = load_history()
+        img_url = search_pexels_single_image(query, history_urls)
+        
+        if not img_url and dry_run:
+            print("[Dry-Run] Pexels search failed or key missing. Using mock image.")
+            img_url = "https://images.pexels.com/photos/2067423/pexels-photo-2067423.jpeg"
+            
+        if not img_url:
+            print("No suitable image found for trivia")
+            return
+            
+        img_path = download_image(img_url)
+        if not img_path:
+            print("Image download failed")
+            return
+            
+        line1, line2, caption = generate_trivia_content(img_path, query, history_recipes)
         line1 = segment_thai_text(line1, client)
         line2 = segment_thai_text(line2, client)
-        print(f"Debate Topic: {line1} | {line2}")
-        print(f"Options: {left_label} ({left_query}) vs {right_label} ({right_query})")
-
-        history_urls = load_history()
+        print(f"Trivia Hook: {line1} | {line2}")
         
-        left_img_url = search_pexels_single_image(left_query, history_urls)
-        if not left_img_url and dry_run:
-            print("[Dry-Run] Left image search failed or key missing. Using mock image.")
-            left_img_url = "https://images.pexels.com/photos/5638527/pexels-photo-5638527.jpeg"
-        left_img_path = None
-        if left_img_url:
-            left_img_path = download_image(left_img_url)
-            
-        right_img_url = search_pexels_single_image(right_query, history_urls, block_urls={left_img_url})
-        if not right_img_url and dry_run:
-            print("[Dry-Run] Right image search failed or key missing. Using mock image.")
-            right_img_url = "https://images.pexels.com/photos/2067423/pexels-photo-2067423.jpeg"
-        right_img_path = None
-        if right_img_url:
-            right_img_path = download_image(right_img_url)
-
-        import tempfile
-        tmp = tempfile.NamedTemporaryFile(suffix=".jpg", delete=False)
-        img_path = tmp.name
-        tmp.close()
-
         try:
-            from overlay_utils import create_split_debate_card
-            img_path = create_split_debate_card(left_img_path, right_img_path, left_label, right_label, img_path)
-            print(f"Split Debate Card generated: {img_path}")
+            from overlay_utils import add_overlay
+            overlaid = add_overlay(img_path, line1, line2, ACCENT_COLOR)
+            os.unlink(img_path)
+            img_path = overlaid
+            print(f"Trivia Overlay generated: {img_path}")
         except Exception as e:
-            print(f"Split Debate Card generation failed: {e}")
-            if os.path.exists(img_path):
-                os.unlink(img_path)
-            return
-        finally:
-            if left_img_path and os.path.exists(left_img_path):
-                os.unlink(left_img_path)
-            if right_img_path and os.path.exists(right_img_path):
-                os.unlink(right_img_path)
-
+            print(f"Overlay failed: {e}")
+            
         caption += f"\n📷 ภาพจาก Pexels"
 
     print(f"Generated Caption:\n{caption}\n")
@@ -968,12 +1098,10 @@ def main():
                 save_to_history(post["url"])
             elif mode == "recipe":
                 save_recipe_to_history(title)
-            elif mode == "debate":
-                save_recipe_to_history(f"{left_label} vs {right_label}")
-                if 'left_img_url' in locals() and left_img_url:
-                    save_to_history(left_img_url)
-                if 'right_img_url' in locals() and right_img_url:
-                    save_to_history(right_img_url)
+            elif mode == "trivia":
+                save_recipe_to_history(line1)
+                if 'img_url' in locals() and img_url:
+                    save_to_history(img_url)
             print("Successfully posted to Facebook!")
         else:
             print("Post to Facebook FAILED")

@@ -23,6 +23,9 @@ if not GEMINI_API_KEY:
     except ImportError:
         pass
 
+if not GEMINI_API_KEY:
+    GEMINI_API_KEY = "DUMMY_KEY"
+
 API_ENABLED = True
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
