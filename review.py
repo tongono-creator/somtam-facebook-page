@@ -15,6 +15,7 @@ PAGE_ID           = os.environ.get("PAGE_ID", "554501167740603")
 TEXT_MODELS       = ["gemini-2.5-flash", "gemini-3.5-flash"]
 OUTPUT_DIR        = "output"
 EXCEL_PATH        = os.path.join(os.path.dirname(__file__), "review_products.xlsx")
+AFFILIATE_DIR     = r"D:\Ai Auto Flow\shopee_affiliate_products"
 ACCENT_COLOR      = (255, 107, 53) # ส้ม #FF6B35 สำหรับพริก 10 เม็ด
 
 if not GEMINI_API_KEY:
@@ -29,7 +30,7 @@ if not GEMINI_API_KEY:
 API_ENABLED = True
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
-client = genai.Client(api_key=GEMINI_API_KEY, http_options={'timeout': 15000.0})
+client = genai.Client(api_key=GEMINI_API_KEY, http_options={'timeout': 60000.0})
 
 # --- Thai Helpers and Fallbacks ---
 _LEADING_VOWELS  = set('เแโใไ')
@@ -200,6 +201,48 @@ def mark_posted(wb, ws, row_num):
     ws.cell(row=row_num, column=7, value=f"done {ts}")
     wb.save(EXCEL_PATH)
     print(f"Marked row {row_num} as done")
+
+def load_affiliate_product():
+    """Fallback: สุ่มสินค้าจาก AFFILIATE_DIR เมื่อ review_products.xlsx หมด"""
+    import glob
+    xlsx_files = glob.glob(os.path.join(AFFILIATE_DIR, "*.xlsx"))
+    if not xlsx_files:
+        print(f"[affiliate] No xlsx files found in {AFFILIATE_DIR}")
+        return None
+    random.shuffle(xlsx_files)
+    for xlsx_path in xlsx_files:
+        try:
+            wb = openpyxl.load_workbook(xlsx_path, read_only=True, data_only=True)
+            ws = wb.active
+            candidates = []
+            for row in ws.iter_rows(min_row=2, values_only=True):
+                if not row or len(row) < 10:
+                    continue
+                name   = row[1]
+                imgurl = row[2]
+                price  = row[3]
+                shopee = row[9]
+                lazada = row[10] if len(row) > 10 else None
+                if not shopee or not name:
+                    continue
+                candidates.append({
+                    "no": row[0],
+                    "detail": f"{name} ราคา {price} บาท",
+                    "shopee": str(shopee).strip(),
+                    "lazada": str(lazada).strip() if lazada else "",
+                    "image_url": str(imgurl).strip() if imgurl else "",
+                    "promo": "",
+                    "row": None,
+                })
+            wb.close()
+            if candidates:
+                product = random.choice(candidates)
+                print(f"[affiliate] Loaded from {os.path.basename(xlsx_path)}: {product['detail'][:60]}")
+                return product
+        except Exception as e:
+            print(f"[affiliate] Failed to read {xlsx_path}: {e}")
+    print("[affiliate] No valid product found in any xlsx file")
+    return None
 
 def clean_promo(raw):
     """เอาเฉพาะบรรทัดที่มี ฿ หรือ ลด หรือ % หรือ ส่งฟรี"""
@@ -388,9 +431,14 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     product, wb, ws = load_next_product()
+    affiliate_mode = False
     if not product:
-        print("ไม่มีสินค้าที่ต้องโพส (ครบแล้วหรือยังไม่ได้เพิ่ม)")
-        raise SystemExit(0)
+        print("review_products.xlsx หมดแล้ว — ลอง fallback จาก AFFILIATE_DIR")
+        product = load_affiliate_product()
+        affiliate_mode = True
+        if not product:
+            print("ไม่มีสินค้าที่ต้องโพส (ครบแล้วหรือยังไม่ได้เพิ่ม)")
+            raise SystemExit(0)
 
     print(f"Product #{product['no']}: {product['detail'][:60]}...")
 
@@ -426,4 +474,5 @@ if __name__ == "__main__":
         post_to_page(review_img, caption)
         if os.path.exists(review_img):
             os.unlink(review_img)
-        mark_posted(wb, ws, product["row"])
+        if not affiliate_mode:
+            mark_posted(wb, ws, product["row"])
