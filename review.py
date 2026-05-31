@@ -15,7 +15,7 @@ PAGE_ID           = os.environ.get("PAGE_ID", "554501167740603")
 TEXT_MODELS       = ["gemini-2.5-flash", "gemini-3.5-flash"]
 OUTPUT_DIR        = "output"
 EXCEL_PATH        = os.path.join(os.path.dirname(__file__), "review_products.xlsx")
-AFFILIATE_DIR     = r"D:\Ai Auto Flow\shopee_affiliate_products"
+AFFILIATE_DIR     = os.path.join(os.path.dirname(__file__), "affiliate_data")
 ACCENT_COLOR      = (255, 107, 53) # ส้ม #FF6B35 สำหรับพริก 10 เม็ด
 
 if not GEMINI_API_KEY:
