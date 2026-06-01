@@ -19,7 +19,7 @@ PEXELS_API_KEY    = os.environ.get("PEXELS_API_KEY", "")
 
 API_ENABLED = True
 client       = genai.Client(api_key=GEMINI_API_KEY, http_options=HttpOptions(timeout=300000))
-TEXT_MODELS  = ["gemini-2.5-flash", "gemini-3.5-flash"]
+TEXT_MODELS  = ["gemini-2.5-flash", "gemini-1.5-flash", "gemini-2.5-pro", "gemini-1.5-pro"]
 ACCENT_COLOR = (255, 107, 53)  # ส้ม #FF6B35
 
 def contains_thai(text):
@@ -622,21 +622,29 @@ def generate_recipe_content(history_recipes):
     history_str = ", ".join(history_recipes) if history_recipes else "ไม่มี"
     prompt = (
         "You are an expert Thai social media copywriter for 'พริก 10 เม็ด' (Spicy Thai Food page). Write with a friendly female persona using female particles like 'ค่ะ' / 'คะ' and pronouns like 'หนู' / 'เรา'.\n"
-        "Generate a mouth-watering, easy-to-follow Thai recipe (สูตรอาหารไทยแซ่บๆ) that local Thai readers will love (e.g. ตำป่ารสเด็ด, ยำมาม่าหมูสับ, กะเพราพริกแห้งสูตรโบราณ, น้ำตกคอหมูย่าง).\n"
-        f"STRICT NEGATIVE CONSTRAINT: Do NOT generate a recipe for any of the following menus/titles: {history_str}.\n"
+        "Using Google Search grounding, search for an authentic, popular Thai spicy/street food recipe from trusted Thai culinary sites like Krua.co, Wongnai, or Kapook. Do NOT hallucinate ingredients or steps. Find a real recipe and rewrite/rephrase it into your own signature style.\n"
+        "Choose a delicious Thai recipe (สูตรอาหารไทยแซ่บๆ/สตรีทฟู้ด) that local Thai readers will love (e.g., ต้มยำกุ้งน้ำข้น, แกงเขียวหวานไก่, ยำวุ้นเส้นโบราณ, น้ำตกคอหมูย่าง, แกงส้มชะอมกุ้ง).\n"
+        f"STRICT NEGATIVE CONSTRAINT: Do NOT choose or generate a recipe for any of the following menus/titles: {history_str}.\n"
         "Requirements:\n"
         "1. Output exactly 5 sections labeled with markers:\n"
-        "   ===TITLE=== (Recipe Title, 2-4 Thai words, e.g., 'ตำป่าทะเลเดือด')\n"
+        "   ===TITLE=== (Recipe Title, 2-4 Thai words, e.g., 'ต้มยำกุ้งน้ำข้น')\n"
         "   ===DESC=== (Short delicious summary/description of the dish, 1-2 sentences. Keep it short!)\n"
-        "   ===INGREDIENTS=== (List of ingredients, one per line. Keep each line short and clean, max 5-7 words, e.g., '• มะละกอดิบสับ 1 กำมือ')\n"
-        "   ===STEPS=== (Numbered steps to cook/prepare the dish, one per line. Keep each line short and clean, max 10-15 words. Maximum 5-6 steps, e.g., '1. โขลกพริกกับกระเทียมให้พอแตก')\n"
-        "   ===CAPTION=== (Facebook Caption: a short, natural story introducing the recipe as a single paragraph of 2-4 sentences. Absolutely NO bullet points, lists, or symbols like ▪️. Ask a relatable question at the end to drive engagement and end with 3 hashtags)\n\n"
+        "   ===INGREDIENTS=== (List of ingredients with accurate measurements from the source, one per line. Keep each line short and clean, max 5-7 words, e.g., '• กุ้งสดปอกเปลือก 200 กรัม')\n"
+        "   ===STEPS=== (Numbered steps to cook/prepare the dish based on the source, one per line. Keep each line short and clean, max 10-15 words. Maximum 5-6 steps, e.g., '1. ต้มน้ำให้เดือดแล้วใส่เครื่องต้มยำ')\n"
+        "   ===CAPTION=== (Facebook Caption: a short, natural story introducing the recipe as a single paragraph of 2-4 sentences. Absolutely NO bullet points, lists, or symbols like ▪️. Ask a relatable question at the end to drive engagement and end with 3 hashtags. Mention that the recipe is adapted/sourced from a reliable source like Krua.co, Wongnai, or Kapook naturally in the text, e.g., 'สูตรนี้หนูได้สูตรเป๊ะๆ มาจาก Krua.co ค่ะ' or similar)\n\n"
         "Ensure all details are in THAI. Do not use English words. Keep ingredients and steps concise so they fit perfectly in a card layout.\n"
         "STRICT NEGATIVE CONSTRAINT: Absolutely NO mention of foreigners, tourists, westerners, or foreigners reacting to Thai food. Focus 100% on local Thai foodie humor, struggles, and everyday food experiences in Thailand. (ห้ามพูดถึงหรืออ้างอิงถึงชาวต่างชาติ, ฝรั่ง, นักท่องเที่ยว หรือปฏิกิริยาของคนต่างชาติต่ออาหารไทยเด็ดขาด เน้นเฉพาะวิถีชีวิตคนไทยและคนชอบกินเผ็ดในไทยเท่านั้น)"
     )
     for model in TEXT_MODELS:
         try:
-            resp = client.models.generate_content(model=model, contents=prompt)
+            resp = client.models.generate_content(
+                model=model,
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    tools=[{"google_search": {}}],
+                    temperature=0.7,
+                )
+            )
             result = resp.text.strip()
             print(f"Recipe Content Generation [{model}]:\n{result[:300]}...\n")
             
