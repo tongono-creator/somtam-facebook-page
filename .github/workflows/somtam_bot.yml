@@ -2,8 +2,7 @@ name: Somtam Bot
 
 on:
   schedule:
-    - cron: "0 1 * * *"
-    - cron: "0 5 * * *"
+    - cron: "0 2 * * *"
     - cron: "0 12 * * *"
   workflow_dispatch:
 

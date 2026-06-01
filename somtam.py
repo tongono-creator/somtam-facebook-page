@@ -176,50 +176,50 @@ FALLBACK_POSTS = {
             "desc": "เมนูสุดแซ่บจัดเต็มยกทะเลมาไว้ในครก เผ็ดร้อนถึงใจสะท้านทรวงค่ะ",
             "ingredients": "• เส้นมะละกอดิบสับ 1 กำมือ\n• กุ้งสดแกะเปลือก 5 ตัว\n• ปลาหมึกหั่นแว่น 5 ชิ้น\n• พริกขี้หนูสวน 10 เม็ด\n• มะเขือเทศสีดา 2 ลูก\n• ผักกาดดองหั่น 1 ช้อนโต๊ะ\n• น้ำปลาร้าต้มสุก 2 ช้อนโต๊ะ\n• น้ำมะนาว 2 ช้อนโต๊ะ",
             "steps": "1. โขลกพริกขี้หนูและกระเทียมให้พอแตก\n2. ใส่มะเขือเทศ ผักกาดดอง และเครื่องปรุงทั้งหมดโขลกเบาๆ\n3. ใส่เส้นมะละกอ กุ้งสด และปลาหมึกลวกสุก คลุกเคล้าให้เข้ากัน\n4. ตักใส่ถาดพร้อมแซ่บกับผักสดและแคบหมูค่ะ",
-            "caption": "▪️ ดึกแล้วท้องมันร้องหาความนัวระดับสิบใช่ไหมคะ\n▪️ วันนี้หนูพาสูตรส้มตำป่าทะเลครกแตกมาแจกค่ะ\n▪️ เครื่องแน่นล้นครก รสชาติเผ็ดแซ่บสะท้านทรวง\n▪️ ทำเองที่บ้านได้ง่ายๆ ไม่ต้องง้อร้านดัง\n▪️ มะนาวแท้ๆ ปลาร้านัวๆ กุ้งเด้งสู้ฟันสุดๆ ค่ะ\n▪️ เมนต์บอกหนูหน่อยว่าใครอยากชิมฝีมือหนูบ้างคะ\n#ส้มตำป่า #สูตรส้มตำ #พริก10เม็ด"
+            "caption": "ดึกแล้วท้องมันร้องหาความนัวระดับสิบใช่ไหมคะ วันนี้หนูพาสูตรส้มตำป่าทะเลครกแตกมาแจกค่ะ เครื่องแน่นล้นครก รสชาติเผ็ดแซ่บสะท้านทรวง มะนาวแท้ๆ ปลาร้านัวๆ กุ้งเด้งสู้ฟันสุดๆ ค่ะ เมนต์บอกหนูหน่อยว่าใครอยากชิมฝีมือหนูบ้างคะ\n#ส้มตำป่า #สูตรส้มตำ #พริก10เม็ด"
         },
         {
             "title": "ตำหลวงพระบางนัวปลาร้า",
             "desc": "ส้มตำเส้นแบนบางกรอบ ซึมซับน้ำปลาร้าเข้มข้นอร่อยนัวทุกคำค่ะ",
             "ingredients": "• มะละกอฝานแผ่นบาง 1 กำมือ\n• พริกแห้งและพริกสด 10 เม็ด\n• น้ำปลาร้าปรุงรสเข้มข้น 2.5 ช้อนโต๊ะ\n• น้ำตาลปี๊บ 1 ช้อนโต๊ะ\n• กะปิแท้ 1/2 ช้อนชา\n• มะเขือเครือ 3 ลูก\n• มะนาวแป้น 2 ลูก",
             "steps": "1. โขลกพริกแห้ง พริกสด และกะปิให้เข้ากัน\n2. ใส่น้ำตาลปี๊บ มะเขือเครือ บีบมะนาวใส่ทั้งเปลือกโขลกเบาๆ\n3. เติมน้ำปลาร้านัวๆ คนให้ละลายดี\n4. ใส่เส้นมะละกอแผ่นบาง คลุกเคล้าให้ซึมซับน้ำตำหลวงพระบาง\n5. โรยเม็ดกระถินตักเสิร์ฟพร้อมกากหมูเจียวค่ะ",
-            "caption": "▪️ ใครชอบกินส้มตำเส้นแบนบางกรอบเชิญทางนี้เลยค่ะ\n▪️ ตำหลวงพระบางสูตรนี้แอดมินพี่สาวคอนเฟิร์มว่านัวมาก\n▪️ เส้นบางๆ ซับน้ำปลาร้ากับกะปิหอมๆ เข้าเนื้อสุดๆ\n▪️ กลิ่นโชยไปถึงปากซอย ข้างบ้านต้องถามว่าตำอะไร\n▪️ ทานคู่กับกากหมูเจียวใหม่ๆ และเม็ดกระถินคือที่สุด\n▪️ เซฟสูตรนี้ไว้ทำตามด่วนๆ เลยนะคะสาวๆ\n#ตำหลวงพระบาง #ส้มตำปลาร้า #พริก10เม็ด"
+            "caption": "ใครชอบกินส้มตำเส้นแบนบางกรอบเชิญทางนี้เลยค่ะ ตำหลวงพระบางสูตรนี้แอดมินพี่สาวคอนเฟิร์มว่านัวมาก เส้นบางๆ ซับน้ำปลาร้ากับกะปิหอมๆ เข้าเนื้อสุดๆ ทานคู่กับกากหมูเจียวใหม่ๆ และเม็ดกระถินคือที่สุด เซฟสูตรนี้ไว้ทำตามด่วนๆ เลยนะคะสาวๆ\n#ตำหลวงพระบาง #ส้มตำปลาร้า #พริก10เม็ด"
         },
         {
             "title": "กะเพราเนื้อสับพริกแห้ง",
             "desc": "กะเพราแท้สูตรโบราณ เผ็ดร้อนแห้งสนิทไม่ใส่ผักกาดขาวค่ะ",
             "ingredients": "• เนื้อวัวสับติดมัน 200 กรัม\n• พริกแห้งแดงและเขียว 10 เม็ด\n• กระเทียมไทย 1 หัว\n• ใบกะเพราป่าแดง 1 กำมือ\n• ซอสปรุงรส 1 ช้อนโต๊ะ\n• น้ำปลาแท้ 1 ช้อนโต๊ะ\n• น้ำตาลทรายปลายช้อนชา",
             "steps": "1. โขลกพริกแห้งและกระเทียมให้ละเอียดพอประมาณ\n2. ตั้งกระทะร้อนจัด นำพริกกระเทียมลงผัดจนฉุนกระเจิง\n3. ใส่เนื้อสับลงผัด ยีให้กระจายตัวและผัดจนแห้งเข้าเนื้อ\n4. ปรุงรสด้วยน้ำปลา ซอสปรุงรส และน้ำตาลเล็กน้อย\n5. ใส่ใบกะเพราป่า ผัดเร็วๆ ด้วยไฟแรงแล้วยกลงทันทีค่ะ",
-            "caption": "▪️ เบื่อไหมคะกับการสั่งผัดกะเพราแล้วได้ถั่วฝักยาวแถมมา\n▪️ วันนี้แอดมินหนูขอแจกสูตรกะเพราเนื้อสับพริกแห้งแท้ๆ ค่ะ\n▪️ ผัดแบบแห้งๆ คั่วพริกหอมฉุนขึ้นจมูกจามกันทั้งบ้าน\n▪️ ใบกะเพราป่าแดงกลิ่นหอมแรงถึงใจไม่มีผักอื่นเจือปน\n▪️ โปะไข่ดาวกรอบๆ ขอบไหม้ไข่แดงเยิ้มๆ คือนิพพาน\n▪️ ไหนใครชอบกะเพราแห้งๆ เหมือนกันบ้าง มารายงานตัวด่วนค่ะ\n#กะเพราเนื้อสับ #กะเพราพริกแห้ง #พริก10เม็ด"
+            "caption": "เบื่อไหมคะกับการสั่งผัดกะเพราแล้วได้ถั่วฝักยาวแถมมา วันนี้แอดมินหนูขอแจกสูตรกะเพราเนื้อสับพริกแห้งแท้ๆ ค่ะ ผัดแบบแห้งๆ คั่วพริกหอมฉุนขึ้นจมูกจามกันทั้งบ้าน โปะไข่ดาวกรอบๆ ขอบไหม้ไข่แดงเยิ้มๆ คือนิพพาน ไหนใครชอบกะเพราแห้งๆ เหมือนกันบ้าง มารายงานตัวด่วนค่ะ\n#กะเพราเนื้อสับ #กะเพราพริกแห้ง #พริก10เม็ด"
         }
     ],
     "contrast_review": [
         {
             "line1": "สั่งเผ็ดน้อย",
             "line2": "แต่แดงทั้งครก",
-            "caption": "▪️ สั่งแม่ค้าว่าเผ็ดน้อยทีไร ได้สีแดงแป๊ดมาตลอดเลยค่ะ\n▪️ ในใจแม่ค้าคงคิดว่าพริก 10 เม็ดคือเลเวลอนุบาล\n▪️ ปากเจ่อเหงื่อไหลยาลดกรดต้องเข้าแล้วค่ะงานนี้\n▪️ แต่ในฐานะนักสู้เรื่องกิน เราไม่มียอมแพ้แน่นอนค่ะ\n▪️ ใครเคยสั่งเผ็ดน้อยแล้วได้เผ็ดร้อนระเบิดรูทวารแบบนี้บ้างคะ\n#สั่งเผ็ดน้อย #แซ่บสู้ชีวิต #พริก10เม็ด"
+            "caption": "สั่งแม่ค้าว่าเผ็ดน้อยทีไร ได้สีแดงแป๊ดมาตลอดเลยค่ะ ในใจแม่ค้าคงคิดว่าพริก 10 เม็ดคือเลเวลอนุบาล ปากเจ่อเหงื่อไหลยาลดกรดต้องเข้าแล้วค่ะงานนี้ แต่ในฐานะนักสู้เรื่องกิน เราไม่มียอมแพ้แน่นอนค่ะ ใครเคยสั่งเผ็ดน้อยแล้วได้เผ็ดร้อนระเบิดรูทวารแบบนี้บ้างคะ\n#สั่งเผ็ดน้อย #แซ่บสู้ชีวิต #พริก10เม็ด"
         },
         {
             "line1": "กินตอนนี้แซ่บปาก",
             "line2": "พรุ่งนี้ลำบากตูด",
-            "caption": "▪️ วงการส้มตำเข้าแล้วออกยาก แต่เข้าห้องน้ำออกยากกว่าค่ะ\n▪️ ตอนกินคือนัวสะใจ พริกแห้งพริกสดจัดเต็มไม่มีกั๊ก\n▪️ พรุ่งนี้เช้าเตรียมตัวรับแรงกระแทกแบบสู้ชีวิตเลยค่ะ\n▪️ สัญญาณเตือนภัยในท้องเริ่มทำงานตั้งแต่ยังกินไม่หมดจาน\n▪️ แต่ถามว่าจะเข็ดไหม ตอบเลยว่าพรุ่งนี้เย็นเจอกันใหม่ค่ะ\n#อร่อยแซ่บ #เตือนภัยสายกิน #พริก10เม็ด"
+            "caption": "วงการส้มตำเข้าแล้วออกยาก แต่เข้าห้องน้ำออกยากกว่าค่ะ ตอนกินคือนัวสะใจ พริกแห้งพริกสดจัดเต็มไม่มีกั๊ก พรุ่งนี้เช้าเตรียมตัวรับแรงกระแทกแบบสู้ชีวิตเลยค่ะ แต่ถามว่าจะเข็ดไหม ตอบเลยว่าพรุ่งนี้เย็นเจอกันใหม่ค่ะ\n#อร่อยแซ่บ #เตือนภัยสายกิน #พริก10เม็ด"
         },
         {
             "line1": "คิวยาวเป็นกิโล",
             "line2": "แต่ยอมยืนรอ",
-            "caption": "▪️ วิถีคนหิวที่แท้จริงคือการยืนรอคิวหน้าร้านส้มตำค่ะ\n▪️ แดดจะร้อนลมจะแรงแค่ไหนก็ทำอะไรความอยากกินไม่ได้\n▪️ แย่งชิงเก้าอี้ดนตรีตอนเที่ยงวันเหมือนไปรบในสนามรบ\n▪️ พอได้กินคำแรกปลาร้านัวๆ เท่านั้นแหละ หายเหนื่อยทันทีค่ะ\n▪️ ใครยอมยืนต่อคิวเพื่อของอร่อยบ้างคะรายงานตัวด่วน\n#รีวิวสตรีทฟู้ด #ส้มตำคิวยาว #พริก10เม็ด"
+            "caption": "วิถีคนหิวที่แท้จริงคือการยืนรอคิวหน้าร้านส้มตำค่ะ แดดจะร้อนลมจะแรงแค่ไหนก็ทำอะไรความอยากกินไม่ได้ พอได้กินคำแรกปลาร้านัวๆ เท่านั้นแหละ หายเหนื่อยทันทีค่ะ ใครยอมยืนต่อคิวเพื่อของอร่อยบ้างคะรายงานตัวด่วน\n#รีวิวสตรีทฟู้ด #ส้มตำคิวยาว #พริก10เม็ด"
         }
     ],
     "trivia": [
         {
             "line1": "กำเนิดส้มตำไทย",
             "line2": "มะละกอมาจากไหน?",
-            "caption": "▪️ รู้ไหมคะว่าส้มตำที่เรากินกันแซ่บๆ ทุกวันนี้ มะละกอไม่ได้มีต้นกำเนิดในไทยนะ!\n▪️ จริงๆ มะละกอเป็นพืชพื้นเมืองของอเมริกากลางค่ะ นำเข้ามาโดยพ่อค้าชาวโปรตุเกสตั้งแต่สมัยอยุธยาตอนปลาย\n▪️ คนไทยเราสมัยก่อนเอามาต้มแกงกิน จนกระทั่งเริ่มมีคนลองเอามาโขลกใส่น้ำปลา พริก และมะนาวจนกลายเป็นส้มตำแซ่บๆ\n▪️ กลายมาเป็นเมนูระดับชาติต้องมีติดไว้ทุกมื้อแซ่บแบบนี้แหละค่ะ\n▪️ ใครเป็นมะละกอเลิฟเวอร์ยกมือขึ้นด่วนๆ เลยนะคะสาวๆ\n#ประวัติส้มตำ #มะละกอแซ่บ #พริก10เม็ด"
+            "caption": "รู้ไหมคะว่าส้มตำที่เรากินกันแซ่บๆ ทุกวันนี้ มะละกอไม่ได้มีต้นกำเนิดในไทยนะ จริงๆ มะละกอเป็นพืชพื้นเมืองของอเมริกากลางค่ะ นำเข้ามาโดยพ่อค้าชาวโปรตุเกสตั้งแต่สมัยอยุธยาตอนปลาย แล้วคนไทยเริ่มเอามาโขลกใส่น้ำปลา พริก และมะนาวจนกลายเป็นส้มตำแซ่บๆ ใครเป็นมะละกอเลิฟเวอร์ยกมือขึ้นด่วนๆ เลยนะคะสาวๆ\n#ประวัติส้มตำ #มะละกอแซ่บ #พริก10เม็ด"
         },
         {
             "line1": "ผัดกะเพราโบราณ",
             "line2": "ใส่ซีอิ๊วดำไหม?",
-            "caption": "▪️ กะเพราแท้สูตรโบราณดั้งเดิมจริงๆ เขาใส่ซีอิ๊วดำกันไหมคะสาวๆ\n▪️ จากสูตรดั้งเดิมสมัยก่อน กะเพราจะเน้นผัดกับพริกแห้งและกระเทียมให้หอมฉุนแบบแห้งๆ และไม่ใส่ซีอิ๊วดำเลยค่ะ\n▪️ ส่วนซีอิ๊วดำพึ่งเริ่มมานิยมใส่กันยุคหลังๆ เพื่อปรับสีให้ดูเข้มขึ้นและรสชาติออกหวานนิดหน่อย\n▪️ ไม่ว่าจะเป็นกะเพราสูตรไหน ขอแค่รสชาติจัดจ้านและใบกะเพราป่ากลิ่นหอมก็ถือว่าดีต่อใจแล้วค่ะ\n▪️ ไหนใครชอบกะเพราแบบใส่ซีอิ๊วดำหรือแบบโบราณมากกว่ากัน คอมเมนต์บอกหนูหน่อยนะคะ\n#กะเพราโบราณ #อาหารไทย #พริก10เม็ด"
+            "caption": "กะเพราแท้สูตรโบราณดั้งเดิมจริงๆ เขาใส่ซีอิ๊วดำกันไหมคะสาวๆ จากสูตรดั้งเดิมสมัยก่อนจะไม่ใส่ซีอิ๊วดำเลยค่ะ จะเน้นผัดกับพริกแห้งและกระเทียมให้หอมฉุนแบบแห้งๆ ไหนใครชอบกะเพราแบบใส่ซีอิ๊วดำหรือแบบโบราณมากกว่ากัน คอมเมนต์บอกหนูหน่อยนะคะ\n#กะเพราโบราณ #อาหารไทย #พริก10เม็ด"
         }
     ]
 }
@@ -495,7 +495,7 @@ def generate_post_content(img_path, image_type, food_name, vibe, genre, content_
         "1. Output exactly 3 sections labeled with markers:\n"
         "   ===HOOK1=== (Hook Line 1: to be written on the image. Very short, 3-6 Thai words. Must feel like a casual first thought. Write strictly about the actual dish/stall in the image. e.g. if the image shows a curry shop, Hook must be about curry or market food)\n"
         "   ===HOOK2=== (Hook Line 2: to be written on the image. Very short, 3-5 Thai words. No placeholders or irrelevant context)\n"
-        "   ===CAPTION=== (Facebook Caption: a short story structured as 6-8 bullet points. Start each bullet with a ▪️ emoji. 1-2 sentences per bullet. Must strictly describe the food/stall shown in the image)\n\n"
+        "   ===CAPTION=== (Facebook Caption: a short, natural story written as a single paragraph of 2-4 sentences. Absolutely NO bullet points, lists, or symbols like ▪️. Must strictly describe the food/stall shown in the image, showing high relatable foodie humor, struggles, or late-night cravings depending on the category. Ask a relatable question at the end to drive engagement)\n\n"
         "2. Strict Constraints for Natural Thai Style and Spelling (AVOID TYPOS & TRANSLATION ERRORS):\n"
         "   - WRITE IN NATURAL, CASUAL THAI STREET/FACEBOOK STYLE (ภาษาพูดธรรมดา ท้องถิ่น สบายๆ ขำๆ เหมือนแชร์เรื่องฮาๆ ลงกลุ่ม).\n"
         "   - AVOID ENGLISH LITERAL TRANSLATIONS.\n"
@@ -630,7 +630,7 @@ def generate_recipe_content(history_recipes):
         "   ===DESC=== (Short delicious summary/description of the dish, 1-2 sentences. Keep it short!)\n"
         "   ===INGREDIENTS=== (List of ingredients, one per line. Keep each line short and clean, max 5-7 words, e.g., '• มะละกอดิบสับ 1 กำมือ')\n"
         "   ===STEPS=== (Numbered steps to cook/prepare the dish, one per line. Keep each line short and clean, max 10-15 words. Maximum 5-6 steps, e.g., '1. โขลกพริกกับกระเทียมให้พอแตก')\n"
-        "   ===CAPTION=== (A funny, engaging Facebook caption introducing the recipe, structured as 6-8 bullet points starting with ▪️ and ending with 3 hashtags)\n\n"
+        "   ===CAPTION=== (Facebook Caption: a short, natural story introducing the recipe as a single paragraph of 2-4 sentences. Absolutely NO bullet points, lists, or symbols like ▪️. Ask a relatable question at the end to drive engagement and end with 3 hashtags)\n\n"
         "Ensure all details are in THAI. Do not use English words. Keep ingredients and steps concise so they fit perfectly in a card layout.\n"
         "STRICT NEGATIVE CONSTRAINT: Absolutely NO mention of foreigners, tourists, westerners, or foreigners reacting to Thai food. Focus 100% on local Thai foodie humor, struggles, and everyday food experiences in Thailand. (ห้ามพูดถึงหรืออ้างอิงถึงชาวต่างชาติ, ฝรั่ง, นักท่องเที่ยว หรือปฏิกิริยาของคนต่างชาติต่ออาหารไทยเด็ดขาด เน้นเฉพาะวิถีชีวิตคนไทยและคนชอบกินเผ็ดในไทยเท่านั้น)"
     )
@@ -769,7 +769,7 @@ def generate_contrast_review_content(img_path, image_type, food_name, vibe, redd
         "1. Output exactly 3 sections labeled with markers:\n"
         "   ===HOOK1=== (Hook Line 1: Sarcastic/pain-point statement to be written on the image. Very short, 3-6 Thai words. Must feel like a casual first thought, NO emojis. Write strictly about the actual dish/stall in the image)\n"
         "   ===HOOK2=== (Hook Line 2: Sarcastic follow-up, very short, 3-5 Thai words, NO emojis. No placeholders or irrelevant context)\n"
-        "   ===CAPTION=== (Facebook Caption: a funny, sarcastic story structured as 6-8 bullet points. Start each bullet with a ▪️ emoji. End with 3 relevant hashtags. Must strictly describe the food/stall shown in the image)\n\n"
+        "   ===CAPTION=== (Facebook Caption: a funny, sarcastic story written as a single paragraph of 2-4 sentences. Absolutely NO bullet points, lists, or symbols like ▪️. Must strictly describe the food/stall shown in the image, showing high foodie humor, and end with 3 relevant hashtags)\n\n"
         "2. Strict Constraints for Natural Thai Style and Spelling:\n"
         "   - WRITE IN NATURAL, CASUAL THAI STREET/FACEBOOK STYLE.\n"
         "   - STRICT LOGICAL CONSISTENCY between hooks and caption: Hook lines and caption MUST tell the exact same story as the image.\n"
@@ -837,7 +837,7 @@ def generate_trivia_content(img_path, query, history_trivias):
         "1. Output exactly 3 sections labeled with markers:\n"
         "   ===HOOK1=== (Hook Line 1: Sarcastic/fascinating fact statement to be written on the image. Very short, 3-6 Thai words. NO emojis. Write strictly about the actual food/dish in the image)\n"
         "   ===HOOK2=== (Hook Line 2: Hook continuation or question, very short, 3-5 Thai words, NO emojis)\n"
-        "   ===CAPTION=== (Facebook Caption: a funny, fascinating food trivia story structured as 6-8 bullet points. Start each bullet with a ▪️ emoji. End with 3 relevant hashtags. Must strictly describe the food/stall shown in the image)\n\n"
+        "   ===CAPTION=== (Facebook Caption: a funny, fascinating food trivia story written as a single paragraph of 2-4 sentences. Absolutely NO bullet points, lists, or symbols like ▪️. Must strictly describe the food/stall shown in the image, showing high foodie humor, and end with 3 relevant hashtags)\n\n"
         "2. Strict Constraints for Natural Thai Style and Spelling:\n"
         "   - WRITE IN NATURAL, CASUAL THAI STREET/FACEBOOK STYLE.\n"
         "   - STRICT LOGICAL CONSISTENCY between hooks and caption: Hook lines and caption MUST tell the exact same story as the image.\n"

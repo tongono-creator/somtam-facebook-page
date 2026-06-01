@@ -1,6 +1,7 @@
 # overlay_utils.py â€” PIL text overlay for Facebook bot images
 
 import os
+import re
 from PIL import Image, ImageDraw, ImageFont
 
 FONT_PATH = os.path.join(os.path.dirname(__file__), "fonts", "Kanit-Bold.ttf")
@@ -117,26 +118,27 @@ def _balance_wrap(draw, lines, font, max_width, min_ratio=0.42):
     last_text = lines[-1].strip()
     last_w    = draw.textbbox((0, 0), last_text, font=font)[2]
     prev_w    = draw.textbbox((0, 0), lines[-2], font=font)[2]
-    # trigger à¸–à¹‰à¸²: pixel ratio à¸•à¹ˆà¸³ à¸«à¸£à¸·à¸­ char à¸™à¹‰à¸­à¸¢à¸¡à¸²à¸ (à¹€à¸¥à¸‚à¹€à¸”à¸µà¹ˆà¸¢à¸§ %, 0, à¸šà¸²à¸— à¸¯à¸¥à¸¯)
+    # trigger à¸–à¹‰à¸²: pixel ratio à¸•à¹ˆà¸³ à¸«à¸£à¸·à¸­ char à¸™à¹‰à¸­à¸¢à¸¡à¸²à¸  (à¹€à¸¥à¸‚à¹€à¸”à¸µà¹ˆà¸¢à¸§ %, 0, à¸šà¸²à¸— à¸¯à¸¥à¸¯)
     is_orphan = (last_w < prev_w * min_ratio) or (len(last_text) <= 4)
     if not is_orphan:
-        return lines  # à¸ªà¸¡à¸”à¸¸à¸¥à¹à¸¥à¹‰à¸§
-    # merge 2 à¸šà¸£à¸£à¸—à¸±à¸”à¸ªà¸¸à¸”à¸—à¹‰à¸²à¸¢ â†’ re-wrap à¸”à¹‰à¸§à¸¢ target_w à¸—à¸µà¹ˆà¹à¸„à¸šà¸¥à¸‡
+        return lines  # à¸ªà¸¡à¸”à¸¸à¸¥à¹ à¸¥à¹‰à¸§
+    # merge 2 à¸šà¸£à¸£à¸—à¸±à¸”à¸ªà¸¸à¸”à¸—à¹‰à¸²à¸¢ â†’ re-wrap à¸”à¹‰à¸§à¸¢ target_w à¸—à¸µà¹ˆà¹ à¸„à¸šà¸¥à¸‡
     merged   = lines[-2] + " " + lines[-1]
     total_w  = draw.textbbox((0, 0), merged, font=font)[2]
-    target_w = min(max_width, int(total_w * 0.55))  # à¸—à¸³à¹ƒà¸«à¹‰à¹à¸•à¸à¹€à¸›à¹‡à¸™ ~2 à¸šà¸£à¸£à¸—à¸±à¸”à¸—à¸µà¹ˆà¹€à¸—à¹ˆà¸²à¹† à¸à¸±à¸™
+    target_w = min(max_width, int(total_w * 0.55))  # à¸—à¸³à¹ƒà¸«à¹‰à¹ à¸•à¸ à¹€à¸›à¹‡à¸™ ~2 à¸šà¸£à¸£à¸—à¸±à¸”à¸—à¸µà¹ˆà¹€à¸—à¹ˆà¸²à¹† à¸ à¸±à¸™
     rebalanced = _wrap_text(draw, merged, font, target_w)
-    # à¸•à¸£à¸§à¸ˆà¸§à¹ˆà¸²à¸—à¸¸à¸ line à¹„à¸¡à¹ˆà¹€à¸à¸´à¸™ max_width (à¹„à¸¡à¹ˆ overflow)
+    # à¸•à¸£à¸§à¸ˆà¸§à¹ˆà¸²à¸—à¸¸à¸  line à¹„à¸¡à¹ˆà¹€à¸ à¸´à¸™ max_width (à¹„à¸¡à¹ˆ overflow)
     if all(draw.textbbox((0, 0), l, font=font)[2] <= max_width for l in rebalanced):
         return lines[:-2] + rebalanced
     return lines  # rebalance à¹„à¸¡à¹ˆà¹„à¸”à¹‰ â€” à¸„à¸·à¸™à¸„à¹ˆà¸²à¹€à¸”à¸´à¸¡
 
 
 def _draw_lines(draw, lines, font, line_h, gap, y_start, W, fill, shadow=(0, 0, 0)):
-    """à¸§à¸²à¸” wrapped lines à¸à¸¶à¹ˆà¸‡à¸à¸¥à¸²à¸‡ à¸žà¸£à¹‰à¸­à¸¡ 8-direction outline (à¸­à¹ˆà¸²à¸™à¹„à¸”à¹‰à¸—à¸¸à¸à¸žà¸·à¹‰à¸™à¸«à¸¥à¸±à¸‡)"""
+    """วาด wrapped lines กึ่งกลาง พร้อม 8-direction outline (อ่านได้ทุกพื้นหลัง)"""
     y = y_start
     for line in lines:
-        bw = draw.textbbox((0, 0), line, font=font)[2]
+        clean_line = line.replace('\u200b', '').replace('\\u200b', '')
+        bw = draw.textbbox((0, 0), clean_line, font=font)[2]
         x  = (W - bw) // 2
         # 8-direction outline â€” à¸—à¸³à¹ƒà¸«à¹‰à¸­à¹ˆà¸²à¸™à¹„à¸”à¹‰à¹à¸¡à¹‰à¸žà¸·à¹‰à¸™à¸«à¸¥à¸±à¸‡à¸ªà¸µà¹ƒà¸à¸¥à¹‰à¹€à¸„à¸µà¸¢à¸‡à¸•à¸±à¸§à¸­à¸±à¸à¸©à¸£
         for dx, dy in [(-3,-3),(-3,0),(-3,3),(0,-3),(0,3),(3,-3),(3,0),(3,3)]:
