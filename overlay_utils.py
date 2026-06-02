@@ -4,7 +4,7 @@ import os
 import re
 from PIL import Image, ImageDraw, ImageFont
 
-FONT_PATH = os.path.join(os.path.dirname(__file__), "fonts", "Kanit-Bold.ttf")
+FONT_PATH = os.path.join(os.path.dirname(__file__), "fonts", "Sarabun-ExtraBold.ttf")
 
 _LEADING_VOWELS  = set('เแโใไ')
 _COMBINING_CHARS = set('่้๊๋์ิีึืุูัํ็')
