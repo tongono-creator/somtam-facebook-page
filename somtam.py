@@ -197,16 +197,19 @@ FALLBACK_POSTS = {
         {
             "line1": "สั่งเผ็ดน้อย",
             "line2": "แต่แดงทั้งครก",
+            "url": "https://images.pexels.com/photos/10527603/pexels-photo-10527603.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
             "caption": "สั่งแม่ค้าว่าเผ็ดน้อยทีไร ได้สีแดงแป๊ดมาตลอดเลยค่ะ ในใจแม่ค้าคงคิดว่าพริก 10 เม็ดคือเลเวลอนุบาล ปากเจ่อเหงื่อไหลยาลดกรดต้องเข้าแล้วค่ะงานนี้ แต่ในฐานะนักสู้เรื่องกิน เราไม่มียอมแพ้แน่นอนค่ะ ใครเคยสั่งเผ็ดน้อยแล้วได้เผ็ดร้อนระเบิดรูทวารแบบนี้บ้างคะ\n#สั่งเผ็ดน้อย #แซ่บสู้ชีวิต #พริก10เม็ด"
         },
         {
             "line1": "กินตอนนี้แซ่บปาก",
             "line2": "พรุ่งนี้ลำบากตูด",
+            "url": "https://images.pexels.com/photos/10527603/pexels-photo-10527603.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
             "caption": "วงการส้มตำเข้าแล้วออกยาก แต่เข้าห้องน้ำออกยากกว่าค่ะ ตอนกินคือนัวสะใจ พริกแห้งพริกสดจัดเต็มไม่มีกั๊ก พรุ่งนี้เช้าเตรียมตัวรับแรงกระแทกแบบสู้ชีวิตเลยค่ะ แต่ถามว่าจะเข็ดไหม ตอบเลยว่าพรุ่งนี้เย็นเจอกันใหม่ค่ะ\n#อร่อยแซ่บ #เตือนภัยสายกิน #พริก10เม็ด"
         },
         {
             "line1": "คิวยาวเป็นกิโล",
             "line2": "แต่ยอมยืนรอ",
+            "url": "https://images.pexels.com/photos/34699470/pexels-photo-34699470.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
             "caption": "วิถีคนหิวที่แท้จริงคือการยืนรอคิวหน้าร้านส้มตำค่ะ แดดจะร้อนลมจะแรงแค่ไหนก็ทำอะไรความอยากกินไม่ได้ พอได้กินคำแรกปลาร้านัวๆ เท่านั้นแหละ หายเหนื่อยทันทีค่ะ ใครยอมยืนต่อคิวเพื่อของอร่อยบ้างคะรายงานตัวด่วน\n#รีวิวสตรีทฟู้ด #ส้มตำคิวยาว #พริก10เม็ด"
         }
     ],
@@ -214,11 +217,13 @@ FALLBACK_POSTS = {
         {
             "line1": "กำเนิดส้มตำไทย",
             "line2": "มะละกอมาจากไหน?",
+            "url": "https://images.pexels.com/photos/10527603/pexels-photo-10527603.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
             "caption": "รู้ไหมคะว่าส้มตำที่เรากินกันแซ่บๆ ทุกวันนี้ มะละกอไม่ได้มีต้นกำเนิดในไทยนะ จริงๆ มะละกอเป็นพืชพื้นเมืองของอเมริกากลางค่ะ นำเข้ามาโดยพ่อค้าชาวโปรตุเกสตั้งแต่สมัยอยุธยาตอนปลาย แล้วคนไทยเริ่มเอามาโขลกใส่น้ำปลา พริก และมะนาวจนกลายเป็นส้มตำแซ่บๆ ใครเป็นมะละกอเลิฟเวอร์ยกมือขึ้นด่วนๆ เลยนะคะสาวๆ\n#ประวัติส้มตำ #มะละกอแซ่บ #พริก10เม็ด"
         },
         {
             "line1": "ผัดกะเพราโบราณ",
             "line2": "ใส่ซีอิ๊วดำไหม?",
+            "url": "https://images.pexels.com/photos/28996226/pexels-photo-28996226.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
             "caption": "กะเพราแท้สูตรโบราณดั้งเดิมจริงๆ เขาใส่ซีอิ๊วดำกันไหมคะสาวๆ จากสูตรดั้งเดิมสมัยก่อนจะไม่ใส่ซีอิ๊วดำเลยค่ะ จะเน้นผัดกับพริกแห้งและกระเทียมให้หอมฉุนแบบแห้งๆ ไหนใครชอบกะเพราแบบใส่ซีอิ๊วดำหรือแบบโบราณมากกว่ากัน คอมเมนต์บอกหนูหน่อยนะคะ\n#กะเพราโบราณ #อาหารไทย #พริก10เม็ด"
         }
     ]
@@ -684,74 +689,6 @@ def generate_recipe_content(history_recipes):
     return fb["title"], fb["desc"], fb["ingredients"], fb["steps"], fb["caption"]
 
 
-def generate_trivia_content(img_path, query, history_trivias):
-    with open(img_path, "rb") as f:
-        img_data = f.read()
-        
-    history_str = ", ".join(history_trivias) if history_trivias else "ไม่มี"
-    prompt = (
-        "You are an expert Thai social media copywriter for 'พริก 10 เม็ด' (Spicy Thai Food page). Write with a friendly female persona using female particles like 'ค่ะ' / 'คะ' and pronouns like 'หนู' / 'เรา'.\n"
-        "Analyze the attached image and generate a highly engaging, funny, and fascinating Thai food trivia fact (สาระสายกิน) related to the food shown in the image.\n"
-        f"STRICT NEGATIVE CONSTRAINT: Do NOT generate trivia for any of the following topics/titles: {history_str}.\n"
-        "Requirements:\n"
-        "1. Output exactly 3 sections labeled with markers:\n"
-        "   ===HOOK1=== (Hook Line 1: Sarcastic/fascinating fact statement to be written on the image. Very short, 3-6 Thai words. NO emojis. Write strictly about the actual food/dish in the image)\n"
-        "   ===HOOK2=== (Hook Line 2: Hook continuation or question, very short, 3-5 Thai words, NO emojis)\n"
-        "   ===CAPTION=== (Facebook Caption: a funny, fascinating food trivia story structured as 6-8 bullet points. Start each bullet with a ▪️ emoji. End with 3 relevant hashtags. Must strictly describe the food/stall shown in the image)\n\n"
-        "2. Strict Constraints for Natural Thai Style and Spelling:\n"
-        "   - WRITE IN NATURAL, CASUAL THAI STREET/FACEBOOK STYLE.\n"
-        "   - STRICT LOGICAL CONSISTENCY between hooks and caption: Hook lines and caption MUST tell the exact same story as the image.\n"
-        "   - STRICT NEGATIVE CONSTRAINT: Absolutely NO mention of foreigners, tourists, westerners, or foreigners reacting to Thai food. Focus 100% on local Thai foodie humor and everyday struggles.\n"
-        f"Realism Guidelines:\n{REALISM_FILTER}\n"
-        "Format of Response:\n"
-        "===HOOK1=== [Hook Line 1]\n"
-        "===HOOK2=== [Hook Line 2]\n"
-        "===CAPTION=== [Facebook Caption]"
-    )
-    for model in TEXT_MODELS:
-        try:
-            resp = client.models.generate_content(
-                model=model,
-                contents=[
-                    types.Part.from_bytes(data=img_data, mime_type="image/jpeg"),
-                    types.Part.from_text(text=prompt),
-                ],
-                generation_config=types.GenerateContentConfig(timeout=60)
-            )
-            result = resp.text.strip()
-            print(f"Trivia Content Generation [{model}]:\n{result[:300]}...\n")
-            
-            h1_match = re.search(r'===HOOK1===\s*(.*)', result, re.IGNORECASE)
-            h2_match = re.search(r'===HOOK2===\s*(.*)', result, re.IGNORECASE)
-            cap_match = re.search(r'===CAPTION===\s*(.*)', result, re.DOTALL | re.IGNORECASE)
-            
-            line1 = h1_match.group(1).split('\n')[0].strip() if h1_match else ""
-            line2 = h2_match.group(1).split('\n')[0].strip() if h2_match else ""
-            caption = cap_match.group(1).strip() if cap_match else ""
-            
-            label_pattern = r'^(ข้อความในโพสต์\s*Facebook|Facebook\s*Caption|Facebook\s*caption|Caption|caption|ข้อความบนรูป|ข้อความในรูป|ข้อความ|คำบรรยาย|คำอธิบาย|บรรทัดที่\s*\d+|บรรทัด\s*\d+|ประโยคที่\s*\d+|ประโยค\s*\d+|Hook\s*text|Hook|Line\s*\d+|[L|l]ine\s*\d+|\d+)\s*[:\-\.\s]\s*'
-            line1 = re.sub(label_pattern, '', line1, flags=re.IGNORECASE).strip()
-            line2 = re.sub(label_pattern, '', line2, flags=re.IGNORECASE).strip()
-            line1 = line1.strip('"\'“”‘’')
-            line2 = line2.strip('"\'“”‘’')
-            
-            if line1 and not contains_thai(line1):
-                line1 = translate_to_thai(line1)
-            if line2 and not contains_thai(line2):
-                line2 = translate_to_thai(line2)
-            if caption and not contains_thai(caption):
-                caption = translate_to_thai(caption)
-                
-            if line1 and caption and contains_thai(line1) and contains_thai(caption):
-                return line1, line2, caption
-        except Exception as e:
-            print(f"[{model}] trivia content generation failed: {e}")
-            
-    print("Using trivia fallback post.")
-    fb = random.choice(FALLBACK_POSTS["trivia"])
-    return fb["line1"], fb["line2"], fb["caption"]
-
-
 def generate_contrast_review_content(img_path, image_type, food_name, vibe, reddit_title=""):
     with open(img_path, "rb") as f:
         img_data = f.read()
@@ -823,13 +760,13 @@ def generate_contrast_review_content(img_path, image_type, food_name, vibe, redd
                 caption = translate_to_thai(caption)
                 
             if line1 and caption and contains_thai(line1) and contains_thai(caption):
-                return line1, line2, caption
+                return line1, line2, caption, None
         except Exception as e:
             print(f"[{model}] contrast review content generation failed: {e}")
             
     print("Using contrast review fallback post.")
     fb = random.choice(FALLBACK_POSTS["contrast_review"])
-    return fb["line1"], fb["line2"], fb["caption"]
+    return fb["line1"], fb["line2"], fb["caption"], fb.get("url")
 
 
 def generate_trivia_content(img_path, query, history_trivias):
@@ -890,13 +827,13 @@ def generate_trivia_content(img_path, query, history_trivias):
                 caption = translate_to_thai(caption)
                 
             if line1 and caption and contains_thai(line1) and contains_thai(caption):
-                return line1, line2, caption
+                return line1, line2, caption, None
         except Exception as e:
             print(f"[{model}] trivia content generation failed: {e}")
             
     print("Using trivia fallback post.")
     fb = random.choice(FALLBACK_POSTS["trivia"])
-    return fb["line1"], fb["line2"], fb["caption"]
+    return fb["line1"], fb["line2"], fb["caption"], fb.get("url")
 
 
 def search_pexels_single_image(query, history_urls, block_urls=None):
@@ -1030,7 +967,14 @@ def main():
             genre = "วิถีสตรีทฟู้ด"
 
         print(f"Food: {food_name} | Type: {image_type} | Vibe: {vibe}")
-        line1, line2, caption = generate_contrast_review_content(img_path, image_type, food_name, vibe, reddit_title=reddit_title)
+        line1, line2, caption, fallback_url = generate_contrast_review_content(img_path, image_type, food_name, vibe, reddit_title=reddit_title)
+        if fallback_url:
+            print(f"API failed, using fallback post. Redownloading matching image: {fallback_url}")
+            if os.path.exists(img_path):
+                os.unlink(img_path)
+            new_img_path = download_image(fallback_url)
+            if new_img_path:
+                img_path = new_img_path
         line1 = segment_thai_text(line1, client)
         line2 = segment_thai_text(line2, client)
         print(f"Contrast Hook: {line1} | {line2}")
@@ -1066,7 +1010,14 @@ def main():
             print("Image download failed")
             return
             
-        line1, line2, caption = generate_trivia_content(img_path, query, history_recipes)
+        line1, line2, caption, fallback_url = generate_trivia_content(img_path, query, history_recipes)
+        if fallback_url:
+            print(f"API failed, using fallback post. Redownloading matching image: {fallback_url}")
+            if os.path.exists(img_path):
+                os.unlink(img_path)
+            new_img_path = download_image(fallback_url)
+            if new_img_path:
+                img_path = new_img_path
         line1 = segment_thai_text(line1, client)
         line2 = segment_thai_text(line2, client)
         print(f"Trivia Hook: {line1} | {line2}")
