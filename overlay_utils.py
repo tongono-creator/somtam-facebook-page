@@ -142,8 +142,8 @@ def _draw_lines(draw, lines, font, line_h, gap, y_start, W, fill, shadow=(0, 0, 
         x  = (W - bw) // 2
         # 8-direction outline â€” à¸—à¸³à¹ƒà¸«à¹‰à¸­à¹ˆà¸²à¸™à¹„à¸”à¹‰à¹à¸¡à¹‰à¸žà¸·à¹‰à¸™à¸«à¸¥à¸±à¸‡à¸ªà¸µà¹ƒà¸à¸¥à¹‰à¹€à¸„à¸µà¸¢à¸‡à¸•à¸±à¸§à¸­à¸±à¸à¸©à¸£
         for dx, dy in [(-3,-3),(-3,0),(-3,3),(0,-3),(0,3),(3,-3),(3,0),(3,3)]:
-            draw.text((x + dx, y + dy), line, font=font, fill=shadow)
-        draw.text((x, y), line, font=font, fill=fill)
+            draw.text((x + dx, y + dy), clean_line, font=font, fill=shadow)
+        draw.text((x, y), clean_line, font=font, fill=fill)
         y += line_h + gap
     return y  # y à¸«à¸¥à¸±à¸‡à¸šà¸£à¸£à¸—à¸±à¸”à¸ªà¸¸à¸”à¸—à¹‰à¸²à¸¢
 
@@ -386,13 +386,14 @@ def create_acid_debate_card(line1, line2, out_path):
     
     y = (H - total_text_h) // 2 + 30
     for line in wrapped_lines:
-        bbox = draw.textbbox((0, 0), line, font=main_font)
+        clean_line = line.replace('\u200b', '').replace('\\u200b', '')
+        bbox = draw.textbbox((0, 0), clean_line, font=main_font)
         tw = bbox[2] - bbox[0]
         tx = (W - tw) // 2 - bbox[0]
         # Drop shadow
-        draw.text((tx + 2, y + 2), line, font=main_font, fill=(0, 0, 0, 40))
+        draw.text((tx + 2, y + 2), clean_line, font=main_font, fill=(0, 0, 0, 40))
         # Main text
-        draw.text((tx, y), line, font=main_font, fill=(40, 40, 40))
+        draw.text((tx, y), clean_line, font=main_font, fill=(40, 40, 40))
         y += line_h + line_gap
         
     img.save(out_path, "JPEG", quality=92)
@@ -512,7 +513,7 @@ def create_split_debate_card(left_img_path, right_img_path, left_label, right_la
     return out_path
 
 
-def create_recipe_card(title, desc, ingredients, steps, out_path):
+def create_recipe_card(title, desc, ingredients, steps, out_path, bg_img_path=None):
     """
     Draws a beautiful dark-mode recipe card with a grid, an orange/gold border,
     a branding capsule, and two columns: ingredients list (left) and steps list (right).
@@ -521,7 +522,27 @@ def create_recipe_card(title, desc, ingredients, steps, out_path):
     bg_color1 = (18, 18, 24)
     bg_color2 = (28, 28, 38)
     
-    img = create_diagonal_gradient(W, H, bg_color1, bg_color2)
+    if bg_img_path and os.path.exists(bg_img_path):
+        try:
+            bg_raw = Image.open(bg_img_path).convert("RGBA")
+            # Crop to 1:1 ratio
+            w_raw, h_raw = bg_raw.size
+            min_side = min(w_raw, h_raw)
+            left = (w_raw - min_side) // 2
+            top = (h_raw - min_side) // 2
+            right = left + min_side
+            bottom = top + min_side
+            bg_crop = bg_raw.crop((left, top, right, bottom))
+            bg_resized = bg_crop.resize((W, H), Image.Resampling.LANCZOS)
+            
+            # Apply a heavy dark overlay to ensure text readability (e.g. 82% opacity)
+            dark_overlay = Image.new("RGBA", (W, H), (15, 15, 20, 210))
+            img = Image.alpha_composite(bg_resized, dark_overlay).convert("RGB")
+        except Exception as e:
+            print(f"Error loading background image {bg_img_path}: {e}")
+            img = create_diagonal_gradient(W, H, bg_color1, bg_color2)
+    else:
+        img = create_diagonal_gradient(W, H, bg_color1, bg_color2)
     
     overlay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     draw_ol = ImageDraw.Draw(overlay)
@@ -634,12 +655,20 @@ def create_recipe_card(title, desc, ingredients, steps, out_path):
     cleaned_ingredients = []
     for ing in ingredients_list:
         ing_text = re.sub(r'^[•\-\*\s]+', '', ing).strip()
+        # Filter out empty entries or placeholders like "=", "-", "_", "."
+        if not ing_text or ing_text in ["=", "-", "_", "."] or re.match(r'^[=\-\_\.\s]+$', ing_text):
+            continue
         cleaned_ingredients.append(f"• {ing_text}")
         
     cleaned_steps = []
-    for idx, step in enumerate(steps_list, 1):
+    step_num = 1
+    for step in steps_list:
         step_text = re.sub(r'^\d+[\.\-\s\u2013]+', '', step).strip()
-        cleaned_steps.append(f"{idx}. {step_text}")
+        # Filter out empty entries or placeholders like "=", "-", "_", "."
+        if not step_text or step_text in ["=", "-", "_", "."] or re.match(r'^[=\-\_\.\s]+$', step_text):
+            continue
+        cleaned_steps.append(f"{step_num}. {step_text}")
+        step_num += 1
         
     item_sz = 26
     col_w = 400
@@ -680,14 +709,16 @@ def create_recipe_card(title, desc, ingredients, steps, out_path):
     y = y_list_start
     for lines in left_wrapped:
         for line in lines:
-            draw.text((85, y), line, font=font, fill=(245, 245, 245))
+            clean_line = line.replace('\u200b', '').replace('\\u200b', '')
+            draw.text((85, y), clean_line, font=font, fill=(245, 245, 245))
             y += line_h + line_gap
         y += item_gap - line_gap
 
     y = y_list_start
     for lines in right_wrapped:
         for line in lines:
-            draw.text((575, y), line, font=font, fill=(245, 245, 245))
+            clean_line = line.replace('\u200b', '').replace('\\u200b', '')
+            draw.text((575, y), clean_line, font=font, fill=(245, 245, 245))
             y += line_h + line_gap
         y += item_gap - line_gap
         

@@ -176,21 +176,24 @@ FALLBACK_POSTS = {
             "desc": "เมนูสุดแซ่บจัดเต็มยกทะเลมาไว้ในครก เผ็ดร้อนถึงใจสะท้านทรวงค่ะ",
             "ingredients": "• เส้นมะละกอดิบสับ 1 กำมือ\n• กุ้งสดแกะเปลือก 5 ตัว\n• ปลาหมึกหั่นแว่น 5 ชิ้น\n• พริกขี้หนูสวน 10 เม็ด\n• มะเขือเทศสีดา 2 ลูก\n• ผักกาดดองหั่น 1 ช้อนโต๊ะ\n• น้ำปลาร้าต้มสุก 2 ช้อนโต๊ะ\n• น้ำมะนาว 2 ช้อนโต๊ะ",
             "steps": "1. โขลกพริกขี้หนูและกระเทียมให้พอแตก\n2. ใส่มะเขือเทศ ผักกาดดอง และเครื่องปรุงทั้งหมดโขลกเบาๆ\n3. ใส่เส้นมะละกอ กุ้งสด และปลาหมึกลวกสุก คลุกเคล้าให้เข้ากัน\n4. ตักใส่ถาดพร้อมแซ่บกับผักสดและแคบหมูค่ะ",
-            "caption": "ดึกแล้วท้องมันร้องหาความนัวระดับสิบใช่ไหมคะ วันนี้หนูพาสูตรส้มตำป่าทะเลครกแตกมาแจกค่ะ เครื่องแน่นล้นครก รสชาติเผ็ดแซ่บสะท้านทรวง มะนาวแท้ๆ ปลาร้านัวๆ กุ้งเด้งสู้ฟันสุดๆ ค่ะ เมนต์บอกหนูหน่อยว่าใครอยากชิมฝีมือหนูบ้างคะ\n#ส้มตำป่า #สูตรส้มตำ #พริก10เม็ด"
+            "caption": "ดึกแล้วท้องมันร้องหาความนัวระดับสิบใช่ไหมคะ วันนี้หนูพาสูตรส้มตำป่าทะเลครกแตกมาแจกค่ะ เครื่องแน่นล้นครก รสชาติเผ็ดแซ่บสะท้านทรวง มะนาวแท้ๆ ปลาร้านัวๆ กุ้งเด้งสู้ฟันสุดๆ ค่ะ เมนต์บอกหนูหน่อยว่าใครอยากชิมฝีมือหนูบ้างคะ\n#ส้มตำป่า #สูตรส้มตำ #พริก10เม็ด",
+            "query": "papaya salad"
         },
         {
             "title": "ตำหลวงพระบางนัวปลาร้า",
             "desc": "ส้มตำเส้นแบนบางกรอบ ซึมซับน้ำปลาร้าเข้มข้นอร่อยนัวทุกคำค่ะ",
             "ingredients": "• มะละกอฝานแผ่นบาง 1 กำมือ\n• พริกแห้งและพริกสด 10 เม็ด\n• น้ำปลาร้าปรุงรสเข้มข้น 2.5 ช้อนโต๊ะ\n• น้ำตาลปี๊บ 1 ช้อนโต๊ะ\n• กะปิแท้ 1/2 ช้อนชา\n• มะเขือเครือ 3 ลูก\n• มะนาวแป้น 2 ลูก",
             "steps": "1. โขลกพริกแห้ง พริกสด และกะปิให้เข้ากัน\n2. ใส่น้ำตาลปี๊บ มะเขือเครือ บีบมะนาวใส่ทั้งเปลือกโขลกเบาๆ\n3. เติมน้ำปลาร้านัวๆ คนให้ละลายดี\n4. ใส่เส้นมะละกอแผ่นบาง คลุกเคล้าให้ซึมซับน้ำตำหลวงพระบาง\n5. โรยเม็ดกระถินตักเสิร์ฟพร้อมกากหมูเจียวค่ะ",
-            "caption": "ใครชอบกินส้มตำเส้นแบนบางกรอบเชิญทางนี้เลยค่ะ ตำหลวงพระบางสูตรนี้แอดมินพี่สาวคอนเฟิร์มว่านัวมาก เส้นบางๆ ซับน้ำปลาร้ากับกะปิหอมๆ เข้าเนื้อสุดๆ ทานคู่กับกากหมูเจียวใหม่ๆ และเม็ดกระถินคือที่สุด เซฟสูตรนี้ไว้ทำตามด่วนๆ เลยนะคะสาวๆ\n#ตำหลวงพระบาง #ส้มตำปลาร้า #พริก10เม็ด"
+            "caption": "ใครชอบกินส้มตำเส้นแบนบางกรอบเชิญทางนี้เลยค่ะ ตำหลวงพระบางสูตรนี้แอดมินพี่สาวคอนเฟิร์มว่านัวมาก เส้นบางๆ ซับน้ำปลาร้ากับกะปิหอมๆ เข้าเนื้อสุดๆ ทานคู่กับกากหมูเจียวใหม่ๆ และเม็ดกระถินคือที่สุด เซฟสูตรนี้ไว้ทำตามด่วนๆ เลยนะคะสาวๆ\n#ตำหลวงพระบาง #ส้มตำปลาร้า #พริก10เม็ด",
+            "query": "papaya salad"
         },
         {
             "title": "กะเพราเนื้อสับพริกแห้ง",
             "desc": "กะเพราแท้สูตรโบราณ เผ็ดร้อนแห้งสนิทไม่ใส่ผักกาดขาวค่ะ",
             "ingredients": "• เนื้อวัวสับติดมัน 200 กรัม\n• พริกแห้งแดงและเขียว 10 เม็ด\n• กระเทียมไทย 1 หัว\n• ใบกะเพราป่าแดง 1 กำมือ\n• ซอสปรุงรส 1 ช้อนโต๊ะ\n• น้ำปลาแท้ 1 ช้อนโต๊ะ\n• น้ำตาลทรายปลายช้อนชา",
             "steps": "1. โขลกพริกแห้งและกระเทียมให้ละเอียดพอประมาณ\n2. ตั้งกระทะร้อนจัด นำพริกกระเทียมลงผัดจนฉุนกระเจิง\n3. ใส่เนื้อสับลงผัด ยีให้กระจายตัวและผัดจนแห้งเข้าเนื้อ\n4. ปรุงรสด้วยน้ำปลา ซอสปรุงรส และน้ำตาลเล็กน้อย\n5. ใส่ใบกะเพราป่า ผัดเร็วๆ ด้วยไฟแรงแล้วยกลงทันทีค่ะ",
-            "caption": "เบื่อไหมคะกับการสั่งผัดกะเพราแล้วได้ถั่วฝักยาวแถมมา วันนี้แอดมินหนูขอแจกสูตรกะเพราเนื้อสับพริกแห้งแท้ๆ ค่ะ ผัดแบบแห้งๆ คั่วพริกหอมฉุนขึ้นจมูกจามกันทั้งบ้าน โปะไข่ดาวกรอบๆ ขอบไหม้ไข่แดงเยิ้มๆ คือนิพพาน ไหนใครชอบกะเพราแห้งๆ เหมือนกันบ้าง มารายงานตัวด่วนค่ะ\n#กะเพราเนื้อสับ #กะเพราพริกแห้ง #พริก10เม็ด"
+            "caption": "เบื่อไหมคะกับการสั่งผัดกะเพราแล้วได้ถั่วฝักยาวแถมมา วันนี้แอดมินหนูขอแจกสูตรกะเพราเนื้อสับพริกแห้งแท้ๆ ค่ะ ผัดแบบแห้งๆ คั่วพริกหอมฉุนขึ้นจมูกจามกันทั้งบ้าน โปะไข่ดาวกรอบๆ ขอบไหม้ไข่แดงเยิ้มๆ คือนิพพาน ไหนใครชอบกะเพราแห้งๆ เหมือนกันบ้าง มารายงานตัวด่วนค่ะ\n#กะเพราเนื้อสับ #กะเพราพริกแห้ง #พริก10เม็ด",
+            "query": "pad kra pao"
         }
     ],
     "contrast_review": [
@@ -631,12 +634,13 @@ def generate_recipe_content(history_recipes):
         "Choose a delicious Thai recipe (สูตรอาหารไทยแซ่บๆ/สตรีทฟู้ด) that local Thai readers will love (e.g., ต้มยำกุ้งน้ำข้น, แกงเขียวหวานไก่, ยำวุ้นเส้นโบราณ, น้ำตกคอหมูย่าง, แกงส้มชะอมกุ้ง).\n"
         f"STRICT NEGATIVE CONSTRAINT: Do NOT choose or generate a recipe for any of the following menus/titles: {history_str}.\n"
         "Requirements:\n"
-        "1. Output exactly 5 sections labeled with markers:\n"
+        "1. Output exactly 6 sections labeled with markers:\n"
         "   ===TITLE=== (Recipe Title, 2-4 Thai words, e.g., 'ต้มยำกุ้งน้ำข้น')\n"
         "   ===DESC=== (Short delicious summary/description of the dish, 1-2 sentences. Keep it short!)\n"
         "   ===INGREDIENTS=== (List of ingredients with accurate measurements from the source, one per line. Keep each line short and clean, max 5-7 words, e.g., '• กุ้งสดปอกเปลือก 200 กรัม')\n"
         "   ===STEPS=== (Numbered steps to cook/prepare the dish based on the source, one per line. Keep each line short and clean, max 10-15 words. Maximum 5-6 steps, e.g., '1. ต้มน้ำให้เดือดแล้วใส่เครื่องต้มยำ')\n"
-        "   ===CAPTION=== (Facebook Caption: a short, natural story introducing the recipe as a single paragraph of 2-4 sentences. Do NOT use any bullet points, lists, or symbols like ▪️. Frame the recipe introduction around a common food controversy or debate (e.g., whether to put MSG, how to make it dry/wet, or authentic ingredient disputes). Ask a relatable question at the end to drive engagement (e.g., 'สูตรนี้หนูได้สูตรแซ่บเป๊ะมาจาก Krua.co ค่ะ พี่ๆ ทีมใส่ผงนัวหรือบีบมะนาวสดคะ?') and end with 3 hashtags. Mention that the recipe is adapted/sourced from a reliable source like Krua.co, Wongnai, or Kapook naturally in the text.)\n\n"
+        "   ===CAPTION=== (Facebook Caption: a short, natural story introducing the recipe as a single paragraph of 2-4 sentences. Do NOT use any bullet points, lists, or symbols like ▪️. Frame the recipe introduction around a common food controversy or debate (e.g., whether to put MSG, how to make it dry/wet, or authentic ingredient disputes). Ask a relatable question at the end to drive engagement (e.g., 'สูตรนี้หนูได้สูตรแซ่บเป๊ะมาจาก Krua.co ค่ะ พี่ๆ ทีมใส่ผงนัวหรือบีบมะนาวสดคะ?') and end with 3 hashtags. Mention that the recipe is adapted/sourced from a reliable source like Krua.co, Wongnai, or Kapook naturally in the text.)\n"
+        "   ===PEXELS_QUERY=== (English search query to find a high-quality, appetizing photo of this dish on Pexels, e.g., 'tom yum soup', 'pad thai', 'green curry'. Make it specific but simple, 2-4 words)\n\n"
         "Ensure all details are in THAI. Do not use English words. Keep ingredients and steps concise so they fit perfectly in a card layout.\n"
         "STRICT NEGATIVE CONSTRAINT: Absolutely NO mention of foreigners, tourists, westerners, or foreigners reacting to Thai food. Focus 100% on local Thai foodie humor, struggles, and everyday food experiences in Thailand. (ห้ามพูดถึงหรืออ้างอิงถึงชาวต่างชาติ, ฝรั่ง, นักท่องเที่ยว หรือปฏิกิริยาของคนต่างชาติต่ออาหารไทยเด็ดขาด เน้นเฉพาะวิถีชีวิตคนไทยและคนชอบกินเผ็ดในไทยเท่านั้น)"
     )
@@ -657,13 +661,15 @@ def generate_recipe_content(history_recipes):
             d_match = re.search(r'===DESC===\s*(.*)', result, re.IGNORECASE)
             i_match = re.search(r'===INGREDIENTS===\s*(.*?)(?===\w+===|$)', result, re.DOTALL | re.IGNORECASE)
             s_match = re.search(r'===STEPS===\s*(.*?)(?===\w+===|$)', result, re.DOTALL | re.IGNORECASE)
-            cap_match = re.search(r'===CAPTION===\s*(.*)', result, re.DOTALL | re.IGNORECASE)
+            cap_match = re.search(r'===CAPTION===\s*(.*?)(?===\w+===|$)', result, re.DOTALL | re.IGNORECASE)
+            pexels_match = re.search(r'===PEXELS_QUERY===\s*(.*)', result, re.IGNORECASE)
             
             title = t_match.group(1).split('\n')[0].strip() if t_match else ""
             desc = d_match.group(1).split('\n')[0].strip() if d_match else ""
             ingredients = i_match.group(1).strip() if i_match else ""
             steps = s_match.group(1).strip() if s_match else ""
             caption = cap_match.group(1).strip() if cap_match else ""
+            pexels_query = pexels_match.group(1).split('\n')[0].strip() if pexels_match else ""
                 
             title = title.strip('"\'“”‘’')
             desc = desc.strip('"\'“”‘’')
@@ -680,13 +686,15 @@ def generate_recipe_content(history_recipes):
                 caption = translate_to_thai(caption)
             
             if title and ingredients and steps and caption and contains_thai(title) and contains_thai(caption):
-                return title, desc, ingredients, steps, caption
+                if not pexels_query:
+                    pexels_query = "thai food"
+                return title, desc, ingredients, steps, caption, pexels_query
         except Exception as e:
             print(f"[{model}] recipe content generation failed: {e}")
             
     print("Using recipe fallback post.")
     fb = random.choice(FALLBACK_POSTS["recipe"])
-    return fb["title"], fb["desc"], fb["ingredients"], fb["steps"], fb["caption"]
+    return fb["title"], fb["desc"], fb["ingredients"], fb["steps"], fb["caption"], fb.get("query", "thai food")
 
 
 def generate_contrast_review_content(img_path, image_type, food_name, vibe, reddit_title=""):
@@ -913,24 +921,49 @@ def main():
     if mode == "recipe":
         print("Generating Recipe Content...")
         history_recipes = load_recipe_history()
-        title, desc, ingredients, steps, caption = generate_recipe_content(history_recipes)
+        title, desc, ingredients, steps, caption, pexels_query = generate_recipe_content(history_recipes)
         print(f"Recipe Title: {title}")
         print(f"Description: {desc}")
+        print(f"Pexels Query: {pexels_query}")
         
+        history_urls = load_history()
+        bg_url = search_pexels_single_image(pexels_query, history_urls)
+        if not bg_url and dry_run:
+            print("[Dry-Run] Recipe Pexels search failed or key missing. Using mock image.")
+            bg_url = "https://images.pexels.com/photos/2067423/pexels-photo-2067423.jpeg"
+            
+        bg_img_path = None
+        if bg_url:
+            print(f"Downloading background image: {bg_url}")
+            bg_img_path = download_image(bg_url)
+            
         import tempfile
         tmp = tempfile.NamedTemporaryFile(suffix=".jpg", delete=False)
         img_path = tmp.name
         tmp.close()
         
+        # Segment Thai text for card rendering to ensure correct wrapping behavior
+        title_seg = segment_thai_text(title, client)
+        desc_seg = segment_thai_text(desc, client) if desc else ""
+        ingredients_seg = segment_thai_text(ingredients, client) if ingredients else ""
+        steps_seg = segment_thai_text(steps, client) if steps else ""
+        
         try:
             from overlay_utils import create_recipe_card
-            img_path = create_recipe_card(title, desc, ingredients, steps, img_path)
+            img_path = create_recipe_card(title_seg, desc_seg, ingredients_seg, steps_seg, img_path, bg_img_path=bg_img_path)
             print(f"Recipe Card generated: {img_path}")
         except Exception as e:
             print(f"Recipe Card generation failed: {e}")
             if os.path.exists(img_path):
                 os.unlink(img_path)
             return
+        finally:
+            if bg_img_path and os.path.exists(bg_img_path):
+                try:
+                    os.unlink(bg_img_path)
+                    print(f"Deleted temporary background image: {bg_img_path}")
+                except Exception as ex:
+                    print(f"Error deleting temporary background image: {ex}")
 
     elif mode == "contrast_review":
         history_urls = load_history()
@@ -1064,6 +1097,8 @@ def main():
                 save_to_history(post["url"])
             elif mode == "recipe":
                 save_recipe_to_history(title)
+                if 'bg_url' in locals() and bg_url:
+                    save_to_history(bg_url)
             elif mode == "trivia":
                 save_recipe_to_history(line1)
                 if 'img_url' in locals() and img_url:
