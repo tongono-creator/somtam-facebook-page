@@ -172,27 +172,27 @@ def translate_to_thai(text):
 FALLBACK_POSTS = {
     "recipe": [
         {
-            "title": "ส้มตำป่าทะเลครกแตก",
-            "desc": "เมนูสุดแซ่บจัดเต็มยกทะเลมาไว้ในครก เผ็ดร้อนถึงใจสะท้านทรวงค่ะ",
-            "ingredients": "• เส้นมะละกอดิบสับ 1 กำมือ\n• กุ้งสดแกะเปลือก 5 ตัว\n• ปลาหมึกหั่นแว่น 5 ชิ้น\n• พริกขี้หนูสวน 10 เม็ด\n• มะเขือเทศสีดา 2 ลูก\n• ผักกาดดองหั่น 1 ช้อนโต๊ะ\n• น้ำปลาร้าต้มสุก 2 ช้อนโต๊ะ\n• น้ำมะนาว 2 ช้อนโต๊ะ",
-            "steps": "1. โขลกพริกขี้หนูและกระเทียมให้พอแตก\n2. ใส่มะเขือเทศ ผักกาดดอง และเครื่องปรุงทั้งหมดโขลกเบาๆ\n3. ใส่เส้นมะละกอ กุ้งสด และปลาหมึกลวกสุก คลุกเคล้าให้เข้ากัน\n4. ตักใส่ถาดพร้อมแซ่บกับผักสดและแคบหมูค่ะ",
-            "caption": "ดึกแล้วท้องมันร้องหาความนัวระดับสิบใช่ไหมคะ วันนี้หนูพาสูตรส้มตำป่าทะเลครกแตกมาแจกค่ะ เครื่องแน่นล้นครก รสชาติเผ็ดแซ่บสะท้านทรวง มะนาวแท้ๆ ปลาร้านัวๆ กุ้งเด้งสู้ฟันสุดๆ ค่ะ เมนต์บอกหนูหน่อยว่าใครอยากชิมฝีมือหนูบ้างคะ\n#ส้มตำป่า #สูตรส้มตำ #พริก10เม็ด",
-            "query": "papaya salad"
+            "title": "ต้มยำกุ้ง",
+            "desc": "น้ำข้น vs น้ำใส",
+            "ingredients": "ทีมไหนคือรสชาติไทยแท้?",
+            "steps": "",
+            "caption": "หนูขอเปิดศาลอาหารไทยหน่อยค่ะ ต้มยำกุ้งนี่ควรเป็นน้ำใสจี๊ดๆ หอมสมุนไพร หรือเป็นน้ำข้นมันนัวใส่นมถึงจะฟินกว่ากันคะ\n\nบางคนบอกน้ำใสคือของแท้ รสจัด สด คลีนกว่า แต่อีกทีมบอกน้ำข้นนี่แหละซดแล้วสะใจ กินกับข้าวคือที่สุด\n\nพี่ๆ อยู่ทีมไหนคะ น้ำใสหรือน้ำข้น แล้วมีบ้านไหนใส่นมข้นจืดจนโดนแม่ดุบ้างไหมคะ",
+            "query": "tom yum soup"
         },
         {
-            "title": "ตำหลวงพระบางนัวปลาร้า",
-            "desc": "ส้มตำเส้นแบนบางกรอบ ซึมซับน้ำปลาร้าเข้มข้นอร่อยนัวทุกคำค่ะ",
-            "ingredients": "• มะละกอฝานแผ่นบาง 1 กำมือ\n• พริกแห้งและพริกสด 10 เม็ด\n• น้ำปลาร้าปรุงรสเข้มข้น 2.5 ช้อนโต๊ะ\n• น้ำตาลปี๊บ 1 ช้อนโต๊ะ\n• กะปิแท้ 1/2 ช้อนชา\n• มะเขือเครือ 3 ลูก\n• มะนาวแป้น 2 ลูก",
-            "steps": "1. โขลกพริกแห้ง พริกสด และกะปิให้เข้ากัน\n2. ใส่น้ำตาลปี๊บ มะเขือเครือ บีบมะนาวใส่ทั้งเปลือกโขลกเบาๆ\n3. เติมน้ำปลาร้านัวๆ คนให้ละลายดี\n4. ใส่เส้นมะละกอแผ่นบาง คลุกเคล้าให้ซึมซับน้ำตำหลวงพระบาง\n5. โรยเม็ดกระถินตักเสิร์ฟพร้อมกากหมูเจียวค่ะ",
-            "caption": "ใครชอบกินส้มตำเส้นแบนบางกรอบเชิญทางนี้เลยค่ะ ตำหลวงพระบางสูตรนี้แอดมินพี่สาวคอนเฟิร์มว่านัวมาก เส้นบางๆ ซับน้ำปลาร้ากับกะปิหอมๆ เข้าเนื้อสุดๆ ทานคู่กับกากหมูเจียวใหม่ๆ และเม็ดกระถินคือที่สุด เซฟสูตรนี้ไว้ทำตามด่วนๆ เลยนะคะสาวๆ\n#ตำหลวงพระบาง #ส้มตำปลาร้า #พริก10เม็ด",
-            "query": "papaya salad"
+            "title": "ข้าวมันไก่",
+            "desc": "เอาหนัง vs ไม่เอาหนัง",
+            "ingredients": "ทีมไหนฟินกว่ากันคะ?",
+            "steps": "",
+            "caption": "มาเปิดประเด็นศาลอาหารไทยรอบเย็นค่ะ เวลาสั่งข้าวมันไก่นี่พี่ๆ ชอบแบบเอาหนังมันๆ ชุ่มฉ่ำ หรือลอกหนังออกกินแต่เนื้อล้วนคลีนๆ กันคะ\n\nฝั่งคนชอบหนังบอกว่าข้าวมันไก่ที่ไม่มีหนังมันขาดวิญญาณความอร่อยไปเลย แต่อีกทีมก็บอกว่าเนื้อล้วนสิคะได้รสไก่เต็มๆ แถมไม่เลี่ยนด้วย\n\nพี่ๆ อยู่ทีมเอาหนังหรือทีมไม่เอาหนังคะ แล้วเวลาสั่งนี่โดนเพื่อนทักบ้างไหมคะ",
+            "query": "chicken rice"
         },
         {
-            "title": "กะเพราเนื้อสับพริกแห้ง",
-            "desc": "กะเพราแท้สูตรโบราณ เผ็ดร้อนแห้งสนิทไม่ใส่ผักกาดขาวค่ะ",
-            "ingredients": "• เนื้อวัวสับติดมัน 200 กรัม\n• พริกแห้งแดงและเขียว 10 เม็ด\n• กระเทียมไทย 1 หัว\n• ใบกะเพราป่าแดง 1 กำมือ\n• ซอสปรุงรส 1 ช้อนโต๊ะ\n• น้ำปลาแท้ 1 ช้อนโต๊ะ\n• น้ำตาลทรายปลายช้อนชา",
-            "steps": "1. โขลกพริกแห้งและกระเทียมให้ละเอียดพอประมาณ\n2. ตั้งกระทะร้อนจัด นำพริกกระเทียมลงผัดจนฉุนกระเจิง\n3. ใส่เนื้อสับลงผัด ยีให้กระจายตัวและผัดจนแห้งเข้าเนื้อ\n4. ปรุงรสด้วยน้ำปลา ซอสปรุงรส และน้ำตาลเล็กน้อย\n5. ใส่ใบกะเพราป่า ผัดเร็วๆ ด้วยไฟแรงแล้วยกลงทันทีค่ะ",
-            "caption": "เบื่อไหมคะกับการสั่งผัดกะเพราแล้วได้ถั่วฝักยาวแถมมา วันนี้แอดมินหนูขอแจกสูตรกะเพราเนื้อสับพริกแห้งแท้ๆ ค่ะ ผัดแบบแห้งๆ คั่วพริกหอมฉุนขึ้นจมูกจามกันทั้งบ้าน โปะไข่ดาวกรอบๆ ขอบไหม้ไข่แดงเยิ้มๆ คือนิพพาน ไหนใครชอบกะเพราแห้งๆ เหมือนกันบ้าง มารายงานตัวด่วนค่ะ\n#กะเพราเนื้อสับ #กะเพราพริกแห้ง #พริก10เม็ด",
+            "title": "ผัดกะเพรา",
+            "desc": "ใส่ถั่วฝักยาว vs ไม่ใส่ถั่วฝักยาว",
+            "ingredients": "แบบไหนคือแท้โบราณ?",
+            "steps": "",
+            "caption": "หนูขอเคลียร์ประเด็นนี้ให้จบเลยค่ะ ผัดกะเพราที่พี่ๆ ชอบกินต้องผัดแห้งๆ พริกกระเทียมใบกะเพราล้วน หรือรับได้กับการใส่ถั่วฝักยาว ข้าวโพดอ่อน หอมใหญ่คะ\n\nฝั่งคนชอบพริกล้วนบอกว่าใส่ผักอื่นไม่ใช่กะเพราแท้หรอกค่ะ เสียรสชาติ แต่อีกทีมบอกว่ามีถั่วฝักยาวช่วยเพิ่มสัมผัสเคี้ยวเพลินแถมได้ปริมาณเยอะขึ้นนะ\n\nพี่ๆ คิดว่ายังไงคะ ผัดกะเพราใส่ถั่วฝักยาวนี่ผ่านหรือควรร้องเรียนดีคะ",
             "query": "pad kra pao"
         }
     ],
@@ -626,25 +626,71 @@ def add_comment(post_id, caption=None, img_path=None):
             time.sleep(random.uniform(30, 90))
 
 
+def validate_debate_content(topic, options, question, caption):
+    # Check for forbidden words
+    for word in ["วัตถุดิบ", "ขั้นตอนการทำ", "ขั้นตอน"]:
+        if word in topic or word in options or word in question or word in caption:
+            print(f"Validation failed: Contains forbidden word '{word}'")
+            return False
+            
+    # Check for ordered list numbers (e.g. "1.", "2.", "3.")
+    if re.search(r'\b\d+[\.\)\s\u200b]', topic + " " + options + " " + question + " " + caption):
+        print("Validation failed: Contains ordered list numbers")
+        return False
+        
+    # Check for bullet points or lists
+    for char in ["•", "*", "-", "▪️", "▫️"]:
+        if char in topic or char in options or char in question or char in caption:
+            print(f"Validation failed: Contains bullet point/list symbol '{char}'")
+            return False
+            
+    # Check for broken/unformatted lines (e.g., "=")
+    if "=" in topic or "=" in options or "=" in question or "=" in caption:
+        print("Validation failed: Contains broken line symbol '='")
+        return False
+        
+    # Check for image text character limit (topic + options + question <= 60 chars)
+    total_img_text = len(topic) + len(options) + len(question)
+    if total_img_text > 60:
+        print(f"Validation failed: Image text too long ({total_img_text} chars > 60)")
+        return False
+        
+    # Check for hashtags in caption
+    if "#" in caption:
+        print("Validation failed: Caption contains hashtags")
+        return False
+
+    # Check for female polite particles (ค่ะ/คะ)
+    if "ค่ะ" not in caption and "คะ" not in caption:
+        print("Validation failed: Caption lacks female polite particles (ค่ะ/คะ)")
+        return False
+
+    return True
+
+
 def generate_recipe_content(history_recipes):
     history_str = ", ".join(history_recipes) if history_recipes else "ไม่มี"
     prompt = (
         "You are an expert Thai social media copywriter for 'พริก 10 เม็ด' (Spicy Thai Food page). Write with a friendly female persona using female particles like 'ค่ะ' / 'คะ' and pronouns like 'หนู' / 'เรา'.\n"
-        "Using Google Search grounding, search for an authentic, popular Thai spicy/street food recipe from trusted Thai culinary sites like Krua.co, Wongnai, or Kapook. Do NOT hallucinate ingredients or steps. Find a real recipe and rewrite/rephrase it into your own signature style.\n"
-        "Choose a delicious Thai recipe (สูตรอาหารไทยแซ่บๆ/สตรีทฟู้ด) that local Thai readers will love (e.g., ต้มยำกุ้งน้ำข้น, แกงเขียวหวานไก่, ยำวุ้นเส้นโบราณ, น้ำตกคอหมูย่าง, แกงส้มชะอมกุ้ง).\n"
-        f"STRICT NEGATIVE CONSTRAINT: Do NOT choose or generate a recipe for any of the following menus/titles: {history_str}.\n"
-        "Requirements:\n"
-        "1. Output exactly 6 sections labeled with markers:\n"
-        "   ===TITLE=== (Recipe Title, 2-4 Thai words, e.g., 'ต้มยำกุ้งน้ำข้น')\n"
-        "   ===DESC=== (Short delicious summary/description of the dish, 1-2 sentences. Keep it short!)\n"
-        "   ===INGREDIENTS=== (List of ingredients with accurate measurements from the source, one per line. Keep each line short and clean, max 5-7 words, e.g., '• กุ้งสดปอกเปลือก 200 กรัม')\n"
-        "   ===STEPS=== (Numbered steps to cook/prepare the dish based on the source, one per line. Keep each line short and clean, max 10-15 words. Maximum 5-6 steps, e.g., '1. ต้มน้ำให้เดือดแล้วใส่เครื่องต้มยำ')\n"
-        "   ===CAPTION=== (Facebook Caption: a short, natural story introducing the recipe as a single paragraph of 2-4 sentences. Do NOT use any bullet points, lists, or symbols like ▪️. Frame the recipe introduction around a common food controversy or debate (e.g., whether to put MSG, how to make it dry/wet, or authentic ingredient disputes). Ask a relatable question at the end to drive engagement (e.g., 'สูตรนี้หนูได้สูตรแซ่บเป๊ะมาจาก Krua.co ค่ะ พี่ๆ ทีมใส่ผงนัวหรือบีบมะนาวสดคะ?') and end with 3 hashtags. Mention that the recipe is adapted/sourced from a reliable source like Krua.co, Wongnai, or Kapook naturally in the text.)\n"
-        "   ===PEXELS_QUERY=== (English search query to find a high-quality, appetizing photo of this dish on Pexels, e.g., 'tom yum soup', 'pad thai', 'green curry'. Make it specific but simple, 2-4 words)\n\n"
-        "Ensure all details are in THAI. Do not use English words. Keep ingredients and steps concise so they fit perfectly in a card layout.\n"
-        "STRICT NEGATIVE CONSTRAINT: Absolutely NO mention of foreigners, tourists, westerners, or foreigners reacting to Thai food. Focus 100% on local Thai foodie humor, struggles, and everyday food experiences in Thailand. (ห้ามพูดถึงหรืออ้างอิงถึงชาวต่างชาติ, ฝรั่ง, นักท่องเที่ยว หรือปฏิกิริยาของคนต่างชาติต่ออาหารไทยเด็ดขาด เน้นเฉพาะวิถีชีวิตคนไทยและคนชอบกินเผ็ดในไทยเท่านั้น)"
+        "Your task is to create a food debate/controversy post ('ศาลอาหารไทย') focusing on a single, highly relatable food debate or choice-forcing topic in Thai cuisine (e.g., ต้มยำกุ้งน้ำข้น vs น้ำใส, ข้าวมันไก่เอาหนัง vs ไม่เอาหนัง, ผัดกะเพราใส่ถั่วฝักยาว vs ไม่ใส่ถั่วฝักยาว, ผัดไทใส่เต้าหู้ vs ไม่ใส่, ผัดซีอิ๊วเส้นใหญ่ vs เส้นหมี่, แกงส้มผักรวม vs แกงเหลืองใต้, กินข้าวไข่ดาวไข่แดงเยิ้ม vs สุกสนิท, บะหมี่กึ่งสำเร็จรูปเส้นอืด vs เส้นเหนียวหนึบ).\n"
+        f"STRICT NEGATIVE CONSTRAINT: Do NOT choose or generate a topic for any of the following menus/titles: {history_str}.\n\n"
+        "**STRICT RULES FOR POST CONTENT**:\n"
+        "1. **NO recipe instructions**: Do NOT list ingredients, measurements, or cooking steps. Do NOT write a recipe.\n"
+        "2. **NO bullet points or numbers**: Absolutely do NOT use list symbols (•, *, -, ▪️, ▫️) or ordered list numbers (1., 2., 3.).\n"
+        "3. **Short image text**: The text to be overlaid on the image must be extremely short and readable in 1 second. The total characters across TOPIC, OPTIONS, and QUESTION must be under 50 characters.\n"
+        "4. **No broken lines**: Do NOT output lines with '=' or empty placeholders.\n"
+        "5. **No hashtags**: The caption must NOT contain any hashtags (#) anywhere.\n"
+        "6. **No newsy/bot buzzwords**: Do NOT use words like 'ดราม่า', 'ช็อก', 'ไวรัล', 'ปัญหาสังคม', 'แชร์สูตร'.\n"
+        "7. **Female conversational caption**: The caption must be structured into 2-4 short paragraphs, written in a friendly, conversational female tone using 'หนู' (or 'เรา') and 'ค่ะ/คะ'. Frame the debate by explaining why people choose each side, making it highly relatable ('เรื่องนี้เกิดกับเราหรือที่บ้านได้'). End with a sharp, direct choice-forcing question like 'พี่ๆ ทีมไหนคะ?' or 'บ้านไหนทำแบบนี้บ้างคะ?'.\n\n"
+        "Output exactly 5 sections labeled with markers:\n"
+        "===TOPIC=== (The food item name, 2-4 Thai words, e.g. 'ต้มยำกุ้ง', 'ข้าวมันไก่')\n"
+        "===OPTIONS=== (The two sides/choices separated by 'vs', e.g. 'น้ำข้น vs น้ำใส', 'เอาหนัง vs ไม่เอาหนัง')\n"
+        "===QUESTION=== (A short question for the image, 2-5 Thai words, e.g. 'ทีมไหนคือรสชาติไทยแท้?', 'เลือกแบบไหนคะ?')\n"
+        "===CAPTION=== (The Facebook caption matching the Rules above)\n"
+        "===PEXELS_QUERY=== (English search query to find a high-quality, appetizing photo of this food item on Pexels, e.g., 'tom yum soup', 'hainanese chicken rice')\n"
     )
-    for model in TEXT_MODELS:
+    for attempt in range(10):
+        model = TEXT_MODELS[attempt % len(TEXT_MODELS)]
         try:
             resp = client.models.generate_content(
                 model=model,
@@ -655,44 +701,46 @@ def generate_recipe_content(history_recipes):
                 )
             )
             result = resp.text.strip()
-            print(f"Recipe Content Generation [{model}]:\n{result[:300]}...\n")
             
-            t_match = re.search(r'===TITLE===\s*(.*)', result, re.IGNORECASE)
-            d_match = re.search(r'===DESC===\s*(.*)', result, re.IGNORECASE)
-            i_match = re.search(r'===INGREDIENTS===\s*(.*?)(?===\w+===|$)', result, re.DOTALL | re.IGNORECASE)
-            s_match = re.search(r'===STEPS===\s*(.*?)(?===\w+===|$)', result, re.DOTALL | re.IGNORECASE)
+            t_match = re.search(r'===TOPIC===\s*(.*)', result, re.IGNORECASE)
+            o_match = re.search(r'===OPTIONS===\s*(.*?)(?===\w+===|$)', result, re.DOTALL | re.IGNORECASE)
+            q_match = re.search(r'===QUESTION===\s*(.*?)(?===\w+===|$)', result, re.DOTALL | re.IGNORECASE)
             cap_match = re.search(r'===CAPTION===\s*(.*?)(?===\w+===|$)', result, re.DOTALL | re.IGNORECASE)
             pexels_match = re.search(r'===PEXELS_QUERY===\s*(.*)', result, re.IGNORECASE)
             
-            title = t_match.group(1).split('\n')[0].strip() if t_match else ""
-            desc = d_match.group(1).split('\n')[0].strip() if d_match else ""
-            ingredients = i_match.group(1).strip() if i_match else ""
-            steps = s_match.group(1).strip() if s_match else ""
+            topic = t_match.group(1).split('\n')[0].strip() if t_match else ""
+            options = o_match.group(1).split('\n')[0].strip() if o_match else ""
+            question = q_match.group(1).split('\n')[0].strip() if q_match else ""
             caption = cap_match.group(1).strip() if cap_match else ""
             pexels_query = pexels_match.group(1).split('\n')[0].strip() if pexels_match else ""
-                
-            title = title.strip('"\'“”‘’')
-            desc = desc.strip('"\'“”‘’')
             
-            if title and not contains_thai(title):
-                title = translate_to_thai(title)
-            if desc and not contains_thai(desc):
-                desc = translate_to_thai(desc)
-            if ingredients and not contains_thai(ingredients):
-                ingredients = translate_to_thai(ingredients)
-            if steps and not contains_thai(steps):
-                steps = translate_to_thai(steps)
+            topic = topic.strip('"\'“”‘’')
+            options = options.strip('"\'“”‘’')
+            question = question.strip('"\'“”‘’')
+            caption = caption.strip('"\'“”‘’')
+            pexels_query = pexels_query.strip('"\'“”‘’')
+            
+            if topic and not contains_thai(topic):
+                topic = translate_to_thai(topic)
+            if options and not contains_thai(options):
+                options = translate_to_thai(options)
+            if question and not contains_thai(question):
+                question = translate_to_thai(question)
             if caption and not contains_thai(caption):
                 caption = translate_to_thai(caption)
-            
-            if title and ingredients and steps and caption and contains_thai(title) and contains_thai(caption):
-                if not pexels_query:
-                    pexels_query = "thai food"
-                return title, desc, ingredients, steps, caption, pexels_query
+                
+            if topic and options and question and caption and contains_thai(topic) and contains_thai(caption):
+                if validate_debate_content(topic, options, question, caption):
+                    print(f"Food debate generation succeeded on attempt {attempt+1} (model={model})")
+                    if not pexels_query:
+                        pexels_query = "thai food"
+                    return topic, options, question, "", caption, pexels_query
+                else:
+                    print(f"Attempt {attempt+1} failed validation.")
         except Exception as e:
-            print(f"[{model}] recipe content generation failed: {e}")
+            print(f"Attempt {attempt+1} [{model}] failed: {e}")
             
-    print("Using recipe fallback post.")
+    print("Using debate fallback post.")
     fb = random.choice(FALLBACK_POSTS["recipe"])
     return fb["title"], fb["desc"], fb["ingredients"], fb["steps"], fb["caption"], fb.get("query", "thai food")
 
@@ -919,17 +967,18 @@ def main():
     caption = ""
 
     if mode == "recipe":
-        print("Generating Recipe Content...")
+        print("Generating Food Debate Content...")
         history_recipes = load_recipe_history()
-        title, desc, ingredients, steps, caption, pexels_query = generate_recipe_content(history_recipes)
-        print(f"Recipe Title: {title}")
-        print(f"Description: {desc}")
+        topic, options, question, _, caption, pexels_query = generate_recipe_content(history_recipes)
+        print(f"Debate Topic: {topic}")
+        print(f"Options: {options}")
+        print(f"Question: {question}")
         print(f"Pexels Query: {pexels_query}")
         
         history_urls = load_history()
         bg_url = search_pexels_single_image(pexels_query, history_urls)
         if not bg_url and dry_run:
-            print("[Dry-Run] Recipe Pexels search failed or key missing. Using mock image.")
+            print("[Dry-Run] Food Debate Pexels search failed or key missing. Using mock image.")
             bg_url = "https://images.pexels.com/photos/2067423/pexels-photo-2067423.jpeg"
             
         bg_img_path = None
@@ -943,17 +992,16 @@ def main():
         tmp.close()
         
         # Segment Thai text for card rendering to ensure correct wrapping behavior
-        title_seg = segment_thai_text(title, client)
-        desc_seg = segment_thai_text(desc, client) if desc else ""
-        ingredients_seg = segment_thai_text(ingredients, client) if ingredients else ""
-        steps_seg = segment_thai_text(steps, client) if steps else ""
+        topic_seg = segment_thai_text(topic, client)
+        options_seg = segment_thai_text(options, client)
+        question_seg = segment_thai_text(question, client)
         
         try:
             from overlay_utils import create_recipe_card
-            img_path = create_recipe_card(title_seg, desc_seg, ingredients_seg, steps_seg, img_path, bg_img_path=bg_img_path)
-            print(f"Recipe Card generated: {img_path}")
+            img_path = create_recipe_card(topic_seg, options_seg, question_seg, img_path, bg_img_path=bg_img_path)
+            print(f"Food Debate Card generated: {img_path}")
         except Exception as e:
-            print(f"Recipe Card generation failed: {e}")
+            print(f"Food Debate Card generation failed: {e}")
             if os.path.exists(img_path):
                 os.unlink(img_path)
             return

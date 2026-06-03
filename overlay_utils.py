@@ -513,10 +513,10 @@ def create_split_debate_card(left_img_path, right_img_path, left_label, right_la
     return out_path
 
 
-def create_recipe_card(title, desc, ingredients, steps, out_path, bg_img_path=None):
+def create_recipe_card(topic, options, question, out_path, bg_img_path=None):
     """
-    Draws a beautiful dark-mode recipe card with a grid, an orange/gold border,
-    a branding capsule, and two columns: ingredients list (left) and steps list (right).
+    Draws a beautiful food debate card (ศาลอาหารไทย) with a background food image (60% dark overlay),
+    an orange/gold border, a branding capsule, and centered debate text (Topic, Options, Question).
     """
     W, H = 1080, 1080
     bg_color1 = (18, 18, 24)
@@ -535,8 +535,8 @@ def create_recipe_card(title, desc, ingredients, steps, out_path, bg_img_path=No
             bg_crop = bg_raw.crop((left, top, right, bottom))
             bg_resized = bg_crop.resize((W, H), Image.Resampling.LANCZOS)
             
-            # Apply a heavy dark overlay to ensure text readability (e.g. 82% opacity)
-            dark_overlay = Image.new("RGBA", (W, H), (15, 15, 20, 210))
+            # Apply a moderate dark overlay so the food is visible but text is readable
+            dark_overlay = Image.new("RGBA", (W, H), (15, 15, 20, 160)) # ~63% opacity
             img = Image.alpha_composite(bg_resized, dark_overlay).convert("RGB")
         except Exception as e:
             print(f"Error loading background image {bg_img_path}: {e}")
@@ -547,11 +547,13 @@ def create_recipe_card(title, desc, ingredients, steps, out_path, bg_img_path=No
     overlay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     draw_ol = ImageDraw.Draw(overlay)
     
+    # Dotted grid decoration
     grid_color = (255, 255, 255, 10)
     for gx in range(100, 980, 40):
         for gy in range(100, 980, 40):
             draw_ol.ellipse([gx-1.5, gy-1.5, gx+1.5, gy+1.5], fill=grid_color)
             
+    # Orange border
     border_color = (255, 107, 53)
     border_inset = 45
     draw_ol.rectangle([border_inset, border_inset, W - border_inset, H - border_inset], outline=border_color, width=4)
@@ -559,168 +561,87 @@ def create_recipe_card(title, desc, ingredients, steps, out_path, bg_img_path=No
     img = Image.alpha_composite(img.convert("RGBA"), overlay).convert("RGB")
     draw = ImageDraw.Draw(img)
     
+    # Top Branding Capsule
     capsule_font = ImageFont.truetype(FONT_PATH, 24)
     draw_capsule(
         draw=draw,
         x_center=W // 2,
         y_center=95,
-        text=clean_image_text("พริก 10 เม็ด • สูตรแซ่บ"),
+        text=clean_image_text("พริก 10 เม็ด • ศาลอาหารไทย"),
         font=capsule_font,
         fill_color=(255, 107, 53),
         text_color=(255, 255, 255)
     )
     
-    title_clean = clean_image_text(title)
-    title_sz = 60
-    while title_sz >= 32:
-        t_font = ImageFont.truetype(FONT_PATH, title_sz)
-        t_lines = _wrap_text(draw, title_clean, t_font, W - 160)
-        t_lh = draw.textbbox((0, 0), "ก A", font=t_font)[3]
-        t_gap = max(4, title_sz // 8)
-        t_h = t_lh * len(t_lines) + t_gap * (len(t_lines) - 1)
-        if t_h <= 120:
-            break
-        title_sz -= 4
-        
-    y = 140
-    for line in t_lines:
-        t_bbox = draw.textbbox((0, 0), line, font=t_font)
+    # Load fonts
+    topic_font = ImageFont.truetype(FONT_PATH, 76)
+    options_font = ImageFont.truetype(FONT_PATH, 62)
+    question_font = ImageFont.truetype(FONT_PATH, 46)
+    
+    # Clean text to remove tofu chars and other garbage
+    topic_clean = clean_image_text(topic).replace('\u200b', '').replace('\\u200b', '')
+    options_clean = clean_image_text(options).replace('\u200b', '').replace('\\u200b', '')
+    question_clean = clean_image_text(question).replace('\u200b', '').replace('\\u200b', '')
+    
+    # Wrap text lines
+    topic_lines = _wrap_text(draw, topic_clean, topic_font, W - 180)
+    options_lines = _wrap_text(draw, options_clean, options_font, W - 180)
+    question_lines = _wrap_text(draw, question_clean, question_font, W - 180)
+    
+    # Calculate heights and spacing
+    topic_lh = draw.textbbox((0, 0), "ก A", font=topic_font)[3]
+    options_lh = draw.textbbox((0, 0), "ก A", font=options_font)[3]
+    question_lh = draw.textbbox((0, 0), "ก A", font=question_font)[3]
+    
+    line_gap = 10
+    sec_gap = 42
+    
+    h_topic = topic_lh * len(topic_lines) + line_gap * (len(topic_lines) - 1)
+    h_options = options_lh * len(options_lines) + line_gap * (len(options_lines) - 1)
+    h_question = question_lh * len(question_lines) + line_gap * (len(question_lines) - 1)
+    
+    total_h = h_topic + sec_gap + h_options + sec_gap + h_question
+    
+    # Center vertically
+    y = (H - total_h) // 2 + 30
+    
+    # Draw Topic lines
+    for line in topic_lines:
+        line_clean = line.replace('\u200b', '').replace('\\u200b', '')
+        t_bbox = draw.textbbox((0, 0), line_clean, font=topic_font)
         tw = t_bbox[2] - t_bbox[0]
         tx = (W - tw) // 2 - t_bbox[0]
-        draw.text((tx + 2, y + 2), line, font=t_font, fill=(0, 0, 0, 80))
-        draw.text((tx, y), line, font=t_font, fill=(255, 180, 50))
-        y += t_lh + t_gap
-        
-    desc_clean = clean_image_text(desc) if desc else ""
-    desc_lines = []
-    desc_lh = 0
-    desc_gap = 0
-    desc_h = 0
-    if desc_clean:
-        desc_font = ImageFont.truetype(FONT_PATH, 26)
-        desc_lines = _wrap_text(draw, desc_clean, desc_font, W - 160)
-        desc_lh = draw.textbbox((0, 0), "ก A", font=desc_font)[3]
-        desc_gap = 6
-        desc_h = desc_lh * len(desc_lines) + desc_gap * (len(desc_lines) - 1)
-        
-    y_desc = y + 10
-    for line in desc_lines:
-        d_bbox = draw.textbbox((0, 0), line, font=desc_font)
-        dw = d_bbox[2] - d_bbox[0]
-        dx = (W - dw) // 2 - d_bbox[0]
-        draw.text((dx, y_desc), line, font=desc_font, fill=(220, 220, 220))
-        y_desc += desc_lh + desc_gap
-        
-    y_content_start = max(310, y_desc + 20)
+        # Shadow
+        draw.text((tx + 2, y + 2), line_clean, font=topic_font, fill=(0, 0, 0, 150))
+        # Main text
+        draw.text((tx, y), line_clean, font=topic_font, fill=(255, 180, 50)) # Gold
+        y += topic_lh + line_gap
+    y += sec_gap - line_gap
     
-    # Column divider line
-    draw.line([(540, y_content_start + 10), (540, 1000)], fill=(255, 107, 53, 150), width=2)
+    # Draw Options lines
+    for line in options_lines:
+        line_clean = line.replace('\u200b', '').replace('\\u200b', '')
+        t_bbox = draw.textbbox((0, 0), line_clean, font=options_font)
+        tw = t_bbox[2] - t_bbox[0]
+        tx = (W - tw) // 2 - t_bbox[0]
+        # Shadow
+        draw.text((tx + 2, y + 2), line_clean, font=options_font, fill=(0, 0, 0, 150))
+        # Main text
+        draw.text((tx, y), line_clean, font=options_font, fill=(255, 255, 255)) # White
+        y += options_lh + line_gap
+    y += sec_gap - line_gap
     
-    hdr_font = ImageFont.truetype(FONT_PATH, 34)
-    lh_text = "วัตถุดิบ"
-    lh_bbox = draw.textbbox((0, 0), lh_text, font=hdr_font)
-    lh_tw = lh_bbox[2] - lh_bbox[0]
-    lh_th = lh_bbox[3] - lh_bbox[1]
-    
-    # Rounded rectangles for headers
-    overlay_hdr = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    draw_oh = ImageDraw.Draw(overlay_hdr)
-    draw_oh.rounded_rectangle([295 - lh_tw//2 - 20, y_content_start - 6, 295 + lh_tw//2 + 20, y_content_start + lh_th + 10], radius=8, fill=(255, 107, 53, 50), outline=(255, 107, 53), width=2)
-    
-    rh_text = "ขั้นตอนการทำ"
-    rh_bbox = draw.textbbox((0, 0), rh_text, font=hdr_font)
-    rh_tw = rh_bbox[2] - rh_bbox[0]
-    rh_th = rh_bbox[3] - rh_bbox[1]
-    draw_oh.rounded_rectangle([785 - rh_tw//2 - 20, y_content_start - 6, 785 + rh_tw//2 + 20, y_content_start + rh_th + 10], radius=8, fill=(255, 180, 50, 50), outline=(255, 180, 50), width=2)
-    
-    img = Image.alpha_composite(img.convert("RGBA"), overlay_hdr).convert("RGB")
-    draw = ImageDraw.Draw(img)
-    
-    draw.text((295 - lh_tw//2 - lh_bbox[0], y_content_start - lh_bbox[1]), lh_text, font=hdr_font, fill=(255, 255, 255))
-    draw.text((785 - rh_tw//2 - rh_bbox[0], y_content_start - rh_bbox[1]), rh_text, font=hdr_font, fill=(255, 255, 255))
-    
-    y_list_start = y_content_start + lh_th + 30
-    list_h = 1000 - y_list_start
-    
-    if isinstance(ingredients, str):
-        ingredients_list = [line.strip() for line in ingredients.split("\n") if line.strip()]
-    else:
-        ingredients_list = [str(i).strip() for i in ingredients if str(i).strip()]
-
-    if isinstance(steps, str):
-        steps_list = [line.strip() for line in steps.split("\n") if line.strip()]
-    else:
-        steps_list = [str(s).strip() for s in steps if str(s).strip()]
-        
-    cleaned_ingredients = []
-    for ing in ingredients_list:
-        ing_text = re.sub(r'^[•\-\*\s]+', '', ing).strip()
-        # Filter out empty entries or placeholders like "=", "-", "_", "."
-        if not ing_text or ing_text in ["=", "-", "_", "."] or re.match(r'^[=\-\_\.\s]+$', ing_text):
-            continue
-        cleaned_ingredients.append(f"• {ing_text}")
-        
-    cleaned_steps = []
-    step_num = 1
-    for step in steps_list:
-        step_text = re.sub(r'^\d+[\.\-\s\u2013]+', '', step).strip()
-        # Filter out empty entries or placeholders like "=", "-", "_", "."
-        if not step_text or step_text in ["=", "-", "_", "."] or re.match(r'^[=\-\_\.\s]+$', step_text):
-            continue
-        cleaned_steps.append(f"{step_num}. {step_text}")
-        step_num += 1
-        
-    item_sz = 26
-    col_w = 400
-    
-    while item_sz >= 16:
-        font = ImageFont.truetype(FONT_PATH, item_sz)
-        line_h = draw.textbbox((0, 0), "ก A", font=font)[3]
-        item_gap = max(4, item_sz // 4)
-        line_gap = max(2, item_sz // 8)
-        
-        left_h = 0
-        left_wrapped = []
-        for ing in cleaned_ingredients:
-            lines = _wrap_text(draw, ing, font, col_w)
-            left_wrapped.append(lines)
-            ing_h = len(lines) * line_h + (len(lines) - 1) * line_gap
-            left_h += ing_h + item_gap
-        left_h -= item_gap
-        
-        right_h = 0
-        right_wrapped = []
-        for step in cleaned_steps:
-            lines = _wrap_text(draw, step, font, col_w)
-            right_wrapped.append(lines)
-            step_h = len(lines) * line_h + (len(lines) - 1) * line_gap
-            right_h += step_h + item_gap
-        right_h -= item_gap
-        
-        if left_h <= list_h and right_h <= list_h:
-            break
-        item_sz -= 2
-        
-    font = ImageFont.truetype(FONT_PATH, max(16, item_sz))
-    line_h = draw.textbbox((0, 0), "ก A", font=font)[3]
-    item_gap = max(4, font.size // 4)
-    line_gap = max(2, font.size // 8)
-    
-    y = y_list_start
-    for lines in left_wrapped:
-        for line in lines:
-            clean_line = line.replace('\u200b', '').replace('\\u200b', '')
-            draw.text((85, y), clean_line, font=font, fill=(245, 245, 245))
-            y += line_h + line_gap
-        y += item_gap - line_gap
-
-    y = y_list_start
-    for lines in right_wrapped:
-        for line in lines:
-            clean_line = line.replace('\u200b', '').replace('\\u200b', '')
-            draw.text((575, y), clean_line, font=font, fill=(245, 245, 245))
-            y += line_h + line_gap
-        y += item_gap - line_gap
+    # Draw Question lines
+    for line in question_lines:
+        line_clean = line.replace('\u200b', '').replace('\\u200b', '')
+        t_bbox = draw.textbbox((0, 0), line_clean, font=question_font)
+        tw = t_bbox[2] - t_bbox[0]
+        tx = (W - tw) // 2 - t_bbox[0]
+        # Shadow
+        draw.text((tx + 2, y + 2), line_clean, font=question_font, fill=(0, 0, 0, 150))
+        # Main text
+        draw.text((tx, y), line_clean, font=question_font, fill=(220, 220, 220)) # Light Gray
+        y += question_lh + line_gap
         
     img.save(out_path, "JPEG", quality=92)
     return out_path
