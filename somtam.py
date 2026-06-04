@@ -959,7 +959,7 @@ def main():
     if forced_mode in ["recipe", "contrast_review", "trivia"]:
         mode = forced_mode
     else:
-        mode = random.choices(["recipe", "contrast_review", "trivia"], weights=[35, 35, 30])[0]
+        mode = random.choices(["recipe", "contrast_review", "trivia"], weights=[50, 50, 0])[0]
     print(f"Selected Mode: {mode} (Forced: {forced_mode})")
 
     os.makedirs("output", exist_ok=True)
@@ -1144,7 +1144,7 @@ def main():
             if mode == "contrast_review" and 'post' in locals() and post:
                 save_to_history(post["url"])
             elif mode == "recipe":
-                save_recipe_to_history(title)
+                save_recipe_to_history(topic)
                 if 'bg_url' in locals() and bg_url:
                     save_to_history(bg_url)
             elif mode == "trivia":
