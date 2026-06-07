@@ -587,7 +587,6 @@ if __name__ == "__main__":
     success_count = 0
 
     for i in range(5):
-        global API_ENABLED
         API_ENABLED = True   # reset ทุก iteration ให้ Gemini ลองใหม่
 
         print(f"\n===== Post {i+1}/5 =====")
