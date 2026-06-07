@@ -207,7 +207,14 @@ def get_allowed_xlsx_files():
     if "chowchow" in path:
         return ["สัตว์เลี้ยง.xlsx"]
     elif "somtam" in path:
-        return ["อาหารและเครื่องดื่ม.xlsx"]
+        return [
+            "อาหารและเครื่องดื่ม.xlsx",
+            "สินค้าขายดี.xlsx",
+            "เครื่องใช้ในบ้าน.xlsx",
+            "เครื่องใช้ไฟฟ้าภายในบ้าน.xlsx",
+            "เสื้อผ้าแฟชั่นผู้หญิง.xlsx",
+            "สัตว์เลี้ยง.xlsx",
+        ]
     elif "rocket" in path:
         return ["เครื่องใช้ไฟฟ้าภายในบ้าน.xlsx"]
     elif "x-bot" in path:
@@ -490,12 +497,16 @@ def post_link_comment(post_id, shopee, lazada, promo):
     if lazada and "xxx" not in lazada:
         _post_one_comment(post_id, f"🛍️ หรือสั่งทาง Lazada → {lazada}")
 
-def post_to_page(img_path, caption, shopee=None, lazada=None, promo=None):
+def post_to_page(img_path, caption, shopee=None, lazada=None, promo=None, scheduled_timestamp=None):
     print("Posting to Facebook Page...")
     from affiliate_utils import get_next_scheduled_time
-    
-    slots = ["08:00"]
-    scheduled_time = get_next_scheduled_time(slots)
+
+    if scheduled_timestamp is not None:
+        scheduled_time = scheduled_timestamp
+        print(f"Using explicit scheduled_timestamp: {scheduled_time}")
+    else:
+        slots = ["08:00", "10:00", "12:30", "15:00", "18:00"]
+        scheduled_time = get_next_scheduled_time(slots)
     
     if scheduled_time:
         comment_texts = []
@@ -561,68 +572,105 @@ def extract_badge_text(promo):
 
 
 if __name__ == "__main__":
-    import argparse
+    import argparse, time as _time
+    from datetime import datetime, timezone, timedelta
     parser = argparse.ArgumentParser()
     parser.add_argument("--dry-run", action="store_true", help="Run without posting or marking as done")
     args = parser.parse_args()
 
-    product, wb, ws = load_next_product()
-    affiliate_mode = False
-    if not product:
-        print("review_products.xlsx หมดแล้ว — ลอง fallback จาก AFFILIATE_DIR")
-        posted_urls = get_posted_urls(ws)
-        product = load_affiliate_product(posted_urls)
-        affiliate_mode = True
+    # คำนวณ 5 scheduled timestamps ล่วงหน้า (Bangkok UTC+7)
+    BKK = timezone(timedelta(hours=7))
+    now_bkk = datetime.now(BKK)
+    DAILY_SLOTS = ["08:00", "10:00", "12:30", "15:00", "18:00"]
+    slot_timestamps = []
+    for slot in DAILY_SLOTS:
+        h, m = map(int, slot.split(":"))
+        dt = datetime(now_bkk.year, now_bkk.month, now_bkk.day, h, m, tzinfo=BKK)
+        if dt <= now_bkk + timedelta(minutes=10):
+            dt += timedelta(days=1)
+        slot_timestamps.append(int(dt.timestamp()))
+
+    posted_this_run = set()   # dedup shopee URL ภายใน run เดียวกัน
+    success_count = 0
+
+    for i in range(5):
+        global API_ENABLED
+        API_ENABLED = True   # reset ทุก iteration ให้ Gemini ลองใหม่
+
+        print(f"\n===== Post {i+1}/5 =====")
+        scheduled_ts = slot_timestamps[i] if i < len(slot_timestamps) else None
+
+        product, wb, ws = load_next_product()
+        affiliate_mode = False
         if not product:
-            print("ไม่มีสินค้าที่ต้องโพส (ครบแล้วหรือยังไม่ได้เพิ่ม)")
-            raise SystemExit(0)
+            print("review_products.xlsx หมดแล้ว — ลอง fallback จาก AFFILIATE_DIR")
+            posted_urls = get_posted_urls(ws)
+            posted_urls |= posted_this_run   # รวม URL ที่โพสใน run นี้ด้วย
+            product = load_affiliate_product(posted_urls)
+            affiliate_mode = True
+            if not product:
+                print("ไม่มีสินค้าเหลือ หยุด")
+                break
 
+        # ป้องกันซ้ำใน run เดียวกัน
+        if product.get("shopee") in posted_this_run:
+            print(f"[Skip] ซ้ำใน run นี้: {str(product.get('shopee',''))[:60]}")
+            continue
 
-    print(f"Product #{product['no']}: {product['detail'][:60]}...")
+        print(f"Product: {product['detail'][:60]}...")
 
-    promo_clean = clean_promo(product["promo"])
-    highlights  = extract_highlights(product["detail"], promo_clean)
-    print(f"Highlights:\n{highlights}\n")
+        promo_clean = clean_promo(product["promo"])
+        highlights  = extract_highlights(product["detail"], promo_clean)
+        print(f"Highlights:\n{highlights}\n")
 
-    line1, line2 = generate_hook(product["detail"], highlights)
-    line1 = segment_thai_text(line1, client)
-    line2 = segment_thai_text(line2, client)
-    print(f"Hook generated: {line1} | {line2}")
+        line1, line2 = generate_hook(product["detail"], highlights)
+        line1 = segment_thai_text(line1, client)
+        line2 = segment_thai_text(line2, client)
+        print(f"Hook: {line1} | {line2}")
 
-    product_img = download_image(product["image_url"])
-    
-    # PIL Overlay
-    try:
-        badge_text = extract_badge_text(product.get("promo"))
-        review_img = add_overlay(
-            product_img, line1, line2, ACCENT_COLOR,
-            font_name="Itim-Regular.ttf",
-            badge_text=badge_text,
-            watermark="พริก 10 เม็ด"
+        product_img = download_image(product["image_url"])
+
+        try:
+            badge_text = extract_badge_text(product.get("promo"))
+            review_img = add_overlay(
+                product_img, line1, line2, ACCENT_COLOR,
+                font_name="Itim-Regular.ttf",
+                badge_text=badge_text,
+                watermark="พริก 10 เม็ด"
+            )
+            os.unlink(product_img)
+            print(f"Overlay done: {review_img}")
+        except Exception as overlay_err:
+            print(f"Overlay failed, using original: {overlay_err}")
+            review_img = product_img
+
+        caption = generate_caption(
+            product["detail"], product["shopee"],
+            product["lazada"], promo_clean, highlights
         )
-        os.unlink(product_img)
-        print(f"Review image overlaid: {review_img}")
-    except Exception as overlay_err:
-        print(f"Overlay failed, using original image: {overlay_err}")
-        review_img = product_img
+        print(f"Caption:\n{caption}\n")
 
-    caption = generate_caption(
-        product["detail"], product["shopee"],
-        product["lazada"], promo_clean, highlights
-    )
-    print(f"Caption:\n{caption}\n")
-
-    if args.dry_run:
-        print(f"Dry run complete. Local image path: {review_img}")
-        print(f"Link comment would be: 👉 Shopee → {product['shopee']}")
-    else:
-        post_id, was_scheduled = post_to_page(review_img, caption, product["shopee"], product["lazada"], promo_clean)
-        if os.path.exists(review_img):
-            os.unlink(review_img)
-        if not was_scheduled:
-            post_link_comment(post_id, product["shopee"], product["lazada"], promo_clean)
-        if not affiliate_mode:
-            mark_posted(wb, ws, product["row"])
+        if args.dry_run:
+            print(f"[Dry run] img={review_img} | shopee={product['shopee']}")
         else:
-            append_posted_fallback(wb, ws, product)
+            post_id, was_scheduled = post_to_page(
+                review_img, caption,
+                product["shopee"], product["lazada"], promo_clean,
+                scheduled_timestamp=scheduled_ts
+            )
+            if os.path.exists(review_img):
+                os.unlink(review_img)
+            if not was_scheduled:
+                post_link_comment(post_id, product["shopee"], product["lazada"], promo_clean)
+            if not affiliate_mode:
+                mark_posted(wb, ws, product["row"])
+            else:
+                append_posted_fallback(wb, ws, product)
+            posted_this_run.add(product["shopee"])
+            success_count += 1
+
+        if i < 4:
+            _time.sleep(5)
+
+    print(f"\nDone: {success_count}/5 posts completed")
 

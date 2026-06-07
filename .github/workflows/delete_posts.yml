@@ -1,0 +1,19 @@
+name: Delete All Posts (Run Once)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  delete:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install requests
+        run: pip install requests
+      - name: Remove all posts from page
+        env:
+          SOMTAM_PAGE_ACCESS_TOKEN: ${{ secrets.SOMTAM_PAGE_ACCESS_TOKEN }}
+        run: python delete_all_posts.py
