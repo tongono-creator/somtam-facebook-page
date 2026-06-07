@@ -574,7 +574,7 @@ if __name__ == "__main__":
     # คำนวณ 5 scheduled timestamps ล่วงหน้า (Bangkok UTC+7)
     BKK = timezone(timedelta(hours=7))
     now_bkk = datetime.now(BKK)
-    DAILY_SLOTS = ["08:00", "10:00", "12:30", "15:00", "18:00"]
+    DAILY_SLOTS = ["05:00", "08:00", "11:00", "14:00", "17:00"]
     slot_timestamps = []
     for slot in DAILY_SLOTS:
         h, m = map(int, slot.split(":"))
