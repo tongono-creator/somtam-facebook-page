@@ -207,14 +207,7 @@ def get_allowed_xlsx_files():
     if "chowchow" in path:
         return ["สัตว์เลี้ยง.xlsx"]
     elif "somtam" in path:
-        return [
-            "อาหารและเครื่องดื่ม.xlsx",
-            "สินค้าขายดี.xlsx",
-            "เครื่องใช้ในบ้าน.xlsx",
-            "เครื่องใช้ไฟฟ้าภายในบ้าน.xlsx",
-            "เสื้อผ้าแฟชั่นผู้หญิง.xlsx",
-            "สัตว์เลี้ยง.xlsx",
-        ]
+        return ["อาหารและเครื่องดื่ม.xlsx"]
     elif "rocket" in path:
         return ["เครื่องใช้ไฟฟ้าภายในบ้าน.xlsx"]
     elif "x-bot" in path:
