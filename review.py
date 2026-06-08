@@ -412,8 +412,25 @@ def generate_hook(detail, highlights):
     # Local fallback for hook
     title = re.sub(r'^[•\-\*\d\.\s\u2013\(\[\{\)\|\}]+', '', detail).strip()
     first_line = title.split('\n')[0].split('|')[0].split(' - ')[0].split(' – ')[0].strip()
-    line1 = first_line[:15] if first_line else "สินค้าแนะนำ"
-    line2 = "รายละเอียดเพิ่มเติม"
+    # line1: ตัดชื่อสั้นก่อน spec keyword แล้วเอา 3 คำแรก
+    _specs = ['ราคา', 'แพ็ค', 'ขนาด', 'สำหรับ', 'จำนวน', 'กรัม', 'ลิตร', ' ml', ' kg', ' g ', '(']
+    _stop = len(first_line)
+    for _kw in _specs:
+        _idx = first_line.find(_kw)
+        if _idx > 2:
+            _stop = min(_stop, _idx)
+    short_title = first_line[:_stop].strip()
+    words = short_title.split()
+    line1 = " ".join(words[:3]) if words else "สินค้าแนะนำ"
+    # line2: ราคา ถ้ามี / ไม่มีดึง feature แรก
+    price_m = re.search(r'ราคา\s*([\d,]+(?:\.\d+)?)\s*บาท', detail)
+    if price_m:
+        line2 = f"แค่ {price_m.group(1)} บาท คุ้มมาก"
+    else:
+        all_lines = [l.strip() for l in detail.splitlines() if l.strip() and len(l.strip()) > 8]
+        clean_lines = [re.sub(r'^[^฀-๿\w]+', '', l).strip() for l in all_lines]
+        clean_lines = [l for l in clean_lines if l and not l.startswith('http')]
+        line2 = " ".join(clean_lines[1].split()[:5]) if len(clean_lines) > 1 else "ของดีน่าลอง"
     return line1, line2
 
 def generate_caption(detail, shopee, lazada, promo, highlights):
@@ -448,11 +465,30 @@ def generate_caption(detail, shopee, lazada, promo, highlights):
             
     if not caption:
         print("[Warning] Falling back to local heuristic caption.")
-        first_few_lines = " ".join([l.strip() for l in detail.splitlines() if l.strip()][:3])
+        # ชื่อสินค้าสั้น — ตัดก่อน spec keyword
+        _first = [l.strip() for l in detail.splitlines() if l.strip()]
+        _fl = _first[0] if _first else ""
+        _specs2 = ['ราคา', 'แพ็ค', 'ขนาด', 'สำหรับ', 'จำนวน', 'กรัม', 'ลิตร', ' ml', ' kg', '(']
+        _stop2 = len(_fl)
+        for _kw in _specs2:
+            _idx = _fl.find(_kw)
+            if _idx > 2:
+                _stop2 = min(_stop2, _idx)
+        short_name = " ".join(_fl[:_stop2].strip().split()[:3]) if _fl else "สินค้าตัวนี้"
+        # เปิดแบบเพื่อนแนะนำ หมุนเวียน 5 template
+        import hashlib
+        _seed = int(hashlib.md5(detail[:30].encode()).hexdigest(), 16) % 5
+        openers = [
+            f"มาแนะนำ {short_name} ค่ะ ใช้เองแล้วดีจริง!",
+            f"เพิ่งสั่งมาลอง {short_name} บอกเลยว่าไม่ผิดหวังเลย!",
+            f"ใครตามหา {short_name} อยู่ — ตัวนี้คุ้มมากค่ะ",
+            f"แนะนำเลยนะ {short_name} ราคาโอเค ของดี!",
+            f"ลองมาแล้วชอบมาก {short_name} เอาไปบอกต่อเลย!",
+        ]
         caption = (
-            f"สวัสดีค่ะทุกคน วันนี้เรามีสินค้าดีๆ มาแนะนำค่ะ!\n\n"
-            f"ตัวนี้คือ {first_few_lines} บอกเลยว่าตอบโจทย์ชีวิตประจำวันมากค่ะ {highlights}\n\n"
-            f"ใครที่กำลังมองหาอยู่หรืออยากสั่งซื้อไปลองใช้งาน สามารถกดสั่งได้ที่ลิงก์ตะกร้าด้านล่างนี้ได้เลยค่ะ 👇"
+            f"{openers[_seed]}\n\n"
+            f"{highlights}\n\n"
+            f"ใครสนใจกดสั่งได้เลยนะ 👇 #พริก10เม็ด #ของดีชี้เป้า"
         )
     else:
         lines = caption.splitlines()
