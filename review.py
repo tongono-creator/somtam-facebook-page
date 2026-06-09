@@ -413,7 +413,8 @@ def generate_hook(detail, highlights):
     title = re.sub(r'^[•\-\*\d\.\s\u2013\(\[\{\)\|\}]+', '', detail).strip()
     first_line = title.split('\n')[0].split('|')[0].split(' - ')[0].split(' – ')[0].strip()
     # line1: ตัดชื่อสั้นก่อน spec keyword แล้วเอา 3 คำแรก
-    _specs = ['ราคา', 'แพ็ค', 'ขนาด', 'สำหรับ', 'จำนวน', 'กรัม', 'ลิตร', ' ml', ' kg', ' g ', '(']
+    first_line = re.sub(r'[\[\]\(\)]', '', first_line)
+    _specs = ['ราคา', 'แพ็ค', 'ขนาด', 'สำหรับ', 'จำนวน', 'กรัม', 'ลิตร', ' ml', ' kg', ' g ', ',']
     _stop = len(first_line)
     for _kw in _specs:
         _idx = first_line.find(_kw)
@@ -421,7 +422,12 @@ def generate_hook(detail, highlights):
             _stop = min(_stop, _idx)
     short_title = first_line[:_stop].strip()
     words = short_title.split()
-    line1 = " ".join(words[:3]) if words else "สินค้าแนะนำ"
+    line1 = "สินค้าแนะนำ"
+    for n in (3, 2, 1):
+        candidate = " ".join(words[:n]) if words else "สินค้าแนะนำ"
+        if len(candidate) <= 20 or n == 1:
+            line1 = candidate
+            break
     # line2: ราคา ถ้ามี / ไม่มีดึง feature แรก
     price_m = re.search(r'ราคา\s*([\d,]+(?:\.\d+)?)\s*บาท', detail)
     if price_m:
