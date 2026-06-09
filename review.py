@@ -608,12 +608,18 @@ if __name__ == "__main__":
     parser.add_argument("--dry-run", action="store_true", help="Run without posting or marking as done")
     args = parser.parse_args()
 
+    IMMEDIATE = os.environ.get("IMMEDIATE", "false").lower() == "true"
+
     # คำนวณ 5 scheduled timestamps ล่วงหน้า (Bangkok UTC+7)
+    # IMMEDIATE=true (workflow_dispatch) -> post now, no scheduling
     BKK = timezone(timedelta(hours=7))
     now_bkk = datetime.now(BKK)
     DAILY_SLOTS = ["05:00", "08:00", "11:00", "14:00", "17:00"]
     slot_timestamps = []
     for slot in DAILY_SLOTS:
+        if IMMEDIATE:
+            slot_timestamps.append(None)
+            continue
         h, m = map(int, slot.split(":"))
         dt = datetime(now_bkk.year, now_bkk.month, now_bkk.day, h, m, tzinfo=BKK)
         if dt <= now_bkk + timedelta(minutes=10):
