@@ -431,12 +431,12 @@ def generate_hook(detail, highlights):
     # line2: ราคา ถ้ามี / ไม่มีดึง feature แรก
     price_m = re.search(r'ราคา\s*([\d,]+(?:\.\d+)?)\s*บาท', detail)
     if price_m:
-        line2 = f"แค่ {price_m.group(1)} บาท คุ้มมาก"
+        line2 = f"ราคา {price_m.group(1)} บาท"
     else:
         all_lines = [l.strip() for l in detail.splitlines() if l.strip() and len(l.strip()) > 8]
         clean_lines = [re.sub(r'^[^฀-๿\w]+', '', l).strip() for l in all_lines]
         clean_lines = [l for l in clean_lines if l and not l.startswith('http')]
-        line2 = " ".join(clean_lines[1].split()[:5]) if len(clean_lines) > 1 else "ของดีน่าลอง"
+        line2 = " ".join(clean_lines[1].split()[:5]) if len(clean_lines) > 1 else ""
     return line1, line2
 
 def generate_caption(detail, shopee, lazada, promo, highlights):
