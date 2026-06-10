@@ -716,17 +716,18 @@ if __name__ == "__main__":
     # IMMEDIATE=true (workflow_dispatch) -> post now, no scheduling
     BKK = timezone(timedelta(hours=7))
     now_bkk = datetime.now(BKK)
-    DAILY_SLOTS = ["05:00", "08:00", "11:00", "14:00", "17:00"]
+    DAILY_SLOTS = ["08:00", "10:00", "12:00", "14:00", "16:00"]
     slot_timestamps = []
-    for slot in DAILY_SLOTS:
+    for idx, slot in enumerate(DAILY_SLOTS):
         if IMMEDIATE:
-            slot_timestamps.append(None)
-            continue
-        h, m = map(int, slot.split(":"))
-        dt = datetime(now_bkk.year, now_bkk.month, now_bkk.day, h, m, tzinfo=BKK)
-        if dt <= now_bkk + timedelta(minutes=10):
-            dt += timedelta(days=1)
-        slot_timestamps.append(int(dt.timestamp()))
+            dt = now_bkk + timedelta(minutes=15 + idx * 120)
+            slot_timestamps.append(int(dt.timestamp()))
+        else:
+            h, m = map(int, slot.split(":"))
+            dt = datetime(now_bkk.year, now_bkk.month, now_bkk.day, h, m, tzinfo=BKK)
+            if dt <= now_bkk + timedelta(minutes=10):
+                dt += timedelta(days=1)
+            slot_timestamps.append(int(dt.timestamp()))
 
     posted_this_run = set()   # dedup shopee URL ภายใน run เดียวกัน
     success_count = 0
