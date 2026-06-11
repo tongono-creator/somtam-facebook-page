@@ -202,10 +202,101 @@ def load_next_product():
         }, wb, ws
     return None, wb, ws
 
-def mark_posted(wb, ws, row_num):
+PERSONAS = [
+    {"id": "A", "name": "เพื่อนบอกต่อ", "desc": "เพื่อนบอกต่อ แนะนำของดีให้เพื่อนด้วยความเป็นกันเอง"},
+    {"id": "B", "name": "คนซื้อมาใช้แล้ว", "desc": "คนที่ชอบซื้อของออนไลน์และมารีวิวสั้นๆ หลังใช้งานจริงมาระยะหนึ่ง บอกเล่าตามจริง"},
+    {"id": "C", "name": "คนเจอโปรมาแชร์", "desc": "คนที่บังเอิญเจอราคาโปรโมชั่นหรือส่วนลดพิเศษแล้วอยากเอามาแชร์ต่อด้วยความตื่นเต้นเบาๆ"},
+    {"id": "D", "name": "คนเคยมีปัญหาแล้วสินค้าช่วยแก้", "desc": "คนที่มีปัญหาชีวิตประจำวันแล้วสินค้าตัวนี้เข้ามาช่วยแก้ปัญหาได้ตรงจุด"},
+    {"id": "E", "name": "คนเล่าเรื่องชีวิตประจำวัน", "desc": "คนเล่าเรื่องราวชีวิตประจำวัน/อุปสรรคชีวิตทั่วไปก่อน แล้วโยงเข้าหาตัวสินค้าที่เข้ามาช่วยชีวิต"},
+    {"id": "F", "name": "คนรีวิวสั้นๆแบบขำๆ", "desc": "คนรีวิวสั้นๆ แบบขำๆ ตลกๆ สอดแทรกความตลกหรือมุกแซวตัวเอง"},
+    {"id": "G", "name": "คนสงสัยก่อนซื้อแล้วมาลอง", "desc": "คนที่เคยสงสัย/ไม่แน่ใจในคุณภาพของสินค้าตัวนี้มาก่อน แล้วตัดสินใจซื้อมาลองและมาแชร์ความจริง"},
+    {"id": "H", "name": "คนแนะนำของให้ครอบครัว", "desc": "คนที่ห่วงใยครอบครัวหรือคนใกล้ตัว แนะนำของดีให้คนในบ้าน/ครอบครัวได้ใช้"}
+]
+
+HOOKS = [
+    "เมื่อวานเพิ่งเจอ...",
+    "ไม่คิดว่าจะ...",
+    "อันนี้เกินคาดจริงๆ",
+    "มีใครเป็นเหมือนผมไหม",
+    "ตอนแรกไม่ได้จะซื้อ",
+    "กำลังหาของแบบนี้อยู่พอดี",
+    "เห็นคนพูดถึงเยอะเลยลอง",
+    "โดนป้ายยามาอีกที",
+    "ลองแล้วเข้าใจเลยว่าทำไมขายดี",
+    "แชร์เผื่อมีคนกำลังหาอยู่"
+]
+
+STYLES = [
+    {"name": "มุกตลก", "desc": "มีมุกตลกหรือการแซวตัวเอง ขำขัน"},
+    {"name": "ประสบการณ์ส่วนตัว", "desc": "มีประสบการณ์ส่วนตัวจากการใช้งานจริง เล่าเหตุการณ์จริง"},
+    {"name": "คำถาม", "desc": "เปิดประเด็นด้วยคำถาม ชวนคุยหรือชวนคิด"},
+    {"name": "การเปรียบเทียบ", "desc": "มีการเปรียบเทียบกับแบบเดิม/สินค้าแบบอื่น หรือชีวิตก่อนและหลังใช้"},
+    {"name": "การบอกต่อเฉยๆ", "desc": "เป็นการบอกต่อเฉยๆ แบบป้ายยาเพื่อนธรรมดา เป็นกันเอง"}
+]
+
+def load_state(wb):
+    state = {
+        "last_personas": [],
+        "last_hooks": [],
+        "last_styles": []
+    }
+    if "posted_state" in wb.sheetnames:
+        ws = wb["posted_state"]
+        val = ws.cell(row=1, column=1).value
+        if val:
+            try:
+                import json
+                state = json.loads(val)
+            except Exception as e:
+                print(f"[State] Failed to parse state JSON: {e}")
+    return state
+
+def save_state_to_wb(wb, state):
+    if "posted_state" not in wb.sheetnames:
+        ws = wb.create_sheet("posted_state")
+    else:
+        ws = wb["posted_state"]
+    import json
+    state["last_personas"] = state.get("last_personas", [])[-50:]
+    state["last_hooks"] = state.get("last_hooks", [])[-50:]
+    state["last_styles"] = state.get("last_styles", [])[-50:]
+    ws.cell(row=1, column=1, value=json.dumps(state, ensure_ascii=False))
+
+def choose_persona(state):
+    last_personas = state.get("last_personas", [])
+    forbidden = []
+    if len(last_personas) >= 2 and last_personas[-1] == last_personas[-2]:
+        forbidden.append(last_personas[-1])
+    available = [p for p in PERSONAS if p["id"] not in forbidden]
+    if not available:
+        available = PERSONAS
+    return random.choice(available)
+
+def choose_hook(state):
+    last_hooks = state.get("last_hooks", [])
+    window_size = min(20, len(HOOKS) - 1)
+    forbidden = last_hooks[-window_size:] if last_hooks else []
+    available = [h for h in HOOKS if h not in forbidden]
+    if not available:
+        available = HOOKS
+    return random.choice(available)
+
+def choose_style(state):
+    last_styles = state.get("last_styles", [])
+    forbidden = []
+    if len(last_styles) >= 2 and last_styles[-1] == last_styles[-2]:
+        forbidden.append(last_styles[-1])
+    available = [s for s in STYLES if s["name"] not in forbidden]
+    if not available:
+        available = STYLES
+    return random.choice(available)
+
+def mark_posted(wb, ws, row_num, state=None):
     bkk = timezone(timedelta(hours=7))
     ts = datetime.now(bkk).strftime("%Y-%m-%d %H:%M")
     ws.cell(row=row_num, column=7, value=f"done {ts}")
+    if state is not None:
+        save_state_to_wb(wb, state)
     wb.save(EXCEL_PATH)
     print(f"Marked row {row_num} as done")
 
@@ -235,7 +326,7 @@ def get_posted_urls(ws):
             urls.add(str(lazada).strip())
     return urls
 
-def append_posted_fallback(wb, ws, product):
+def append_posted_fallback(wb, ws, product, state=None):
     bkk = timezone(timedelta(hours=7))
     ts = datetime.now(bkk).strftime("%Y-%m-%d %H:%M")
     row_num = ws.max_row + 1
@@ -248,6 +339,8 @@ def append_posted_fallback(wb, ws, product):
     ws.cell(row=row_num, column=6, value=product["promo"])
     ws.cell(row=row_num, column=7, value=f"done {ts}")
     
+    if state is not None:
+        save_state_to_wb(wb, state)
     wb.save(EXCEL_PATH)
     print(f"Appended fallback product to review_products.xlsx at row {row_num}")
 
@@ -448,120 +541,201 @@ def generate_hook(detail, highlights):
         line2 = " ".join(clean_lines[1].split()[:5]) if len(clean_lines) > 1 else ""
     return line1, line2
 
-def generate_caption(detail, shopee, lazada, promo, highlights):
-    global API_ENABLED
-    import random
-    import hashlib as _hs
-    import re
+def local_parse_detail_to_json(detail, promo=None):
+    price = ""
+    # Find price in detail or promo
+    price_m = re.search(r'(?:ราคา|฿)\s*([\d,]+(?:\.\d+)?)\s*(?:บาท)?', detail + " " + (promo or ""))
+    if price_m:
+        price = price_m.group(1).replace(",", "")
     
-    is_x = "x-bot" in __file__.replace("\\", "/")
-    promo_line = f"\n🔥 โปรโมชั่น: {promo}" if promo else ""
-    if is_x:
-        promo_line = f" 🔥 {promo}" if promo else ""
+    lines = [l.strip() for l in detail.splitlines() if l.strip()]
+    first_line = lines[0] if lines else ""
+    first_line = re.sub(r'^[•\-\*\d\.\s\u2013\(\[\{\)\|\}#@❤️🙏🚚🔥]+', '', first_line).strip()
+    clean_title = re.sub(r'^(?:ส่งฟรี|พร้อมส่ง|ลดล้างสต๊อก|แท้|ของแท้|ส่งด่วน|ส่งด่วน\d+วัน|รีวิวเยอะสุด|เกรดพรีเมี่ยม|ยอดขายเยอะที่สุด|พรีเมียม)\s*', '', first_line)
+    # Clean price from clean_title
+    clean_title = re.sub(r'(?:ราคา|฿)\s*[\d,]+(?:\.\d+)?\s*(?:บาท)?', '', clean_title).strip()
+    
+    prod_type = "สินค้า"
+    title_lower = clean_title.lower()
+    
+    if "ขนม" in title_lower:
+        prod_type = "ของกิน"
+    elif any(x in title_lower for x in ["กรงแมว", "อาหารเปียก", "อาหารแมว", "อาหารสุนัข", "ทรายแมว", "สัตว์เลี้ยง", "แมว", "หมา", "สุนัข", "cat", "dog", "pet"]):
+        prod_type = "ของใช้สัตว์เลี้ยง"
+    elif any(x in title_lower for x in ["นม", "โปรตีน", "เวย์", "ไฮโปรตีน"]) and "อัตโนมัติ" not in title_lower and "มอเตอร์" not in title_lower:
+        prod_type = "นมโปรตีน"
+    elif any(x in title_lower for x in ["ทุเรียน", "มะพร้าว", "เก๊กฮวย", "ชาเขียว", "มัทฉะ", "น้ำพริก", "คุกกี้", "เบเกอรี่", "กาแฟ", "ช็อกโกแลต", "อาหาร", "กิน", "ส้มตำ", "ปลา"]):
+        prod_type = "ของกิน"
+    elif any(x in title_lower for x in ["แว่น", "ray-ban", "rayban", "กันแดด"]):
+        prod_type = "แว่นตากันแดด"
+    elif any(x in title_lower for x in ["ทีที", "tv", "ทีวี", "โทรทัศน์", "smart tv"]):
+        prod_type = "ทีวี"
+    elif any(x in title_lower for x in ["เก้าอี้", "chair", "ergonomic"]):
+        prod_type = "เก้าอี้สุขภาพ"
+    elif any(x in title_lower for x in ["แก้ว", "กระติก", "tumbler"]):
+        prod_type = "แก้วเก็บความเย็น"
+    elif any(x in title_lower for x in ["หมอน", "ที่นอน", "เตียง", "pillow"]):
+        prod_type = "เครื่องนอน"
+    elif any(x in title_lower for x in ["ตัดหญ้า", "เครื่องมือ"]):
+        prod_type = "เครื่องมือช่าง/ทำสวน"
         
-    caption = None
+    highlights = []
+    for line in lines[1:]:
+        cleaned = re.sub(r'^[•\-\*\d\.\s\u2013\(\[\{\)\|\}]+', '', line).strip()
+        cleaned = re.sub(r'(?:ราคา|฿)\s*[\d,]+(?:\.\d+)?\s*(?:บาท)?', '', cleaned).strip()
+        if cleaned and 5 < len(cleaned) < 80 and not cleaned.startswith("http"):
+            highlights.append(cleaned)
+        if len(highlights) >= 2:
+            break
+            
+    if not highlights:
+        highlights = [clean_title[:45]]
+        
+    res = {
+        "ประเภท": prod_type,
+        "จุดเด่น": ", ".join(highlights),
+    }
+    if price:
+        res["ราคา"] = price
+        
+    flavors = []
+    for f in ["ช็อกโกแลต", "สตอเบอรี่", "สตรอว์เบอร์รี่", "มะพร้าว", "ชาเขียว", "ทุเรียนหมอนทอง", "รสหวาน", "จืด", "รสเผ็ด", "ต้มยำ"]:
+        if f in detail:
+            flavors.append(f)
+    if flavors:
+        res["รสชาติ"] = ", ".join(flavors)
+        
+    colors = []
+    for c in ["สีดำ", "สีขาว", "สีครีม", "สีเขียว", "สีแดง", "สีน้ำเงิน", "สีเทา", "black", "white", "grey"]:
+        if c in detail.lower():
+            colors.append(c)
+    if colors:
+        res["สี"] = ", ".join(colors)
+        
+    return res
+
+def parse_detail_to_json(detail, promo=None, client=None):
+    global API_ENABLED
+    if API_ENABLED and client:
+        prompt = (
+            "คุณเป็นผู้ช่วยจัดการข้อมูลสินค้า หน้าที่ของคุณคือสกัดรายละเอียดสินค้าภาษาไทยให้เป็นสรุปสั้นๆ ในรูปแบบ JSON\n"
+            "กฎเหล็ก:\n"
+            "1. ห้ามแสดงชื่อแบรนด์เต็มหรือชื่อสินค้าที่ยาวเกินไป ให้ใช้คำย่อที่เป็นธรรมชาติและสั้นกระชับ\n"
+            "2. สรุปรายละเอียดให้ออกมาเป็น JSON object ที่มีโครงสร้างดังนี้ (ตอบเป็นภาษาไทย):\n"
+            "   - 'ประเภท': ระบุประเภทสินค้าสั้นๆ (เช่น นมโปรตีน, แว่นกันแดด, ทีวี, มะพร้าวอบแห้ง, เก้าอี้สุขภาพ)\n"
+            "   - 'จุดเด่น': สรุปสรรพคุณหรือจุดเด่นที่คนใช้สนใจ 1-2 ข้อสั้นๆ (เช่น โปรตีน 31g, ขอบจอบาง, น้ำตาลต่ำ)\n"
+            "   - 'ราคา': ตัวเลขราคาสินค้าเท่านั้น (เช่น 399, 189) หากไม่มีในรายละเอียดหรือโปรโมชั่นให้ใส่เครื่องหมายคำพูดว่าง \"\"\n"
+            "   - รวมถึงฟิลด์ย่อยอื่นที่จำเป็นและมีระบุในข้อความ เช่น 'รส', 'สี', 'ขนาด', 'รุ่น' (ถ้าไม่มีไม่ต้องใส่ฟิลด์เหล่านี้)\n"
+            "3. ห้ามมีคำนำหน้า คำเกริ่น หรือคำอธิบายเพิ่มเติม ห้ามมีเครื่องหมาย markdown ```json ตอบกลับเฉพาะ JSON ดิบเท่านั้น\n\n"
+            f"รายละเอียดสินค้า:\n{detail}\n"
+            f"โปรโมชั่น:\n{promo or ''}"
+        )
+        for model in TEXT_MODELS:
+            try:
+                resp = client.models.generate_content(model=model, contents=prompt)
+                res_text = resp.text.strip()
+                res_text = re.sub(r'^```(?:json)?\s*', '', res_text)
+                res_text = re.sub(r'\s*```$', '', res_text)
+                import json
+                parsed = json.loads(res_text)
+                if isinstance(parsed, dict) and "ประเภท" in parsed:
+                    return parsed
+            except Exception as e:
+                print(f"[{model}] parse_detail_to_json failed: {e}")
+        print("[Warning] parse_detail_to_json failed on all models. Falling back to local parser.")
+        
+    return local_parse_detail_to_json(detail, promo)
+
+def generate_local_fallback_caption(product_json, selected_persona, selected_hook, selected_style, path_norm, is_x):
+    prod_type = product_json.get("ประเภท", "ของกินของใช้")
+    highlights = product_json.get("จุดเด่น", "คุณภาพดี ใช้งานสะดวก")
+    price = product_json.get("ราคา", "")
     
-    # Archetypes with weights: 30% Friend, 30% Review, 20% Promo, 20% Life Story
-    archetypes = [
-        ("เพื่อนที่มาบอกต่อ แนะนำของดีให้เพื่อน", "เพื่อนบอกต่อ"),
-        ("คนที่ชอบซื้อของออนไลน์และมารีวิวสั้นๆ หลังใช้งานจริงมาระยะหนึ่ง", "รีวิวหลังใช้"),
-        ("คนที่บังเอิญเจอราคาโปรโมชั่นหรือส่วนลดพิเศษแล้วอยากเอามาแชร์ต่อ", "เจอโปรมาแชร์"),
-        ("คนที่บ่นหรือเล่าเรื่องราวชีวิตประจำวัน/อุปสรรคชีวิตทั่วไปก่อน แล้วโยงเข้าหาตัวสินค้าที่เข้ามาช่วยแก้ปัญหา", "เล่าเรื่องชีวิตแล้วโยงเข้าสินค้า")
-    ]
-    weights = [30, 30, 20, 20]
+    if "somtam" in path_norm:
+        ending = "ค่ะ"
+        closing = "ดูลิ้งในคอมเมนต์แรกเลยนะคะ 👇"
+    elif "chowchow" in path_norm:
+        ending = "ฮะ"
+        closing = "กดลิ้งในคอมเมนต์แรกได้เลยฮะ 👇"
+    elif "x-bot" in path_norm:
+        ending = "ครับ"
+        closing = ""
+    else:
+        ending = "ครับ"
+        closing = "ดูลิ้งในคอมเมนต์แรกเลยครับ 👇"
+        
+    price_str = f" ราคาแค่ {price} บาท" if price else ""
     
-    selected_arch_desc, selected_arch_name = random.choices(archetypes, weights=weights, k=1)[0]
+    style_name = selected_style["name"]
+    if style_name == "มุกตลก":
+        body = f"{selected_hook} {prod_type}ตัวนี้เลย{ending} ตอนแรกกังวลว่าจะไม่โอเค แต่พอลองแล้วชอบเลย รอดตายแล้วเรา 555 จุดเด่นคือ {highlights}{price_str}"
+    elif style_name == "ประสบการณ์ส่วนตัว":
+        body = f"{selected_hook} ลองซื้อ {prod_type} ตัวนี้มาใช้ได้สักพักแล้ว{ending} รู้สึกสะดวกสบายขึ้นเยอะ โดยเฉพาะเรื่อง {highlights}{price_str} ดีจริง"
+    elif style_name == "คำถาม":
+        body = f"{selected_hook} มีใครเคยลอง {prod_type} ตัวนี้รึยัง{ending} ส่วนตัวใช้แล้วประทับใจจุดเด่น {highlights}{price_str} คิดว่าไงกันบ้าง"
+    elif style_name == "การเปรียบเทียบ":
+        body = f"{selected_hook} เทียบกับ {prod_type} แบบเดิมๆ ที่เคยใช้ ตัวนี้คือจุดเด่น {highlights}{price_str} ดีกว่าเห็นๆ เลย{ending}"
+    else:
+        body = f"{selected_hook} แวะมาแชร์ {prod_type} ดีๆ{ending} ตัวนี้มีจุดเด่นคือ {highlights}{price_str} เผื่อใครกำลังสนใจอยู่"
+        
+    if is_x:
+        return body[:200]
+    else:
+        return f"{body}\n\n{closing}"
+
+def generate_caption(product_json, selected_persona, selected_hook, selected_style, shopee, lazada, promo):
+    global API_ENABLED
+    import json
     
     path_norm = __file__.replace("\\", "/").lower()
-    if "somtam" in path_norm:
-        gender_inst = f"คุณคือคนธรรมดาที่ซื้อของออนไลน์บ่อย และชอบแชร์ของที่คิดว่าคุ้มให้เพื่อน โดยรอบนี้สุ่มบทบาทเป็น: {selected_arch_desc} ใช้คำลงท้ายว่า 'ค่ะ' หรือ 'คะ' และสรรพนามแทนตัวว่า 'หนู' หรือ 'เรา' เท่านั้น"
-        closing = "ดูลิ้งในคอมเมนต์แรกเลยนะคะ 👇"
-        closing_fallback_promo = "แปะพิกัดไว้ในคอมเมนต์แรกเลยนะคะ 👇"
-        fallbacks = [
-            "เจอ {title_clean} อันนี้มาลองใช้แล้วดีงามมาก แนะนำค่า{_price_str}\n\nดูลิ้งในคอมเมนต์แรกเลยนะคะ 👇",
-            "ใครหา {title_clean} อยู่ ตัวนี้ลองใช้มาระยะนึงแล้ว ดีกว่าที่คิดไว้เยอะเลย{_price_str}\n\nดูลิ้งในคอมเมนต์แรกเลยนะคะ 👇",
-            "บังเอิญเจอ {title_clean} ลดเหลือแค่นี้เอง แปะพิกัดไว้เผื่อใครตามหาอยู่เนอะ{_price_str}\n\nดูลิ้งในคอมเมนต์แรกเลยนะคะ 👇",
-            "ช่วงนี้เจอปัญหาชีวิตประจำวันนิดหน่อย ดีที่ได้ {title_clean} ตัวนี้มาช่วย สะดวกขึ้นเยอะเลยค่ะ{_price_str}\n\nดูลิ้งในคอมเมนต์แรกเลยนะคะ 👇"
-        ]
-    elif "chowchow" in path_norm:
-        gender_inst = f"คุณคือคนธรรมดาที่ซื้อของออนไลน์บ่อย และชอบแชร์ของที่คิดว่าคุ้มให้เพื่อน โดยรอบนี้สุ่มบทบาทเป็น: {selected_arch_desc} ใช้คำลงท้ายว่า 'ฮะ' หรือ 'โฮ่ง' และสรรพนามแทนตัวว่า 'น้องตูบ' หรือ 'ผม' เท่านั้น และมีกลิ่นอายความซนแบบน้องหมา"
-        closing = "กดลิ้งในคอมเมนต์แรกได้เลยฮะ 👇"
-        closing_fallback_promo = "พิกัดอยู่ในคอมเมนต์แรกนะโฮ่ง 👇"
-        fallbacks = [
-            "เจอ {title_clean} อันนี้มาลองใช้แล้วชอบมาก แนะนำฮะ{_price_str}\n\nกดลิ้งในคอมเมนต์แรกได้เลยฮะ 👇",
-            "ใครหา {title_clean} อยู่ ตัวนี้ลองใช้มาระยะนึงแล้ว ดีกว่าที่คิดไว้เยอะเลย{_price_str}\n\nกดลิ้งในคอมเมนต์แรกได้เลยฮะ 👇",
-            "บังเอิญเจอ {title_clean} ลดราคาเหลือเท่านี้ แปะพิกัดไว้เผื่อใครหาอยู่ฮะ{_price_str}\n\nกดลิ้งในคอมเมนต์แรกได้เลยฮะ 👇",
-            "ช่วงนี้เจอปัญหาวุ่นๆ ดีที่ได้ {title_clean} ตัวนี้มาช่วย ชีวิตง่ายขึ้นเยอะโฮ่ง{_price_str}\n\nกดลิ้งในคอมเมนต์แรกได้เลยฮะ 👇"
-        ]
-    elif "x-bot" in path_norm:
-        gender_inst = f"คุณคือคนธรรมดาที่ซื้อของออนไลน์บ่อย และมาโพสต์สั้นๆ บน X (Twitter) เล่าแบบเพื่อนคุยกัน โดยรอบนี้สุ่มบทบาทเป็น: {selected_arch_desc} ใช้คำลงท้าย 'ครับ' สรรพนาม 'ผม'"
-        closing = ""
-        closing_fallback_promo = ""
-        fallbacks = [
-            "เจอ {title_clean} มาลองใช้แล้วชอบเลย แนะนำครับ{_price_str}",
-            "ใครหา {title_clean} อยู่ ลองใช้มาระยะนึงแล้ว รู้สึกดีกว่าที่คิดไว้ครับ{_price_str}",
-            "บังเอิญเจอ {title_clean} ลดราคาเหลือเท่านี้ แปะพิกัดไว้เผื่อใครหาอยู่{_price_str}",
-            "ชีวิตช่วงนี้สบายขึ้นเยอะเพราะได้ {title_clean} ตัวนี้มาช่วย สะดวกมากครับ{_price_str}"
-        ]
-    else:  # rocket & kram
-        gender_inst = f"คุณคือคนธรรมดาที่ซื้อของออนไลน์บ่อย และชอบแชร์ของที่คิดว่าคุ้มให้เพื่อน โดยรอบนี้สุ่มบทบาทเป็น: {selected_arch_desc} ใช้คำลงท้ายว่า 'ครับ' และสรรพนามแทนตัวว่า 'ผม' หรือ 'พี่' เท่านั้น"
-        closing = "ดูลิ้งในคอมเมนต์แรกเลยครับ 👇"
-        closing_fallback_promo = "แปะพิกัดไว้ในคอมเมนต์แรกเลยครับ 👇"
-        fallbacks = [
-            "เจอ {title_clean} อันนี้มาลองใช้แล้วโอเคเลย แนะนำครับ{_price_str}\n\nดูลิ้งในคอมเมนต์แรกเลยครับ 👇",
-            "ใครหา {title_clean} อยู่ ตัวนี้ลองใช้มาระยะนึงแล้ว รู้สึกดีกว่าที่คิดไว้ครับ{_price_str}\n\nดูลิ้งในคอมเมนต์แรกเลยครับ 👇",
-            "บังเอิญเจอ {title_clean} ลดราคาเหลือเท่านี้ แปะพิกัดไว้เผื่อใครหาอยู่ครับ{_price_str}\n\nดูในคอมเมนต์แรกเลยครับ 👇",
-            "ช่วงนี้พยายามแก้ปัญหาชีวิตประจำวัน พอดีได้ {title_clean} ตัวนี้มา สะดวกขึ้นเยอะครับ{_price_str}\n\nดูในคอมเมนต์แรกเลยครับ 👇"
-        ]
-
-    title_lines = [l.strip() for l in detail.splitlines() if l.strip()]
-    title_raw = title_lines[0] if title_lines else ""
-    title_clean = re.sub(r'^[•\-\*\d\.\s\u2013\(\[\{\)\|\}]+', '', title_raw).strip()
-    title_clean = title_clean[:50]
+    is_x = "x-bot" in path_norm
     
-    price_m = re.search(r'ราคา\s*([\d,]+(?:\.\d+)?)\s*บาท', detail)
-    price_val = price_m.group(1) if price_m else ""
-    _price_str = f" ราคาแค่ {price_val} บาท" if price_val else ""
-    if is_x:
-        _price_str = f" ราคา {price_val} บาท" if price_val else ""
+    if "somtam" in path_norm:
+        gender_rule = "ใช้คำลงท้ายว่า 'ค่ะ' หรือ 'คะ' และสรรพนามแทนตัวว่า 'หนู' หรือ 'เรา' เท่านั้น"
+        closing = "ดูลิ้งในคอมเมนต์แรกเลยนะคะ 👇"
+    elif "chowchow" in path_norm:
+        gender_rule = "ใช้คำลงท้ายว่า 'ฮะ' หรือ 'โฮ่ง' และสรรพนามแทนตัวว่า 'น้องตูบ' หรือ 'ผม' เท่านั้น และมีกลิ่นอายความซนแบบน้องหมา"
+        closing = "กดลิ้งในคอมเมนต์แรกได้เลยฮะ 👇"
+    elif "x-bot" in path_norm:
+        gender_rule = "ใช้คำลงท้าย 'ครับ' สรรพนามแทนตัว 'ผม'"
+        closing = ""
+    else:
+        gender_rule = "ใช้คำลงท้ายว่า 'ครับ' และสรรพนามแทนตัวว่า 'ผม' หรือ 'พี่' เท่านั้น"
+        closing = "ดูลิ้งในคอมเมนต์แรกเลยครับ 👇"
 
+    caption = None
+    
     active_client = globals().get("client")
     if API_ENABLED and active_client:
         prompt = (
-            f"{gender_inst}\n\n"
-            "ก่อนเขียนโพสต์ ให้คิดก่อนว่า:\n"
-            "- สินค้านี้แก้ปัญหาอะไร\n"
-            "- คนซื้อเพราะอะไร\n"
-            "- จุดไหนที่ทำให้รู้สึกว่า 'เออ น่าสนใจ'\n\n"
-            f"รายละเอียดสินค้า:\n{detail}\n\n"
-            "กฎเหล็กสำคัญมาก:\n"
-            "- ห้ามเปิดโพสต์ด้วยชื่อสินค้า หรือแบรนด์เด็ดขาด\n"
-            "- ห้ามคัดลอกชื่อสินค้าเต็มจาก Shopee\n"
-            "- ห้ามใส่สเปกยาวๆ\n"
-            "- ห้ามใช้คำขายของหรือคำชมที่เว่อร์เกินจริงเด็ดขาด เช่น 'คุ้มมาก', 'คุ้มสุดๆ', 'คุ้มค่า', 'คุ้ม', 'ดีงาม', 'ห้ามพลาด', 'ของมันต้องมี', 'รีบซื้อ', 'โปรโมชั่น', 'สั่งได้เลย', 'อย่าพลาด', 'ไม่ควรพลาด', 'ดีจริง', 'แนะนำเลย'\n"
-            "- เน้นแสดงความคิดเห็น/ความรู้สึกส่วนตัวที่เป็นมนุษย์จริงๆ เช่น การนำไปใช้งานในชีวิตประจำวันที่เฉพาะเจาะจง หรือบอกข้อดีข้อเสียสั้นๆ แบบเพื่อนรีวิวให้ฟัง\n"
-            "- ให้เขียนเหมือนคนใช้จริงมาเล่า เป็นกันเองและเป็นธรรมชาติที่สุด\n\n"
+            "คุณคือคนธรรมดาเขียนรีวิวสินค้าที่เป็นธรรมชาติและเป็นกันเอง\n"
+            f"ในโพสต์นี้ คุณจะสวมบทบาท (Persona): \"{selected_persona['desc']}\"\n"
+            f"และเขียนในสไตล์ (Style): \"{selected_style['desc']}\"\n\n"
+            f"คุณต้องเริ่มประโยคแรกของโพสต์ด้วย Hook นี้เป๊ะๆ ห้ามดัดแปลง: \"{selected_hook}\"\n\n"
+            f"ข้อมูลสินค้าที่คุณมีในรูป JSON (ห้ามคิดรายละเอียดที่ไม่มีใน JSON นี้ขึ้นมาเองเด็ดขาด และห้ามโชว์ชื่อสินค้าหรือแบรนด์เต็ม):\n"
+            f"{json.dumps(product_json, ensure_ascii=False, indent=2)}\n\n"
+            f"กฎเหล็กข้อห้าม:\n"
+            f"- ห้ามเปิดโพสต์ด้วยชื่อสินค้า หรือชื่อแบรนด์ (ต้องเริ่มด้วย Hook: \"{selected_hook}\")\n"
+            f"- ห้ามพูดถึงสเปกยาวๆ\n"
+            f"- ห้ามใช้คำโฆษณา/คำขายของซ้ำซาก เช่น 'คุ้มมาก', 'คุ้มสุดๆ', 'คุ้มค่า', 'คุ้ม', 'ดีงาม', 'ห้ามพลาด', 'ของดี', 'ดีจริง', 'แนะนำเลย'\n"
+            f"- น้ำเสียงและสำเนียงการเขียน: {gender_rule}\n\n"
         )
         
         if is_x:
             prompt += (
-                "รูปแบบโพสต์บน X (Twitter):\n"
-                "1. เปิดด้วยปัญหาหรือความรู้สึกสั้นๆ\n"
-                "2. พูดถึงสินค้าสั้นๆ (ใช้ชื่อย่อ/แบรนด์ย่อ)\n"
-                "3. บอกจุดเด่นสั้นๆ 1 ข้อ\n\n"
-                "ความยาว: 2-3 ประโยค ห้ามเกิน 150 ตัวอักษรรวม\n"
-                "ตอบเฉพาะตัวโพสต์เท่านั้น"
+                "รูปแบบโพสต์สำหรับ X (Twitter):\n"
+                "1. ความยาวสั้นกระชับ รวมกันไม่เกิน 150-200 ตัวอักษร\n"
+                "2. เล่าความเห็นส่วนตัวสั้นๆ สอดรับกับ Persona และ Style\n"
+                "3. ลงท้ายด้วยสรรพนามธรรมชาติ ไม่ต้องมีข้อความปิดท้ายอื่น\n"
+                "ตอบกลับเฉพาะเนื้อความโพสต์เท่านั้น"
             )
         else:
             prompt += (
-                "รูปแบบโพสต์บน Facebook:\n"
-                "1. เปิดด้วยปัญหาหรือความรู้สึก\n"
-                "2. เล่าว่าเจออะไร\n"
-                "3. พูดถึงสินค้าสั้นๆ (ใช้ชื่อแบรนด์หรือชื่อย่อเท่านั้น ห้ามใช้ชื่อเต็ม)\n"
-                "4. บอกเหตุผลที่ชอบ 1-2 จุด จากมุมผู้ใช้จริง\n"
-                f"5. ปิดท้ายกระตุ้นการกระทำด้วยประโยคว่า: '{closing}'\n\n"
-                "ความยาว: 2-5 ประโยค\n"
-                "ตอบเฉพาะตัวโพสต์เท่านั้น ไม่ต้องพูดนำหน้า/อธิบายใดๆ"
+                f"รูปแบบโพสต์สำหรับ Facebook:\n"
+                f"1. ความยาวประมาณ 2-5 ประโยค\n"
+                f"2. เล่าเรื่องราวหรือให้ความเห็นส่วนตัวสั้นๆ สอดรับกับ Persona และ Style\n"
+                f"3. ปิดท้ายด้วยประโยคนี้เป๊ะๆ: \"{closing}\"\n"
+                f"ตอบกลับเฉพาะเนื้อความโพสต์เท่านั้น ไม่ต้องมีข้อความนำ/อธิบายใดๆ"
             )
             
         for model in TEXT_MODELS:
@@ -581,30 +755,25 @@ def generate_caption(detail, shopee, lazada, promo, highlights):
                 err_msg = str(e)
                 print(f"[{model}] caption generation failed: {err_msg[:80]}")
                 if any(x in err_msg.lower() for x in ["api key", "invalid_argument", "api_key", "timeout", "timed out", "deadline exceeded", "connection", "connect", "unreachable"]):
-                    print("Persistent API key or network/timeout issue detected. Disabling API calls immediately.")
+                    print("API key or connection issue detected. Disabling API calls.")
                     API_ENABLED = False
                     break
                     
         if not caption and API_ENABLED:
-            print("[Warning] Caption generation failed on all models. Disabling API calls for this run.")
+            print("[Warning] Caption generation failed on all models. Disabling API calls.")
             API_ENABLED = False
 
     if not caption:
         print("[Warning] Falling back to local heuristic caption.")
-        arch_idx = 0
-        if selected_arch_name == "เพื่อนบอกต่อ":
-            arch_idx = 0
-        elif selected_arch_name == "รีวิวหลังใช้":
-            arch_idx = 1
-        elif selected_arch_name == "เจอโปรมาแชร์":
-            arch_idx = 2
-        else:
-            arch_idx = 3
-            
-        template = fallbacks[arch_idx]
-        caption = template.format(title_clean=title_clean or "ของดี", _price_str=_price_str)
+        caption = generate_local_fallback_caption(
+            product_json, selected_persona, selected_hook, selected_style, path_norm, is_x
+        )
         
-    if promo:
+    promo_line = f"\n🔥 โปรโมชั่น: {promo}" if promo else ""
+    if is_x:
+        promo_line = f" 🔥 {promo}" if promo else ""
+        
+    if promo and promo_line not in caption:
         caption += promo_line
         
     return caption
@@ -705,9 +874,8 @@ def extract_badge_text(promo):
         return price_match.group(0).replace(" ", "")
     return None
 
-
 if __name__ == "__main__":
-    import argparse, time as _time
+    import argparse, time as _time, json
     from datetime import datetime, timezone, timedelta
     parser = argparse.ArgumentParser()
     parser.add_argument("--dry-run", action="store_true", help="Run without posting or marking as done")
@@ -731,6 +899,12 @@ if __name__ == "__main__":
             if dt <= now_bkk + timedelta(minutes=10):
                 dt += timedelta(days=1)
             slot_timestamps.append(int(dt.timestamp()))
+
+    # โหลด state เพียงครั้งเดียวก่อนเข้าลูป เพื่อให้จำค่าการสุ่มข้ามโพสต์ได้ถูกต้อง
+    import openpyxl
+    wb_init = openpyxl.load_workbook(EXCEL_PATH)
+    state = load_state(wb_init)
+    wb_init.close()
 
     posted_this_run = set()   # dedup shopee URL ภายใน run เดียวกัน
     success_count = 0
@@ -760,10 +934,22 @@ if __name__ == "__main__":
 
         print(f"Product: {product['detail'][:60]}...")
 
-        promo_clean = clean_promo(product["promo"])
-        highlights  = extract_highlights(product["detail"], promo_clean)
-        print(f"Highlights:\n{highlights}\n")
+        selected_persona = choose_persona(state)
+        selected_hook = choose_hook(state)
+        selected_style = choose_style(state)
 
+        print(f"[System Log] Chosen Persona: {selected_persona['name']} ({selected_persona['id']})")
+        print(f"[System Log] Chosen Hook: {selected_hook}")
+        print(f"[System Log] Chosen Style: {selected_style['name']}")
+
+        promo_clean = clean_promo(product["promo"])
+        
+        # Parse product details to JSON (hiding full name from final caption generator)
+        product_json = parse_detail_to_json(product["detail"], promo_clean, client)
+        print(f"[System Log] Converted Product JSON:\n{json.dumps(product_json, ensure_ascii=False, indent=2)}")
+
+        highlights = product_json.get("จุดเด่น", "")
+        # For the image overlay hook text, we still generate it using original helper, but we clean it
         line1, line2 = generate_hook(product["detail"], highlights)
         line1 = segment_thai_text(line1, client)
         line2 = segment_thai_text(line2, client)
@@ -786,10 +972,15 @@ if __name__ == "__main__":
             review_img = product_img
 
         caption = generate_caption(
-            product["detail"], product["shopee"],
-            product["lazada"], promo_clean, highlights
+            product_json, selected_persona, selected_hook, selected_style,
+            product["shopee"], product["lazada"], promo_clean
         )
         print(f"Caption:\n{caption}\n")
+
+        # บันทึกประวัติการสุ่มเก็บเข้า state ของการรันนี้
+        state["last_personas"].append(selected_persona["id"])
+        state["last_hooks"].append(selected_hook)
+        state["last_styles"].append(selected_style["name"])
 
         if args.dry_run:
             print(f"[Dry run] img={review_img} | shopee={product['shopee']}")
@@ -804,9 +995,9 @@ if __name__ == "__main__":
             if not was_scheduled:
                 post_link_comment(post_id, product["shopee"], product["lazada"], promo_clean)
             if not affiliate_mode:
-                mark_posted(wb, ws, product["row"])
+                mark_posted(wb, ws, product["row"], state=state)
             else:
-                append_posted_fallback(wb, ws, product)
+                append_posted_fallback(wb, ws, product, state=state)
             posted_this_run.add(product["shopee"])
             success_count += 1
 
