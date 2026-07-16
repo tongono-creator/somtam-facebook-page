@@ -19,7 +19,7 @@ PEXELS_API_KEY    = os.environ.get("PEXELS_API_KEY", "")
 
 API_ENABLED = True
 client       = genai.Client(api_key=GEMINI_API_KEY, http_options=HttpOptions(timeout=300000))
-TEXT_MODELS  = ["gemini-2.5-flash", "gemini-1.5-flash", "gemini-2.5-pro", "gemini-1.5-pro"]
+TEXT_MODELS       = ["gemini-1.5-flash", "gemini-1.5-flash"]
 ACCENT_COLOR = (255, 107, 53)  # ส้ม #FF6B35
 
 def contains_thai(text):
@@ -138,7 +138,9 @@ def segment_thai_text(text, client=client):
         "3. Ensure words like 'หวยออก', 'เงินเก็บ', 'แสนแรก', 'ทำงาน' are segmented at their natural boundaries (e.g., 'หวย\\u200bออก' or left as 'หวยออก', but never break syllables awkwardly).\n\n"
         f"Text to segment:\n{text}"
     )
-    for model in TEXT_MODELS:
+    for model_idx, model in enumerate(TEXT_MODELS):
+        if model_idx > 0:
+            import time; time.sleep(2)
         try:
             resp = client.models.generate_content(model=model, contents=prompt)
             segmented = resp.text.strip().replace('\\u200b', '\u200b')
@@ -159,7 +161,9 @@ def translate_to_thai(text):
     if contains_thai(text):
         return text
     prompt = f"Translate the following food-related English text to natural Thai food vocabulary. Only output the translation, no explanation:\n\n{text}"
-    for model in TEXT_MODELS:
+    for model_idx, model in enumerate(TEXT_MODELS):
+        if model_idx > 0:
+            import time; time.sleep(2)
         try:
             resp = client.models.generate_content(model=model, contents=prompt)
             translated = resp.text.strip()
@@ -427,7 +431,9 @@ def analyze_image(img_path, reddit_title=""):
         "Example: dish | ยำมะพร้าวอ่อนทะเล | น้ำยำเปรี้ยวแซ่บหอมมะนาวสดๆ | สายแซ่บสู้ชีวิต\n"
         "Example: stall | ร้านข้าวแกงถาด | กับข้าวเรียงรายในถาดละลานตาในตลาดสด | วิถีสตรีทฟู้ด"
     )
-    for model in TEXT_MODELS:
+    for model_idx, model in enumerate(TEXT_MODELS):
+        if model_idx > 0:
+            import time; time.sleep(2)
         try:
             resp = client.models.generate_content(
                 model=model,
@@ -517,7 +523,9 @@ def generate_post_content(img_path, image_type, food_name, vibe, genre, content_
         "===HOOK2=== [Hook Line 2]\n"
         "===CAPTION=== [Facebook Caption]"
     )
-    for model in TEXT_MODELS:
+    for model_idx, model in enumerate(TEXT_MODELS):
+        if model_idx > 0:
+            import time; time.sleep(2)
         try:
             resp = client.models.generate_content(
                 model=model,
@@ -782,7 +790,9 @@ def generate_contrast_review_content(img_path, image_type, food_name, vibe, redd
         "===CAPTION=== [Facebook Caption]"
     )
 
-    for model in TEXT_MODELS:
+    for model_idx, model in enumerate(TEXT_MODELS):
+        if model_idx > 0:
+            import time; time.sleep(2)
         try:
             resp = client.models.generate_content(
                 model=model,
@@ -849,7 +859,9 @@ def generate_trivia_content(img_path, query, history_trivias):
         "===HOOK2=== [Hook Line 2]\n"
         "===CAPTION=== [Facebook Caption]"
     )
-    for model in TEXT_MODELS:
+    for model_idx, model in enumerate(TEXT_MODELS):
+        if model_idx > 0:
+            import time; time.sleep(2)
         try:
             resp = client.models.generate_content(
                 model=model,
