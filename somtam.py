@@ -19,7 +19,7 @@ PEXELS_API_KEY    = os.environ.get("PEXELS_API_KEY", "")
 
 API_ENABLED = True
 client       = genai.Client(api_key=GEMINI_API_KEY, http_options=HttpOptions(timeout=300000))
-TEXT_MODELS       = ["gemini-1.5-flash", "gemini-1.5-flash"]
+TEXT_MODELS       = ["gemini-flash-latest", "gemini-flash-latest"]
 ACCENT_COLOR = (255, 107, 53)  # ส้ม #FF6B35
 
 def contains_thai(text):

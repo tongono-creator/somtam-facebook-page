@@ -168,7 +168,7 @@ def format_thai_price(price_val):
 GEMINI_API_KEY    = os.environ.get("GEMINI_API_KEY",    "")
 PAGE_ACCESS_TOKEN = os.environ.get("SOMTAM_PAGE_ACCESS_TOKEN", "")
 PAGE_ID           = "554501167740603"
-TEXT_MODELS       = ["gemini-1.5-flash", "gemini-1.5-flash"]
+TEXT_MODELS       = ["gemini-flash-latest", "gemini-flash-latest"]
 OUTPUT_DIR        = "output"
 EXCEL_PATH        = os.path.join(os.path.dirname(__file__), "review_products.xlsx")
 AFFILIATE_DIR     = os.path.join(os.path.dirname(__file__), "affiliate_data")
