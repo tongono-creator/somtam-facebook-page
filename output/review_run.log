@@ -1,0 +1,37 @@
+
+===== Post 1/1 =====
+Product: อึ่งไข่ฝนแรก ❗️พร้อมส่ง อึ่งไข่แช่แข็ง 📍อึ่งไข่ฝนแรกล็อตสุดท...
+[System Log] Converted Product JSON:
+{
+  "ประเภท": "อึ่งไข่แช่แข็ง",
+  "จุดเด่น": "อึ่งไข่ฝนแรก ล็อตสุดท้ายของปี",
+  "ราคา": 1600
+}
+[gemini-flash-latest] caption generation failed: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently exp
+[gemini-flash-latest] caption generation failed: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your cu
+[Warning] Caption generation failed on all models. Disabling API calls.
+[Warning] Falling back to local heuristic caption.
+[Attempt 1] Caption rejected by Excel memory! Similarity too high (0.63 > 0.60)
+[Warning] Falling back to local heuristic caption.
+[System Log] Caption approved on attempt 2!
+[System Log] Chosen Role: คนลดน้ำหนัก (R3)
+[System Log] Chosen Persona: คนซื้อมาใช้แล้ว (B)
+[System Log] Chosen Hook: เห็นคนพูดถึงเยอะเลยลอง
+[System Log] Chosen Style: มุกตลก
+Hook: อึ่งไข่ฝน​แรก | 
+Product image downloaded: output/product_20260717_082310.webp
+Overlay done: output/product_20260717_082310_overlay.jpg
+Caption:
+เห็นคนพูดถึงเยอะเลยลอง อึ่งไข่แช่แข็งตัวนี้เลยค่ะ ช่วงควบคุมอาหาร ดูแลหุ่นอยู่ ได้ตัวนี้ช่วยชีวิตไว้เลย แคลน้อยโปรตีนสูง ตอนแรกกังวลว่าจะไม่โอเค แต่พอลองแล้วชอบเลย รอดตายแล้วเรา 555 จุดเด่นคือ อึ่งไข่ฝนแรก ล็อตสุดท้ายของปี ราคาแค่ 1600 บาท
+
+ดูลิ้งในคอมเมนต์แรกเลยนะคะ 👇
+🔥 โปรโมชั่น: ฿1600
+
+Posting to Facebook Page...
+Using explicit scheduled_timestamp: 1784287200
+Scheduling to Facebook for timestamp 1784287200...
+Scheduled successfully! Photo ID: 122178147800726152
+[DB] Successfully saved post memory.
+Marked row 130 as done
+
+Done: 1/5 posts completed
