@@ -1,32 +1,32 @@
 
 ===== Post 1/1 =====
-Product: Chocolate Brownie Bite ช็อกโกแลตบราวนี่ไบท์ บราวนี่หน้าฟิล์ม...
+Product: ไข่ไก่เบอร์ 2 สดจากฟาร์ม 🥚 คัดพิเศษ ไข่ใหม่ทุกวัน...
 [System Log] Converted Product JSON:
 {
-  "ประเภท": "บราวนี่",
-  "จุดเด่น": "หน้าฟิล์ม พอดีคำ",
-  "ราคา": 119,
-  "รส": "ช็อกโกแลต"
+  "ประเภท": "ไข่ไก่",
+  "จุดเด่น": "สดใหม่ คัดพิเศษ",
+  "ราคา": 80,
+  "ขนาด": "เบอร์ 2"
 }
 [System Log] Caption approved on attempt 1!
-[System Log] Chosen Role: คนเลี้ยงสัตว์ (R5)
+[System Log] Chosen Role: คนชอบของถูก (R8)
 [System Log] Chosen Persona: คนรีวิวสั้นๆแบบขำๆ (F)
-[System Log] Chosen Hook: เมื่อวานเพิ่งเจอ...
+[System Log] Chosen Hook: มีใครเป็นเหมือนผมไหม
 [System Log] Chosen Style: การบอกต่อเฉยๆ
-Hook: น้อง​บราวนี่​ชิ้น​จิ๋ว | หน้า​ฟิล์ม​อร่อย​ไซส์​พอดี​คำ
-Product image downloaded: output/product_20260718_131233.webp
-Card render done: output/product_20260718_131233_card.png
+Hook: ไข่​สด​จาก​ฟาร์ม | คัด​พิเศษ​สด​ใหม่​ทุก​วัน
+Product image downloaded: output/product_20260718_190915.webp
+Card render done: output/product_20260718_190915_card.png
 Caption:
-เมื่อวานเพิ่งเจอ...บราวนี่ รสช็อกโกแลต แบบหน้าฟิล์ม พอดีคำ ราคา 119 บาท ที่ทำให้หนูค้นพบว่าคำว่ากินแค่ชิ้นเดียวไม่มีอยู่จริงค่ะ ตอนแรกกะจะกินเล่นๆ สรุปหมดกล่องเกลี้ยงเลย สภาพเหมือนพายุเข้าพุงตัวเองมาก 555 ใครที่ชอบทาน บราวนี่หน้าฟิล์ม ไซส์น่ารักแบบนี้ เซฟเก็บไว้ดูตอนช้อป หรือจะแชร์ต่อให้เพื่อนไปลองกันได้นะคะ
+มีใครเป็นเหมือนผมไหม เจียวไข่ทีไรนึกว่าทำสงคราม ล่าสุดเราเลยไปซื้อ ไข่ไก่ ขนาดเบอร์ 2 ที่คัดพิเศษแบบสดใหม่มาในราคา 80 บาทค่ะ สรุปต้องเอามาต้มกินแทนเพื่อความปลอดภัยของใบหน้า ใครที่ทอดไข่ทีไรน้ำมันกระเด็นใส่ตลอดแชร์ต่อให้เพื่อนที่เจอปัญหานี้ด่วนๆ เลยนะคะ
 
 ดูลิ้งในคอมเมนต์แรกเลยนะคะ 👇
-🔥 โปรโมชั่น: ฿119
+🔥 โปรโมชั่น: ฿80
 
 Posting to Facebook Page...
-Using explicit scheduled_timestamp: 1784356022
-Scheduling to Facebook for timestamp 1784356022...
-Scheduled successfully! Photo ID: 122178291620726152
+Using explicit scheduled_timestamp: 1784460000
+Scheduling to Facebook for timestamp 1784460000...
+Scheduled successfully! Photo ID: 122178326006726152
 [DB] Successfully saved post memory.
-Marked row 132 as done
+Marked row 133 as done
 
 Done: 1/5 posts completed
