@@ -1,3 +1,4 @@
+import time
 # -*- coding: utf-8 -*-
 """review.py — generate รูปรีวิวสินค้าจาก review_products.xlsx แล้วโพส FB"""
 
@@ -314,7 +315,7 @@ def segment_thai_text(text, client=client):
     )
     for model_idx, model in enumerate(TEXT_MODELS):
         if model_idx > 0:
-            import time; time.sleep(2)
+            time.sleep(2)
         try:
             resp = client.models.generate_content(model=model, contents=prompt)
             segmented = resp.text.strip().replace('\\u200b', '\u200b')
@@ -672,7 +673,7 @@ def extract_highlights(detail, promo):
         )
         for model_idx, model in enumerate(TEXT_MODELS):
             if model_idx > 0:
-                import time; time.sleep(2)
+                time.sleep(2)
             try:
                 resp = client.models.generate_content(model=model, contents=prompt)
                 highlights = resp.text.strip()
@@ -751,7 +752,7 @@ def generate_hook(detail, highlights):
         )
         for model_idx, model in enumerate(TEXT_MODELS):
             if model_idx > 0:
-                import time; time.sleep(2)
+                time.sleep(2)
             try:
                 resp = active_client.models.generate_content(model=model, contents=prompt)
                 result = resp.text.strip()
@@ -891,7 +892,7 @@ def parse_detail_to_json(detail, promo=None, client=None):
         )
         for model_idx, model in enumerate(TEXT_MODELS):
             if model_idx > 0:
-                import time; time.sleep(2)
+                time.sleep(2)
             try:
                 resp = client.models.generate_content(model=model, contents=prompt)
                 res_text = resp.text.strip()
@@ -1006,7 +1007,7 @@ def generate_caption(product_json, selected_persona, selected_hook, selected_sty
             
         for model_idx, model in enumerate(TEXT_MODELS):
             if model_idx > 0:
-                import time; time.sleep(2)
+                time.sleep(2)
             try:
                 resp = active_client.models.generate_content(model=model, contents=prompt)
                 caption_text = resp.text.strip()

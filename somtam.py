@@ -140,7 +140,7 @@ def segment_thai_text(text, client=client):
     )
     for model_idx, model in enumerate(TEXT_MODELS):
         if model_idx > 0:
-            import time; time.sleep(2)
+            time.sleep(2)
         try:
             resp = client.models.generate_content(model=model, contents=prompt)
             segmented = resp.text.strip().replace('\\u200b', '\u200b')
@@ -163,7 +163,7 @@ def translate_to_thai(text):
     prompt = f"Translate the following food-related English text to natural Thai food vocabulary. Only output the translation, no explanation:\n\n{text}"
     for model_idx, model in enumerate(TEXT_MODELS):
         if model_idx > 0:
-            import time; time.sleep(2)
+            time.sleep(2)
         try:
             resp = client.models.generate_content(model=model, contents=prompt)
             translated = resp.text.strip()
@@ -433,7 +433,7 @@ def analyze_image(img_path, reddit_title=""):
     )
     for model_idx, model in enumerate(TEXT_MODELS):
         if model_idx > 0:
-            import time; time.sleep(2)
+            time.sleep(2)
         try:
             resp = client.models.generate_content(
                 model=model,
@@ -525,7 +525,7 @@ def generate_post_content(img_path, image_type, food_name, vibe, genre, content_
     )
     for model_idx, model in enumerate(TEXT_MODELS):
         if model_idx > 0:
-            import time; time.sleep(2)
+            time.sleep(2)
         try:
             resp = client.models.generate_content(
                 model=model,
@@ -792,7 +792,7 @@ def generate_contrast_review_content(img_path, image_type, food_name, vibe, redd
 
     for model_idx, model in enumerate(TEXT_MODELS):
         if model_idx > 0:
-            import time; time.sleep(2)
+            time.sleep(2)
         try:
             resp = client.models.generate_content(
                 model=model,
@@ -861,7 +861,7 @@ def generate_trivia_content(img_path, query, history_trivias):
     )
     for model_idx, model in enumerate(TEXT_MODELS):
         if model_idx > 0:
-            import time; time.sleep(2)
+            time.sleep(2)
         try:
             resp = client.models.generate_content(
                 model=model,

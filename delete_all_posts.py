@@ -1,3 +1,4 @@
+import time
 #!/usr/bin/env python3
 """delete_all_posts.py -- remove all posts from page 554501167740603 (Prik 10 Med)
 Run once via GitHub Actions: .github/workflows/delete_posts.yml
