@@ -1,40 +1,32 @@
 
 ===== Post 1/1 =====
-Product: ปลาหมึกแห้ง ปลาหมึกแพไข่ ไซส์กลาง ไม่เค็มมาก ตากสดใหม่ รับปร...
-[gemini-flash-latest] parse_detail_to_json failed: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.5-flash\nPlease retry in 51.317442914s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '51s'}]}}
-[gemini-flash-latest] parse_detail_to_json failed: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-3.5-flash\nPlease retry in 49.207674247s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.5-flash'}, 'quotaValue': '20'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '49s'}]}}
-[Warning] parse_detail_to_json failed on all models. Falling back to local parser.
+Product: Chocolate Brownie Bite ช็อกโกแลตบราวนี่ไบท์ บราวนี่หน้าฟิล์ม...
 [System Log] Converted Product JSON:
 {
-  "ประเภท": "ของกิน",
-  "จุดเด่น": "ปลาหมึกแห้ง ปลาหมึกแพไข่ ไซส์กลาง ไม่เค็มมาก",
-  "ราคา": "129"
+  "ประเภท": "บราวนี่",
+  "จุดเด่น": "หน้าฟิล์ม พอดีคำ",
+  "ราคา": 119,
+  "รส": "ช็อกโกแลต"
 }
-[gemini-flash-latest] caption generation failed: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your cu
-[gemini-flash-latest] caption generation failed: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your cu
-[Warning] Caption generation failed on all models. Disabling API calls.
-[Warning] Falling back to local heuristic caption.
-[Attempt 1] Caption rejected by Excel memory! Similarity too high (0.63 > 0.60)
-[Warning] Falling back to local heuristic caption.
-[System Log] Caption approved on attempt 2!
-[System Log] Chosen Role: สายกิน (R2)
-[System Log] Chosen Persona: คนเคยมีปัญหาแล้วสินค้าช่วยแก้ (D)
-[System Log] Chosen Hook: ลองแล้วเข้าใจเลยว่าทำไมขายดี
-[System Log] Chosen Style: การเปรียบเทียบ (BAB)
-Hook: ปลาหมึกแห้ง | 
-Product image downloaded: output/product_20260718_130213.webp
-Card render done: output/product_20260718_130213_card.png
+[System Log] Caption approved on attempt 1!
+[System Log] Chosen Role: คนเลี้ยงสัตว์ (R5)
+[System Log] Chosen Persona: คนรีวิวสั้นๆแบบขำๆ (F)
+[System Log] Chosen Hook: เมื่อวานเพิ่งเจอ...
+[System Log] Chosen Style: การบอกต่อเฉยๆ
+Hook: น้อง​บราวนี่​ชิ้น​จิ๋ว | หน้า​ฟิล์ม​อร่อย​ไซส์​พอดี​คำ
+Product image downloaded: output/product_20260718_131233.webp
+Card render done: output/product_20260718_131233_card.png
 Caption:
-ลองแล้วเข้าใจเลยว่าทำไมขายดี สายของอร่อยอย่างเราลองแล้วดื่มด่ำมาก ฟินสุดๆ เทียบกับ ของกิน แบบเดิมๆ ที่เคยใช้ ตัวนี้คือจุดเด่น ปลาหมึกแห้ง ปลาหมึกแพไข่ ไซส์กลาง ไม่เค็มมาก ราคาแค่ 129 บาท ดีกว่าเห็นๆ เลยค่ะ
+เมื่อวานเพิ่งเจอ...บราวนี่ รสช็อกโกแลต แบบหน้าฟิล์ม พอดีคำ ราคา 119 บาท ที่ทำให้หนูค้นพบว่าคำว่ากินแค่ชิ้นเดียวไม่มีอยู่จริงค่ะ ตอนแรกกะจะกินเล่นๆ สรุปหมดกล่องเกลี้ยงเลย สภาพเหมือนพายุเข้าพุงตัวเองมาก 555 ใครที่ชอบทาน บราวนี่หน้าฟิล์ม ไซส์น่ารักแบบนี้ เซฟเก็บไว้ดูตอนช้อป หรือจะแชร์ต่อให้เพื่อนไปลองกันได้นะคะ
 
 ดูลิ้งในคอมเมนต์แรกเลยนะคะ 👇
-🔥 โปรโมชั่น: ฿129
+🔥 โปรโมชั่น: ฿119
 
 Posting to Facebook Page...
-Using explicit scheduled_timestamp: 1784355428
-Scheduling to Facebook for timestamp 1784355428...
-Scheduled successfully! Photo ID: 122178290810726152
+Using explicit scheduled_timestamp: 1784356022
+Scheduling to Facebook for timestamp 1784356022...
+Scheduled successfully! Photo ID: 122178291620726152
 [DB] Successfully saved post memory.
-Marked row 131 as done
+Marked row 132 as done
 
 Done: 1/5 posts completed
