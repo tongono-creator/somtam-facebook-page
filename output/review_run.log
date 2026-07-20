@@ -1,32 +1,37 @@
 
 ===== Post 1/1 =====
-Product: ไข่ไก่เบอร์ 2 สดจากฟาร์ม 🥚 คัดพิเศษ ไข่ใหม่ทุกวัน...
+Product: น้ำพริกแห้งปลาสลิดโรยข้าว รสผัดพริกขิง รสสมุนไพร รสน้ำพริกนร...
 [System Log] Converted Product JSON:
 {
-  "ประเภท": "ไข่ไก่",
-  "จุดเด่น": "สดใหม่ คัดพิเศษ",
-  "ราคา": 80,
-  "ขนาด": "เบอร์ 2"
+  "ประเภท": "น้ำพริกโรยข้าว",
+  "จุดเด่น": "ปลาสลิดแท้ 3 รสชาติ",
+  "ราคา": 160,
+  "รส": "ผัดพริกขิง/สมุนไพร/นรก",
+  "ขนาด": "100g"
 }
 [System Log] Caption approved on attempt 1!
 [System Log] Chosen Role: คนชอบของถูก (R8)
-[System Log] Chosen Persona: คนรีวิวสั้นๆแบบขำๆ (F)
-[System Log] Chosen Hook: มีใครเป็นเหมือนผมไหม
-[System Log] Chosen Style: การบอกต่อเฉยๆ
-Hook: ไข่​สด​จาก​ฟาร์ม | คัด​พิเศษ​สด​ใหม่​ทุก​วัน
-Product image downloaded: output/product_20260718_190915.webp
-Card render done: output/product_20260718_190915_card.png
+[System Log] Chosen Persona: คนเจอโปรมาแชร์ (C)
+[System Log] Chosen Hook: ตอนแรกไม่ได้จะซื้อ
+[System Log] Chosen Style: การเปรียบเทียบ (BAB)
+[gemini-flash-latest] hook generation failed: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}
+[gemini-flash-latest] segment_thai_text failed: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}
+[gemini-flash-latest] segment_thai_text failed: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}
+[Warning] segment_thai_text failed on all models. Disabling API calls for this run.
+Hook: เพื่อน​ซี้​คน​รัก​ข้าว | ปลาสลิด​แท้​สามรสชาติแก้เบื่อ​อาหาร
+Product image downloaded: output/product_20260720_202302.webp
+Card render done: output/product_20260720_202302_card.png
 Caption:
-มีใครเป็นเหมือนผมไหม เจียวไข่ทีไรนึกว่าทำสงคราม ล่าสุดเราเลยไปซื้อ ไข่ไก่ ขนาดเบอร์ 2 ที่คัดพิเศษแบบสดใหม่มาในราคา 80 บาทค่ะ สรุปต้องเอามาต้มกินแทนเพื่อความปลอดภัยของใบหน้า ใครที่ทอดไข่ทีไรน้ำมันกระเด็นใส่ตลอดแชร์ต่อให้เพื่อนที่เจอปัญหานี้ด่วนๆ เลยนะคะ
+ตอนแรกไม่ได้จะซื้อ แต่ช่วงก่อนหน้านี้หนูเบื่ออาหารมาก ทานอะไรก็จืดชืดไม่มีรสชาติเลยค่ะ พอได้ลองโรยน้ำพริกโรยข้าวสูตรปลาสลิดแท้ลงบนข้าวสวยร้อนๆ มื้ออาหารก็กลับมามีชีวิตชีวา ทานข้าวหมดจานได้ง่ายๆ เลยค่ะ ตัวนี้เขามี 3 รสชาติ ทั้งผัดพริกขิง สมุนไพร และนรก ขนาด 100g บังเอิญไปเจอช่วงจัดราคาพิเศษ 160 บาทพอดี ใครที่เจอปัญหาเดียวกันเซฟเก็บไว้ดูตอนช้อปหรือแชร์ต่อให้เพื่อนได้นะคะ
 
 ดูลิ้งในคอมเมนต์แรกเลยนะคะ 👇
-🔥 โปรโมชั่น: ฿80
+🔥 โปรโมชั่น: ฿160
 
 Posting to Facebook Page...
-Using explicit scheduled_timestamp: 1784460000
-Scheduling to Facebook for timestamp 1784460000...
-Scheduled successfully! Photo ID: 122178326006726152
+Using explicit scheduled_timestamp: 1784632800
+Scheduling to Facebook for timestamp 1784632800...
+Scheduled successfully! Photo ID: 122178554474726152
 [DB] Successfully saved post memory.
-Marked row 133 as done
+Marked row 134 as done
 
 Done: 1/5 posts completed
