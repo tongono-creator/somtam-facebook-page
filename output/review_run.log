@@ -1,37 +1,36 @@
 
 ===== Post 1/1 =====
-Product: น้ำพริกแห้งปลาสลิดโรยข้าว รสผัดพริกขิง รสสมุนไพร รสน้ำพริกนร...
+Product: (แพ็ค 24 ซอง) Muek Groob หมึกกรุบ เส้นบุกปรุงรสหม่าล่า (เลือ...
+[gemini-flash-latest] parse_detail_to_json failed: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}
+[gemini-flash-latest] parse_detail_to_json failed: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}
+[Warning] parse_detail_to_json failed on all models. Falling back to local parser.
 [System Log] Converted Product JSON:
 {
-  "ประเภท": "น้ำพริกโรยข้าว",
-  "จุดเด่น": "ปลาสลิดแท้ 3 รสชาติ",
-  "ราคา": 160,
-  "รส": "ผัดพริกขิง/สมุนไพร/นรก",
-  "ขนาด": "100g"
+  "ประเภท": "สินค้า",
+  "จุดเด่น": "แพ็ค Muek Groob หมึกกรุบ",
+  "ราคา": "502"
 }
+[gemini-flash-latest] caption generation failed: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently exp
 [System Log] Caption approved on attempt 1!
-[System Log] Chosen Role: คนชอบของถูก (R8)
-[System Log] Chosen Persona: คนเจอโปรมาแชร์ (C)
-[System Log] Chosen Hook: ตอนแรกไม่ได้จะซื้อ
-[System Log] Chosen Style: การเปรียบเทียบ (BAB)
-[gemini-flash-latest] hook generation failed: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}
+[System Log] Chosen Role: พ่อบ้าน (R1)
+[System Log] Chosen Persona: คนเล่าเรื่องชีวิตประจำวัน (E)
+[System Log] Chosen Hook: โดนป้ายยามาอีกที
+[System Log] Chosen Style: คำถาม
 [gemini-flash-latest] segment_thai_text failed: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}
-[gemini-flash-latest] segment_thai_text failed: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}
-[Warning] segment_thai_text failed on all models. Disabling API calls for this run.
-Hook: เพื่อน​ซี้​คน​รัก​ข้าว | ปลาสลิด​แท้​สามรสชาติแก้เบื่อ​อาหาร
-Product image downloaded: output/product_20260720_202302.webp
-Card render done: output/product_20260720_202302_card.png
+Hook: สาย​ตุน​หมึก​กรุบ | ยก​ลัง 24 ซอง​กิน​สะใจ​ไม่​ขาด​ตอน
+Product image downloaded: output/product_20260721_194927.webp
+Card render done: output/product_20260721_194927_card.png
 Caption:
-ตอนแรกไม่ได้จะซื้อ แต่ช่วงก่อนหน้านี้หนูเบื่ออาหารมาก ทานอะไรก็จืดชืดไม่มีรสชาติเลยค่ะ พอได้ลองโรยน้ำพริกโรยข้าวสูตรปลาสลิดแท้ลงบนข้าวสวยร้อนๆ มื้ออาหารก็กลับมามีชีวิตชีวา ทานข้าวหมดจานได้ง่ายๆ เลยค่ะ ตัวนี้เขามี 3 รสชาติ ทั้งผัดพริกขิง สมุนไพร และนรก ขนาด 100g บังเอิญไปเจอช่วงจัดราคาพิเศษ 160 บาทพอดี ใครที่เจอปัญหาเดียวกันเซฟเก็บไว้ดูตอนช้อปหรือแชร์ต่อให้เพื่อนได้นะคะ
+โดนป้ายยามาอีกที มีใครเคยเจอปัญหาง่วงนอนตอนบ่ายจนไม่มีสมาธิทำงานเหมือนกันบ้างไหมคะ? ล่าสุดเราได้ แพ็ค Muek Groob หมึกกรุบ มาเคี้ยวเล่นแก้ง่วงระหว่างวัน ช่วยชีวิตในออฟฟิศไว้ได้เยอะเลยค่ะ ใครที่กำลังมองหาของกินเล่นยามบ่าย แชร์ต่อให้เพื่อนที่เจอปัญหานี้แล้วลองไปกดสั่งในราคา 502 บาทมาตุนกันไว้นะคะ
 
 ดูลิ้งในคอมเมนต์แรกเลยนะคะ 👇
-🔥 โปรโมชั่น: ฿160
+🔥 โปรโมชั่น: ฿502
 
 Posting to Facebook Page...
-Using explicit scheduled_timestamp: 1784632800
-Scheduling to Facebook for timestamp 1784632800...
-Scheduled successfully! Photo ID: 122178554474726152
+Using explicit scheduled_timestamp: 1784719200
+Scheduling to Facebook for timestamp 1784719200...
+Scheduled successfully! Photo ID: 122178683354726152
 [DB] Successfully saved post memory.
-Marked row 134 as done
+Marked row 135 as done
 
 Done: 1/5 posts completed
