@@ -1,36 +1,32 @@
 
 ===== Post 1/1 =====
-Product: (แพ็ค 24 ซอง) Muek Groob หมึกกรุบ เส้นบุกปรุงรสหม่าล่า (เลือ...
-[gemini-flash-latest] parse_detail_to_json failed: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}
-[gemini-flash-latest] parse_detail_to_json failed: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}
-[Warning] parse_detail_to_json failed on all models. Falling back to local parser.
+Product: น้ำพริกแซลมอนไข่เค็มคลีน ไม่มัน ไม่ใส่ผงชูรส ไม่ใส่สารกันเสี...
 [System Log] Converted Product JSON:
 {
-  "ประเภท": "สินค้า",
-  "จุดเด่น": "แพ็ค Muek Groob หมึกกรุบ",
-  "ราคา": "502"
+  "ประเภท": "น้ำพริก",
+  "รส": "แซลมอนไข่เค็ม",
+  "จุดเด่น": "คลีน ไม่มัน ไร้สารกันเสีย",
+  "ขนาด": "150g",
+  "ราคา": 150
 }
-[gemini-flash-latest] caption generation failed: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently exp
 [System Log] Caption approved on attempt 1!
-[System Log] Chosen Role: พ่อบ้าน (R1)
-[System Log] Chosen Persona: คนเล่าเรื่องชีวิตประจำวัน (E)
-[System Log] Chosen Hook: โดนป้ายยามาอีกที
-[System Log] Chosen Style: คำถาม
-[gemini-flash-latest] segment_thai_text failed: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}
-Hook: สาย​ตุน​หมึก​กรุบ | ยก​ลัง 24 ซอง​กิน​สะใจ​ไม่​ขาด​ตอน
-Product image downloaded: output/product_20260721_194927.webp
-Card render done: output/product_20260721_194927_card.png
+[System Log] Chosen Role: มนุษย์เงินเดือน (R4)
+[System Log] Chosen Persona: คนสงสัยก่อนซื้อแล้วมาลอง (G)
+[System Log] Chosen Hook: กำลังหาของแบบนี้อยู่พอดี
+[System Log] Chosen Style: มุกตลก
+Hook: น้ำพริก​แซลมอน​ไข่เค็ม​สาย​คลีน | อร่อย​แบบ​คลีน​ไม่​มัน​ไร้​สาร​กัน​เสีย
+Product image downloaded: output/product_20260722_195045.webp
+Card render done: output/product_20260722_195045_card.png
 Caption:
-โดนป้ายยามาอีกที มีใครเคยเจอปัญหาง่วงนอนตอนบ่ายจนไม่มีสมาธิทำงานเหมือนกันบ้างไหมคะ? ล่าสุดเราได้ แพ็ค Muek Groob หมึกกรุบ มาเคี้ยวเล่นแก้ง่วงระหว่างวัน ช่วยชีวิตในออฟฟิศไว้ได้เยอะเลยค่ะ ใครที่กำลังมองหาของกินเล่นยามบ่าย แชร์ต่อให้เพื่อนที่เจอปัญหานี้แล้วลองไปกดสั่งในราคา 502 บาทมาตุนกันไว้นะคะ
-
+กำลังหาของแบบนี้อยู่พอดี ตอนแรกหนูแอบสงสัยว่าน้ำพริกรสแซลมอนไข่เค็มมันจะคลีนได้ยังไง จะไม่มันแผลบเหมือนหน้าหนูตอนบ่ายแน่นะ เลยยอมจ่าย 150 บาท ซื้อขนาด 150g มาลองให้รู้แล้วรู้รอดค่ะ ปรากฏว่าเนื้อน้ำพริกคลีนจริง ไม่มัน แถมไร้สารกันเสียตามที่บอกไว้เป๊ะ ใครที่ค้นหาน้ำพริกอร่อยๆ อยู่ กดเซฟเก็บไว้ดูตอนช้อปหรือแชร์ต่อให้เพื่อนได้เลยนะคะ
 ดูลิ้งในคอมเมนต์แรกเลยนะคะ 👇
-🔥 โปรโมชั่น: ฿502
+🔥 โปรโมชั่น: ฿150
 
 Posting to Facebook Page...
-Using explicit scheduled_timestamp: 1784719200
-Scheduling to Facebook for timestamp 1784719200...
-Scheduled successfully! Photo ID: 122178683354726152
+Using explicit scheduled_timestamp: 1784805600
+Scheduling to Facebook for timestamp 1784805600...
+Scheduled successfully! Photo ID: 122178782960726152
 [DB] Successfully saved post memory.
-Marked row 135 as done
+Marked row 136 as done
 
 Done: 1/5 posts completed
