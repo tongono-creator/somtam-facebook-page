@@ -1,30 +1,30 @@
 
 ===== Post 1/1 =====
-Product: กุ้งขาวตัวใหญ่ๆ ไซส์25-35ตัวโล กุ้งสดๆแล้วนำมาแช่แข็ง ขายแพ็...
+Product: กาแฟดำเพื่อสุขภาพ ไม่มีน้ำตาล คั่วสด บดละเอียด ผงสกัดกาแฟละล...
 [System Log] Converted Product JSON:
 {
-  "ประเภท": "กุ้งขาวแช่แข็ง",
-  "จุดเด่น": "กุ้งสดนำมาแช่แข็ง ไซส์ใหญ่",
-  "ขนาด": "25-35 ตัว/กก. (1 กก.)",
-  "ราคา": 300
+  "ประเภท": "กาแฟดำ",
+  "จุดเด่น": "ไม่มีน้ำตาล ละลายทันที",
+  "ราคา": 99
 }
 [System Log] Caption approved on attempt 1!
-[System Log] Chosen Role: นักออกกำลังกาย (R6)
-[System Log] Chosen Persona: คนสงสัยก่อนซื้อแล้วมาลอง (G)
-[System Log] Chosen Hook: อันนี้เกินคาดจริงๆ
-[System Log] Chosen Style: การเปรียบเทียบ (BAB)
-Hook: กุ้ง​ขาว​แช่แข็ง​ตัว​ใหญ่ | กุ้ง​สด​แช่​แข็ง ไซส์​ใหญ่ 25-35 ตัว​โล
-Product image downloaded: output/product_20260723_195328.webp
-Card render done: output/product_20260723_195328_card.png
+[System Log] Chosen Role: สายกิน (R2)
+[System Log] Chosen Persona: คนแนะนำของให้ครอบครัว (H)
+[System Log] Chosen Hook: แชร์เผื่อมีคนกำลังหาอยู่
+[System Log] Chosen Style: การบอกต่อเฉยๆ
+Hook: กาแฟ​ดำ​สาย​คลีน | ไม่​มี​น้ำตาล ชง​ปุ๊บ​ละลาย​ปั๊บ
+Product image downloaded: output/product_20260724_195034.webp
+Card render done: output/product_20260724_195034_card.png
 Caption:
-อันนี้เกินคาดจริงๆ เมื่อก่อนเราเคยลังเลไม่กล้าซื้อกุ้งแช่แข็งมาทำอาหาร เพราะกลัวว่าจะเจอกุ้งไม่สดหรือเนื้อเละค่ะ แต่พอลองตัดสินใจซื้อกุ้งขาวแช่แข็งไซส์ใหญ่ขนาด 25-35 ตัว/กก. ถุงใหญ่ 1 กก. ในราคา 300 บาทมาลองทำกินเอง ตัวนี้เขาใช้กุ้งสดนำมาแช่แข็งได้คุณภาพมาก ทำให้การทำเมนูกุ้งของหนูสะดวกสบายขึ้นเยอะโดยไม่ต้องเสียเวลาไปเดินหาซื้อกุ้งสดเองเลยค่ะ เซฟเก็บไว้ดูตอนช้อปหรือแชร์ต่อให้เพื่อนสายเข้าครัวได้เลยนะคะ ดูลิ้งในคอมเมนต์แรกเลยนะคะ 👇
-🔥 โปรโมชั่น: ฿300
+แชร์เผื่อมีคนกำลังหาอยู่ พอดีเราเพิ่งซื้อกาแฟดำมาให้คนที่บ้านชงดื่มค่ะ ตัวนี้ไม่มีน้ำตาล แถมชงแล้วละลายทันที สะดวกมาก ในราคา 99 บาท เซฟโพสต์ไว้หรือแชร์ต่อให้คนในครอบครัวดูได้นะคะ
+ดูลิ้งในคอมเมนต์แรกเลยนะคะ 👇
+🔥 โปรโมชั่น: ฿99
 
 Posting to Facebook Page...
-Using explicit scheduled_timestamp: 1784892000
-Scheduling to Facebook for timestamp 1784892000...
-Scheduled successfully! Photo ID: 122178908702726152
+Using explicit scheduled_timestamp: 1784978400
+Scheduling to Facebook for timestamp 1784978400...
+Scheduled successfully! Photo ID: 122179008194726152
 [DB] Successfully saved post memory.
-Marked row 137 as done
+Marked row 138 as done
 
 Done: 1/5 posts completed
