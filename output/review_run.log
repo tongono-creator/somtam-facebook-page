@@ -1,33 +1,31 @@
 
 ===== Post 1/1 =====
-Product: น้ำมันมรกต 1 ลิตร ยกลัง 12 ขวด สินค้าส่งตรงจากโรงงาน (1 คำสั...
+Product: น้ำพริกหมูกระจกมะเดี่ยว วับวาว รสต้มยำ ชิ้นใหญ่ เต็มคำ แซ่บ ...
 [System Log] Converted Product JSON:
 {
-  "ประเภท": "น้ำมันพืช",
-  "จุดเด่น": "ขายยกลัง ส่งตรงจากโรงงาน",
-  "ขนาด": "1 ลิตร x 12 ขวด",
-  "ราคา": 822
+  "ประเภท": "น้ำพริกหมูกระจก",
+  "จุดเด่น": "ชิ้นใหญ่ เปรี้ยวเผ็ดสะใจ",
+  "ราคา": 175,
+  "รส": "ต้มยำ",
+  "ขนาด": "100g/400g"
 }
 [System Log] Caption approved on attempt 1!
 [System Log] Chosen Role: คนลดน้ำหนัก (R3)
-[System Log] Chosen Persona: คนรีวิวสั้นๆแบบขำๆ (F)
-[System Log] Chosen Hook: เห็นคนพูดถึงเยอะเลยลอง
-[System Log] Chosen Style: มุกตลก
-Hook: น้ำมัน​พืช​ยก​ลัง​สาย​ตุน | ส่ง​ตรง​จาก​โรงงาน 12 ขวด
-Product image downloaded: output/product_20260725_191350.webp
-Card render done: output/product_20260725_191350_card.png
+[System Log] Chosen Persona: คนแนะนำของให้ครอบครัว (H)
+[System Log] Chosen Hook: ไม่คิดว่าจะ...
+[System Log] Chosen Style: การเปรียบเทียบ (BAB)
+Hook: หมู​กระจก​ต้มยำ​ชิ้น​เป้ง | ชิ้น​ใหญ่​เต็ม​คำ เปรี้ยว​เผ็ด​สะ​ใจ
+Product image downloaded: output/product_20260726_193431.webp
+Card render done: output/product_20260726_193431_card.png
 Caption:
-เห็นคนพูดถึงเยอะเลยลองกดสั่งน้ำมันพืชยกลังส่งตรงจากโรงงาน ขนาด 1 ลิตร x 12 ขวด ในราคา 822 บาทมาไว้เต็มบ้านเลยค่ะ
-มองไปทางไหนก็เจอแต่ขวดน้ำมัน นึกว่าเรากำลังจะเปิดร้านกล้วยทอดซะแล้ว 55555
-ใครไม่อยากออกไปขนเอง เซฟเก็บไว้ดูตอนช้อป หรือแชร์ต่อให้เพื่อนสายเข้าครัวได้เลยนะคะ
-ดูลิ้งในคอมเมนต์แรกเลยนะคะ 👇
-🔥 โปรโมชั่น: ฿822
+ไม่คิดว่าจะเจอน้ำพริกที่เข้ามาเปลี่ยนมื้ออาหารเดิมๆ ของครอบครัวเรา จากที่เมื่อก่อนมื้อเย็นที่บ้านน่าเบื่อมากจนทุกคนกินข้าวกันได้น้อยค่ะ พอได้ลองน้ำพริกหมูกระจก รสต้มยำ ที่ชิ้นใหญ่ เปรี้ยวเผ็ดสะใจ ตอนนี้คนที่บ้านเอนจอยกับการกินข้าวและเจริญอาหารขึ้นเยอะเลยค่ะ ตัวนี้มีขนาด 100g และ 400g ราคา 175 บาท ช่วยเปลี่ยนมื้อธรรมดาให้จัดจ้านถูกใจคนในบ้านมากๆ เซฟโพสต์เก็บไว้ดูตอนช้อปหรือแชร์ต่อให้คนที่บ้านได้เลยนะคะ ดูลิ้งในคอมเมนต์แรกเลยนะคะ 👇
+🔥 โปรโมชั่น: ฿175
 
 Posting to Facebook Page...
-Using explicit scheduled_timestamp: 1785064800
-Scheduling to Facebook for timestamp 1785064800...
-Scheduled successfully! Photo ID: 122179109678726152
+Using explicit scheduled_timestamp: 1785151200
+Scheduling to Facebook for timestamp 1785151200...
+Scheduled successfully! Photo ID: 122179229606726152
 [DB] Successfully saved post memory.
-Marked row 139 as done
+Marked row 140 as done
 
 Done: 1/5 posts completed
