@@ -1,31 +1,29 @@
 
 ===== Post 1/1 =====
-Product: มัทฉะ Kanbayashi Shunsho Usucha Aya no Mori อายะ โนะ โมริ 20...
+Product: ระฆังทองน้ำปลาหวาน องค์พระปฐมเจดีย์...
 [System Log] Converted Product JSON:
 {
-  "ประเภท": "ผงมัทฉะ",
-  "รุ่น": "Aya no Mori",
-  "ขนาด": "20g/40g",
-  "จุดเด่น": "มัทฉะ Uji ส่งตรงจากญี่ปุ่น",
-  "ราคา": 1451
+  "ประเภท": "น้ำปลาหวาน",
+  "จุดเด่น": "เจ้าดังองค์พระปฐมเจดีย์",
+  "ราคา": 150
 }
 [System Log] Caption approved on attempt 1!
-[System Log] Chosen Role: คนลดน้ำหนัก (R3)
-[System Log] Chosen Persona: คนเล่าเรื่องชีวิตประจำวัน (E)
-[System Log] Chosen Hook: เมื่อวานเพิ่งเจอ...
-[System Log] Chosen Style: มุกตลก
-Hook: มัทฉะ​อุจิ​ใน​ตำนาน | หอม​เข้ม​กลมกล่อม​ส่ง​ตรง​จาก​ญี่ปุ่น
-Product image downloaded: output/product_20260728_200529.webp
-Card render done: output/product_20260728_200529_card.png
+[System Log] Chosen Role: มนุษย์เงินเดือน (R4)
+[System Log] Chosen Persona: คนสงสัยก่อนซื้อแล้วมาลอง (G)
+[System Log] Chosen Hook: มีใครเป็นเหมือนผมไหม
+[System Log] Chosen Style: การเปรียบเทียบ (BAB)
+Hook: น้ำปลา​หวาน​ใน​ตำนาน | เครื่อง​แน่น​ข้น​สะใจ​กุ้ง​ตัว​โต
+Product image downloaded: output/product_20260729_201222.webp
+Card render done: output/product_20260729_201222_card.png
 Caption:
-เมื่อวานเพิ่งเจอศึกหนักกับการทำงานจนสภาพเราเกือบกลายเป็นซอมบี้ สมองเบลอจนแทบจะวูบกลางอากาศค่ะ เลิกงานเลยต้องรีบกลับมาชงผงมัทฉะ รุ่น Aya no Mori ขนาด 20g/40g ซึ่งเป็นมัทฉะ Uji ส่งตรงจากญี่ปุ่น ดื่มแก้เหนื่อยสักหน่อย จิบแล้วกลิ่นชาเขียวมัทฉะหอมละมุนสมราคา 1451 บาท ช่วยกู้ชีวิตและสติของเรารับวันใหม่ได้พอดี สายชาเขียวลองเซฟเก็บไว้ดูตอนช้อป หรือกดแชร์ต่อให้เพื่อนที่เจอปัญหาทำงานหนักจนร่างพังเหมือนกันได้นะคะ ดูลิ้งในคอมเมนต์แรกเลยนะคะ 👇
-🔥 โปรโมชั่น: ฿1451
+มีใครเป็นเหมือนผมไหม ที่เคยสงสัยว่าน้ำปลาหวานเจ้าดังองค์พระปฐมเจดีย์จะอร่อยแตกต่างจากทั่วไปจริงไหม เพราะปกติเราซื้อกินที่ไหนก็เจอแต่น้ำตาลเชื่อมใสๆ ไม่ถูกปากสักที แต่พอตัดสินใจสั่งกระปุกละ 150 บาทมาลองจิ้มกับมะม่วงดิบดู ปรากฏว่ารสชาติเข้มข้นถึงเครื่องมากจนกลายเป็นของติดตู้เย็นที่ต้องมีไว้กินแก้ง่วงไปแล้วค่ะ ใครที่กำลังมองหาน้ำปลาหวานอร่อยๆ กินกับผลไม้เปรี้ยว เซฟโพสต์นี้ไว้หรือแชร์ต่อให้เพื่อนสายกินได้เลยนะคะ ดูลิ้งในคอมเมนต์แรกเลยนะคะ 👇
+🔥 โปรโมชั่น: ฿150
 
 Posting to Facebook Page...
-Using explicit scheduled_timestamp: 1785324000
-Scheduling to Facebook for timestamp 1785324000...
-Scheduled successfully! Photo ID: 122179476374726152
+Using explicit scheduled_timestamp: 1785410400
+Scheduling to Facebook for timestamp 1785410400...
+Scheduled successfully! Photo ID: 122179605164726152
 [DB] Successfully saved post memory.
-Marked row 142 as done
+Marked row 143 as done
 
 Done: 1/5 posts completed
