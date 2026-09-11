@@ -206,9 +206,11 @@ def translate_to_thai(text):
         return ""
     if contains_thai(text):
         return text
-    prompt = f"Translate the following food, dining, or cooking news/drama text to natural Thai. Only output the translation, no explanation:
-
-{text}"
+    prompt = (
+        "Translate the following food, dining, or cooking news/drama text to natural Thai. "
+        "Only output the translation, no explanation:\n\n"
+        f"{text}"
+    )
     for model_idx, model in enumerate(TEXT_MODELS):
         if model_idx > 0:
             time.sleep(2)
@@ -223,24 +225,24 @@ def translate_to_thai(text):
 
 FALLBACK_NEWS = [
     {
-        "line1": "ความสำเร็จขั้นสุด",
-        "line2": "นักวิทย์ผลิตแบตเตอรี่โซลิดสเตตสำเร็จ",
-        "caption": "นักวิทยาศาสตร์ประสบความสำเร็จในการพัฒนาแบตเตอรี่โซลิดสเตต (Solid-State Battery) รุ่นใหม่ที่มีความหนาแน่นพลังงานสูงกว่าเดิมถึง 2 เท่า และสามารถชาร์จเต็มได้ภายในเวลาเพียง 5 นาทีครับ\n\nเทคโนโลยีนี้คาดว่าจะถูกนำมาใช้งานในรถยนต์ไฟฟ้า (EV) ยุคถัดไป ซึ่งจะช่วยแก้ปัญหาเรื่องระยะเวลาการชาร์จและเพิ่มความปลอดภัยอย่างมาก เนื่องจากไม่มีของเหลวไวไฟอยู่ภายในเหมือนแบตเตอรี่ลิเธียมไอออนทั่วไปครับ\n\nทุกท่านคิดว่าเทคโนโลยีแบตเตอรี่ใหม่นี้จะเปลี่ยนโฉมวงการรถยนต์ไฟฟ้าได้เร็วแค่ไหนครับ ลองคอมเมนต์คุยกันได้เลยครับ\n\n#เทคโนโลยี #แบตเตอรี่ #รถยนต์ไฟฟ้า"
+        "line1": "ดราม่าชวนเถียง",
+        "line2": "กะเพราแท้ต้องไม่มีถั่วฝักยาวจริงไหม",
+        "caption": "เปิดศึกระดับชาติอีกรอบเมื่อร้านอาหารชื่อดังโพสต์ถามว่า กะเพราที่แท้จริงควรใส่เฉพาะใบกะเพรากับเนื้อสัตว์ หรือสามารถใส่ถั่วฝักยาวและหัวหอมเพื่อเพิ่มความกรุบกรอบได้คะ\n\nฝั่งอนุรักษ์นิยมบอกว่าถ้าใส่ถั่วก็ไม่ใช่ผัดกะเพราแล้ว แต่เป็นผัดผักรวมมิตร ในขณะที่อีกฝั่งมองว่าใส่แล้วอร่อยเคี้ยวเพลิน แถมช่วยเพิ่มปริมาณให้อิ่มท้องกำลังดีค่ะ\n\nแล้วลูกเพจพริก 10 เม็ดอยู่ทีมไหนกันคะ สายใบกะเพราล้วน หรือสายใส่ถั่วฝักยาว มาบอกกันหน่อยค่า\n\n#ผัดกะเพรา #ดราม่าอาหาร #ของกิน #พริก10เม็ด"
     },
     {
-        "line1": "เทคโนโลยีสุดล้ำ",
-        "line2": "จีนสร้างศูนย์ข้อมูล AI ใต้น้ำเป็นที่แรก",
-        "caption": "วิศวกรจีนประสบความสำเร็จในการจัดตั้งศูนย์ข้อมูล (Data Center) สำหรับ AI ใต้ทะเลลึกเพื่อใช้ประโยชน์จากน้ำทะเลเย็นในการช่วยระบายความร้อนให้กับเครื่องเซิร์ฟเวอร์ครับ\n\nการย้ายศูนย์ข้อมูลลงใต้น้ำช่วยประหยัดพลังงานไฟฟ้าที่ใช้ในระบบหล่อเย็นได้มากกว่า 40% และยังช่วยประหยัดพื้นที่บนบกที่มีราคาสูงอีกด้วย โดยระบบทั้งหมดถูกออกแบบมาให้ทนทานต่อแรงดันน้ำและการกัดกร่อนของเกลือทะเลได้เป็นอย่างดีครับ\n\nทุกท่านคิดว่าไอเดียการสร้างดาต้าเซ็นเตอร์ใต้น้ำแบบนี้จะกลายเป็นมาตรฐานใหม่ในอนาคตไหมครับ\n\n#ศูนย์ข้อมูลใต้น้ำ #ปัญญาประดิษฐ์ #เทคโนโลยีจีน"
+        "line1": "สูตรลับความอร่อย",
+        "line2": "เคล็ดลับทอดไข่เจียวให้ฟูกรอบไม่อมน้ำมัน",
+        "caption": "ใครเจอปัญหาทอดไข่เจียวแล้วเหี่ยวแบนแถมน้ํามันเยิ้ม ลองใช้เทคนิคตีไข่ให้ขึ้นฟูแล้วบีบมะนาวลงไปสัก 2-3 หยด พร้อมตั้งกระทะให้น้ำมันร้อนจัดก่อนเทไข่จากที่สูงลงไปตรงๆ ค่ะ\n\nวิธีนี้จะช่วยให้เนื้อไข่พองฟูกรอบนอกนุ่มใน ไม่อมน้ำมัน กินกับข้าวสวยร้อนๆ และพริกน้ำปลาคือฟินลืมแน่นอนค่ะ\n\nใครมีสูตรลับการทอดไข่เจียวแบบเด็ดๆ ประจำบ้านอีกบ้างคะ มาแชร์ให้เพื่อนๆ ลอกการบ้านหน่อยค่า\n\n#ไข่เจียวฟูกรอบ #สูตรอาหาร #เคล็ดลับคู่ครัว #พริก10เม็ด"
     },
     {
-        "line1": "การค้นพบใหม่",
-        "line2": "นาซาพบเบาะแสน้ำเหลวบนดาวอังคาร",
-        "caption": "ยานสำรวจรุ่นล่าสุดขององค์การนาซา (NASA) ได้ค้นพบหลักฐานใหม่ที่บ่งชี้ถึงการมีอยู่ของแหล่งน้ำไหลที่เป็นของเหลวใต้พื้นผิวดาวอังคารในอดีต ซึ่งอาจเป็นกุญแจสำคัญในการค้นหาสิ่งมีชีวิตนอกโลกครับ\n\nข้อมูลระบุว่าน้ำดังกล่าวอาจมีความเค็มจัดจนไม่แข็งตัวภายใต้อุณหภูมิที่หนาวเย็นของดาวอังคาร ทำให้นักวิทยาศาสตร์มีความหวังมากขึ้นในการส่งภารกิจสำรวจที่มีมนุษย์ควบคุมไปลงจอดในพื้นที่ดังกล่าวในอนาคตครับ\n\nคิดว่าเราจะได้เห็นมนุษย์คนแรกไปเหยียบดาวอังคารภายในทศวรรษนี้ไหมครับ ลองแบ่งปันมุมมองกันได้ครับ\n\n#นาซา #ดาวอังคาร #ดาราศาสตร์"
+        "line1": "เมนูเด็ดแซ่บซี้ด",
+        "line2": "ซุปเปอร์เล้งหม้อไฟกระดูกหมูเปื่อยละลาย",
+        "caption": "อากาศแบบนี้ได้ซดน้ำซุปร้อนๆ รสเปรี้ยวเผ็ดแซ่บของซุปเปอร์เล้งคงฟินไม่ไหว กระดูกเล้งต้มจนเปื่อยนุ่มเนื้อร่อน ปรุงรสด้วยพริกขี้หนูสวนบุบมะนาวแท้บีบสดๆ กลิ่นหอมฟุ้งไปทั้งครัวค่ะ\n\nความเด็ดอยู่ที่น้ำซุปที่เคี่ยวจนหวานน้ำต้มกระดูก ตัดกับความแซ่บซี้ดสะใจ ชวนให้ตักข้าวหมดหม้อโดยไม่รู้ตัวเลยค่ะ\n\nแถวบ้านใครมีร้านเล้งแซ่บๆ เด็ดๆ เจ้าประจำบ้างคะ ปักหมุดชี้เป้ามาให้ตามไปชิมหน่อยค่า\n\n#เล้งแซ่บ #ต้มแซ่บ #ของอร่อย #พริก10เม็ด"
     }
 ]
 
-# --- แหล่งข่าวซับเรดดิตยอดนิยม (เน้นเทคโนโลยี วิทยาศาสตร์ และเรื่องราวน่าสนใจระดับโลก) ---
-NEWS_SUBREDDITS = ["food", "FoodPorn", "cooking", "pizza", "mildlyinteresting", "interestingasfuck"]
+# --- แหล่งข่าวซับเรดดิตยอดนิยม (เน้นอาหาร ของกิน การทำอาหาร และของหวาน) ---
+NEWS_SUBREDDITS = ["food", "FoodPorn", "cooking", "pizza", "baking", "streetfood"]
 
 def get_reddit_image(entry):
     """สกัดรูปภาพประกอบจาก feed entry ของ Reddit"""
@@ -315,13 +317,13 @@ def select_best_news_candidate(candidates):
         return candidates[0]
         
     prompt = (
-        "จากรายชื่อหัวข้อข่าวเทคโนโลยี/วิทยาศาสตร์/เรื่องน่าสนใจรอบโลกภาษาอังกฤษด้านล่างนี้:\n\n"
+        "จากรายชื่อหัวข้อข่าวและกระทู้อาหาร/เมนูเด็ด/ร้านอาหารภาษาอังกฤษด้านล่างนี้:\n\n"
     )
     for idx, c in enumerate(candidates):
         prompt += f"[{idx}] (Subreddit: r/{c['subreddit']}): {c['reddit_title']}\n"
         
     prompt += (
-        "\nจงวิเคราะห์และเลือกข่าวเด่นเพียง 1 ข่าวที่มีความน่าสนใจ แปลกใหม่ ชวนตะลึง หรือมีโอกาสที่จะสร้างความไวรัล (Viral) และกระตุ้นให้ผู้ใหญ่ชาวไทยวัยทำงาน (อายุ 30+) เข้ามาเขียนคอมเมนต์พูดคุย/ถกเถียงกันในเพจมากที่สุด\n"
+        "\nจงวิเคราะห์และเลือกข่าวเด่นเพียง 1 ข่าวเกี่ยวกับอาหาร ขนม ร้านอาหาร หรือประเด็นของกินที่มีความน่าสนใจ ชวนน้ำลายสอ หรือชวนให้แฟนเพจชาวไทยสายกินเข้ามาคอมเมนต์พูดคุย/แชร์ประสบการณ์มากที่สุด\n"
         "ตอบกลับในรูปแบบ JSON เท่านั้น โดยมีคีย์ดังนี้:\n"
         "{\n"
         "  \"selected_index\": <ตัวเลขดัชนีของข่าวที่เลือก เช่น 0, 1, 2...>\n"
@@ -355,14 +357,14 @@ def select_best_news_candidate(candidates):
 
 
 def generate_news_content(img_bytes, reddit_title, sub, original_link):
-    """ส่งให้ Gemini Vision ช่วยแปล วิเคราะห์ และแต่งข้อความพาดหัว+แคปชั่นข่าวในสไตล์แอดมินเพจผู้ชาย"""
+    """ส่งให้ Gemini Vision ช่วยแปล วิเคราะห์ และแต่งข้อความพาดหัว+แคปชั่นข่าวในสไตล์แอดมินเพจสายกิน พริก 10 เม็ด"""
     prompt = (
         f"This image is from the Reddit thread: '{reddit_title}' in r/{sub}.\n"
-        "Analyze the Reddit title and the image together to understand the context. Then, generate highly engaging, informative tech/science news content in Thai.\n"
+        "Analyze the Reddit title and the image together to understand the context. Then, generate highly engaging food, recipe, restaurant, or viral dining content in Thai for the food page 'พริก 10 เม็ด'.\n"
         "Output format must have exactly 3 sections separated by labels:\n"
-        "===HOOK1=== [Hook Line 1: very short, 3-5 Thai words, e.g. 'จะรอดไหม', 'เทคโนโลยีใหม่', 'สุดล้ำ', 'ความจริงวันนี้']\n"
-        "===HOOK2=== [Hook Line 2: very short, 4-7 Thai words, describing the core event or a dilemma, e.g. 'เอไอเตรียมแทนที่คน']\n"
-        "===CAPTION=== [Facebook Caption: A detailed, highly engaging explanation structured in 1-2 paragraphs. Reframe the news context around everyday adulting, work-life, productivity, job stability, or financial struggles of 30+ year olds (e.g., if it is AI news, highlight job replacement fears; if it is remote work, compare remote vs office work; if it is gadgets, discuss tech costs/worth). Write in the spicy, gossip-loving female persona of 'พริก 10 เม็ด' who reviews food and shares delicious or dramatic food stories. Use 'ค่ะ' or 'นะคะ' and 'เรา' or 'พริก'. You MUST end the caption with a direct, reply-eliciting question (e.g., 'หิวกันเลยใช่ไหมล่ะคะ?', 'เคยกินแบบนี้กันไหมคะ?') Absolutely NO markdown bolding (**), NO bullet points, lists, or symbols like ▪️ or - anywhere. Include hashtags and citation.]\n\n"
+        "===HOOK1=== [Hook Line 1: very short, 3-5 Thai words, e.g. 'เมนูเด็ดวันนี้', 'ของอร่อยต้องลอง', 'เห็นแล้วหิวเลย', 'ดราม่าชวนคุย']\n"
+        "===HOOK2=== [Hook Line 2: very short, 4-7 Thai words, describing the dish, flavor, or topic, e.g. 'ใครชอบรสแซ่บต้องแวะ']\n"
+        "===CAPTION=== [Facebook Caption: A detailed, highly engaging explanation structured in 1-2 paragraphs. Focus on the food experience, flavors, ingredients, cooking technique, or foodie debate. Write in the spicy, friendly, gossip-loving female persona of 'พริก 10 เม็ด' who reviews food and shares delicious or dramatic food stories. Use 'ค่ะ' or 'นะคะ' and 'เรา' or 'พริก'. You MUST end the caption with a direct, reply-eliciting question (e.g., 'ใครเคยชิมแบบนี้ชอบไหมคะ?', 'ถ้าให้เลือกระหว่างสองเมนูนี้ พี่ๆ จะกินอันไหนคะ?') Absolutely NO markdown bolding (**), NO bullet points, lists, or symbols like ▪️ or - anywhere. Include food hashtags and citation.]\n\n"
         "Requirements:\n"
         "- Write in natural, fluent Thai.\n"
         "- Maintain strict factual accuracy. Do not fabricate or speculate. Use real numbers or data if mentioned.\n"
@@ -421,7 +423,7 @@ def generate_news_content(img_bytes, reddit_title, sub, original_link):
     if contains_thai(translated_title):
         line1 = "ข่าวเด่นวันนี้"
         line2 = translated_title[:30] if len(translated_title) <= 30 else translated_title[:27] + "..."
-        caption = f"{translated_title}\n\nรายละเอียดเพิ่มเติมกำลังตามมาครับ ติดตามอัปเดตข่าวสารเทคโนโลยีกับพวกเราได้เลยครับ\n\n#เทคโนโลยี #ข่าวสาร"
+        caption = f"{translated_title}\n\nเมนูนี้น่าทานมาก ใครเคยลองชิมหรือมีสูตรเด็ดๆ แวะมาแชร์ในคอมเมนต์กันได้นะคะ\n\n#ของกิน #อาหาร #พริก10เม็ด"
         if original_link:
             caption += f"\n.\nที่มา: {original_link}"
         return line1, line2, caption, False
