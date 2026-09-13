@@ -1,31 +1,32 @@
 Direct use of automatic function calling (AFC) in Models.generate_content is not recommended. Instead, we recommend to use AFC in Chat.send_message. Similarly, direct use of AFC in Models.generate_content_stream is not recommended. Instead, we recommend to use AFC in Chat.send_message_stream.
 
 ===== Post 1/1 =====
-Product: น้ำมันถั่วเหลือง ตราองุ่น ขนาด1ลิตร แพ็ค3ขวด โปรโมชั่นสุดคุ้...
+Product: The Chocolate Factory บราวนี่แครกเกอร์ แผ่นกลม รสดาร์กช็อกโก...
 [System Log] Converted Product JSON:
 {
-  "ประเภท": "น้ำมันถั่วเหลือง",
-  "ขนาด": "1 ลิตร (แพ็ค 3)",
-  "จุดเด่น": "ตราองุ่น โปรสุดคุ้ม",
-  "ราคา": 182
+  "ประเภท": "บราวนี่แครกเกอร์",
+  "รส": "ดาร์กช็อกโกแลต",
+  "ขนาด": "40 กรัม",
+  "จุดเด่น": "แผ่นกลม",
+  "ราคา": 45
 }
 [System Log] Caption approved on attempt 1!
 [System Log] Chosen Role: แม่บ้านเข้าครัว (R5)
-[System Log] Chosen Persona: คนเล่าเรื่องชีวิตประจำวัน (E)
-[System Log] Chosen Hook: ตอนแรกไม่ได้จะซื้อ
-[System Log] Chosen Style: การบอกต่อเฉยๆ
-Hook: น้ำมัน​พืช​สามัญ​ประจำ​บ้าน | แพ็ค​สาม​ขวด​ใช้​ยาว​ทั้ง​เดือน
-Product image downloaded: output/product_20260912_211408.webp
-Card render done: output/product_20260912_211408_card.png
+[System Log] Chosen Persona: คนเคยมีปัญหาแล้วสินค้าช่วยแก้ (D)
+[System Log] Chosen Hook: โดนป้ายยามาอีกที
+[System Log] Chosen Style: มุกตลก
+Hook: บราวนี่​กรอบ​แผ่น​กลม | ดาร์ก​ช็อก​เข้ม​สะใจ เคี้ยว​เพลิน​เต็ม​คำ
+Product image downloaded: output/product_20260913_215712.webp
+Card render done: output/product_20260913_215712_card.png
 Caption:
-ตอนแรกไม่ได้จะซื้อ แต่กำลังจะทำกับข้าวแล้วเปิดเจอว่าน้ำมันพืชหมดเกลี้ยงครัวเลยค่ะ เราเลยรีบกดสั่งน้ำมันถั่วเหลืองตราองุ่น ขนาด 1 ลิตร (แพ็ค 3) ราคา 182 บาท มาตุนไว้ทำอาหารรอบต่อไป ใครที่ต้องซื้อของใช้ในครัวเข้าบ้านอยู่เรื่อยๆ เซฟเก็บไว้ดูตอนช้อปได้นะคะ ดูลิ้งในคอมเมนต์แรกเลยนะคะ 👇
-🔥 โปรโมชั่น: ฿182.00
+โดนป้ายยามาอีกที ช่วงบ่ายทีไรงานไม่ค่อยเดินเพราะปากเราเรียกร้องหาแต่ขนมกินเล่นตลอดเวลาค่ะ พอได้ลองบราวนี่แครกเกอร์ รสดาร์กช็อกโกแลต แผ่นกลม ขนาด 40 กรัม ราคา 45 บาท ซองนี้มาเคี้ยวเพลินๆ ตอนนั่งหน้าคอมก็ช่วยชีวิตคนหมดพลังแบบเราได้ตรงจุดเลยค่ะ เซฟเก็บไว้ดูตอนช้อปหรือแชร์ต่อให้เพื่อนที่เจอปัญหานี้ได้เลยนะคะ ดูลิ้งในคอมเมนต์แรกเลยนะคะ 👇
+🔥 โปรโมชั่น: ฿45.00
 
 Posting to Facebook Page...
-Using explicit scheduled_timestamp: 1789298400
-Scheduling to Facebook for timestamp 1789298400...
-Scheduled successfully! Photo ID: 122185103918726152
+Using explicit scheduled_timestamp: 1789384800
+Scheduling to Facebook for timestamp 1789384800...
+Scheduled successfully! Photo ID: 122185243478726152
 [DB] Successfully saved post memory.
-Marked row 144 as done
+Marked row 145 as done
 
 Done: 1/5 posts completed
