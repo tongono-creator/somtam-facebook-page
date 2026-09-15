@@ -1,33 +1,31 @@
 Direct use of automatic function calling (AFC) in Models.generate_content is not recommended. Instead, we recommend to use AFC in Chat.send_message. Similarly, direct use of AFC in Models.generate_content_stream is not recommended. Instead, we recommend to use AFC in Chat.send_message_stream.
 
 ===== Post 1/1 =====
-Product: Ensure Gold AdvancePro wheat เอนชัวร์ โกลด์ แอดวานซ์โปร รสข้...
+Product: [พร้อมส่งในไทย]Marukyu Koyamaen Matcha มัทฉะมารุคิวโคยามะเอ็...
 [System Log] Converted Product JSON:
 {
-  "ประเภท": "นมผงสูตรครบถ้วน",
-  "รุ่น": "Gold AdvancePro",
-  "รส": "ข้าวสาลี",
-  "ขนาด": "800 กรัม",
-  "จุดเด่น": "สารอาหารครบถ้วน",
-  "ราคา": 690
+  "ประเภท": "ผงมัทฉะ",
+  "จุดเด่น": "เกรดพิธีการญี่ปุ่น",
+  "ราคา": 1118,
+  "รส": "อูมามิ"
 }
 [System Log] Caption approved on attempt 1!
-[System Log] Chosen Role: คนทำกับข้าว (R1)
-[System Log] Chosen Persona: คนแนะนำของให้ครอบครัว (H)
-[System Log] Chosen Hook: กำลังหาของแบบนี้อยู่พอดี
-[System Log] Chosen Style: การเปรียบเทียบ (BAB)
-Hook: นม​ชง​กู้​ร่าง​วัย​เก๋า | แก้ว​เดียว​สารอาหาร​มา​ครบ
-Product image downloaded: output/product_20260914_235943.webp
-Card render done: output/product_20260914_235943_card.png
+[System Log] Chosen Role: คนเลือกวัตถุดิบ (R3)
+[System Log] Chosen Persona: คนเคยมีปัญหาแล้วสินค้าช่วยแก้ (D)
+[System Log] Chosen Hook: อันนี้เกินคาดจริงๆ
+[System Log] Chosen Style: คำถาม
+Hook: มัทฉะ​สาหร่าย​ผู้ดี | รส​นัว​ละมุน เกรด​พิธีการ​ญี่ปุ่น
+Product image downloaded: output/product_20260915_223702.webp
+Card render done: output/product_20260915_223702_card.png
 Caption:
-กำลังหาของแบบนี้อยู่พอดี เมื่อก่อนเราเคยกังวลเรื่องโภชนาการของคนในครอบครัวมาก แต่ตอนนี้หมดห่วงเพราะมี นมผงสูตรครบถ้วน Gold AdvancePro รสข้าวสาลี ขนาด 800 กรัม ที่มีสารอาหารครบถ้วน ในราคา 690 บาทเข้ามาดูแลทุกคนค่ะ เซฟเก็บไว้ดูตอนช้อปหรือแชร์ต่อให้คนที่บ้านได้เลยนะคะ ดูลิ้งในคอมเมนต์แรกเลยนะคะ 👇
-🔥 โปรโมชั่น: ฿690.00
+อันนี้เกินคาดจริงๆ มีใครเคยเจอปัญหาอยากชงชาเขียวดื่มเองที่บ้านแล้วหารสชาติที่ถูกใจไม่เจอเหมือนเราบ้างไหมคะ? พอได้ลองผงมัทฉะที่เป็นเกรดพิธีการญี่ปุ่นกระปุกนี้ในราคา 1118 บาท คือได้รสอูมามิตามที่ตามหามานาน ตอบโจทย์คนที่อยากชงดื่มเองมากๆ ใครชอบมัทฉะแท้ๆ เซฟเก็บไว้ดูตอนช้อปได้เลยนะคะ ดูลิ้งในคอมเมนต์แรกเลยนะคะ 👇
+🔥 โปรโมชั่น: ฿1118.00
 
 Posting to Facebook Page...
-Using explicit scheduled_timestamp: 1789471200
-Scheduling to Facebook for timestamp 1789471200...
-Scheduled successfully! Photo ID: 122185361060726152
+Using explicit scheduled_timestamp: 1789557600
+Scheduling to Facebook for timestamp 1789557600...
+Scheduled successfully! Photo ID: 122185441850726152
 [DB] Successfully saved post memory.
-Marked row 146 as done
+Marked row 147 as done
 
 Done: 1/5 posts completed
