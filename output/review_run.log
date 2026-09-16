@@ -1,31 +1,30 @@
 Direct use of automatic function calling (AFC) in Models.generate_content is not recommended. Instead, we recommend to use AFC in Chat.send_message. Similarly, direct use of AFC in Models.generate_content_stream is not recommended. Instead, we recommend to use AFC in Chat.send_message_stream.
 
 ===== Post 1/1 =====
-Product: [พร้อมส่งในไทย]Marukyu Koyamaen Matcha มัทฉะมารุคิวโคยามะเอ็...
+Product: หมูสามชั้นแดดเดียวพรีเมี่ยม อบลมร้อน สะอาด ไร้ฝุ่น ไร้แมลง ไ...
 [System Log] Converted Product JSON:
 {
-  "ประเภท": "ผงมัทฉะ",
-  "จุดเด่น": "เกรดพิธีการญี่ปุ่น",
-  "ราคา": 1118,
-  "รส": "อูมามิ"
+  "ประเภท": "หมูสามชั้นแดดเดียว",
+  "จุดเด่น": "อบลมร้อน ไร้สารกันเสีย ทอดง่ายใน 5 นาที",
+  "ราคา": 189
 }
 [System Log] Caption approved on attempt 1!
-[System Log] Chosen Role: คนเลือกวัตถุดิบ (R3)
-[System Log] Chosen Persona: คนเคยมีปัญหาแล้วสินค้าช่วยแก้ (D)
-[System Log] Chosen Hook: อันนี้เกินคาดจริงๆ
+[System Log] Chosen Role: คนทำกับข้าว (R1)
+[System Log] Chosen Persona: คนเล่าเรื่องชีวิตประจำวัน (E)
+[System Log] Chosen Hook: แชร์เผื่อมีคนกำลังหาอยู่
 [System Log] Chosen Style: คำถาม
-Hook: มัทฉะ​สาหร่าย​ผู้ดี | รส​นัว​ละมุน เกรด​พิธีการ​ญี่ปุ่น
-Product image downloaded: output/product_20260915_223702.webp
-Card render done: output/product_20260915_223702_card.png
+Hook: สาม​ชั้น​แดด​เดียว​ไม่​ง้อ​แดด | สะอาด​ไร้​สาร ทอด​ห้า​นาที​พร้อม​กิน
+Product image downloaded: output/product_20260916_222733.webp
+Card render done: output/product_20260916_222733_card.png
 Caption:
-อันนี้เกินคาดจริงๆ มีใครเคยเจอปัญหาอยากชงชาเขียวดื่มเองที่บ้านแล้วหารสชาติที่ถูกใจไม่เจอเหมือนเราบ้างไหมคะ? พอได้ลองผงมัทฉะที่เป็นเกรดพิธีการญี่ปุ่นกระปุกนี้ในราคา 1118 บาท คือได้รสอูมามิตามที่ตามหามานาน ตอบโจทย์คนที่อยากชงดื่มเองมากๆ ใครชอบมัทฉะแท้ๆ เซฟเก็บไว้ดูตอนช้อปได้เลยนะคะ ดูลิ้งในคอมเมนต์แรกเลยนะคะ 👇
-🔥 โปรโมชั่น: ฿1118.00
+แชร์เผื่อมีคนกำลังหาอยู่ มีใครเคยเหนื่อยจนไม่อยากยืนทำกับข้าวตอนเย็นเหมือนกันไหมคะ? วันก่อนเราเจอปัญหานี้เลยลองเอาหมูสามชั้นแดดเดียวที่ซื้อมาทำ ตัวนี้ผ่านการอบลมร้อน ไร้สารกันเสีย แถมทอดง่ายใน 5 นาทีก็ได้กินแล้ว ในราคา 189 บาท ใครอยากได้เมนูเร่งด่วนเซฟเก็บไว้ดูตอนคิดกับข้าวไม่ออก หรือแชร์ต่อให้เพื่อนที่กลับบ้านดึกบ่อยๆ ได้นะคะ ดูลิ้งในคอมเมนต์แรกเลยนะคะ 👇
+🔥 โปรโมชั่น: ฿189.00
 
 Posting to Facebook Page...
-Using explicit scheduled_timestamp: 1789557600
-Scheduling to Facebook for timestamp 1789557600...
-Scheduled successfully! Photo ID: 122185441850726152
+Using explicit scheduled_timestamp: 1789644000
+Scheduling to Facebook for timestamp 1789644000...
+Scheduled successfully! Photo ID: 122185571588726152
 [DB] Successfully saved post memory.
-Marked row 147 as done
+Marked row 148 as done
 
 Done: 1/5 posts completed
