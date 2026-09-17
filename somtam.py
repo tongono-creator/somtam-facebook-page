@@ -5,8 +5,8 @@ import time
 import requests
 import tempfile
 import sys
-import io
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
 from google import genai
 from google.genai import types
 from google.genai.types import HttpOptions
@@ -967,6 +967,11 @@ def main():
             forced_mode = arg.split("=")[1]
 
     print("=== พริก 10 เม็ด Bot ===")
+
+    if forced_mode == "dilemma":
+        import dilemma
+        dilemma.main(dry_run=dry_run)
+        return
 
     if forced_mode in ["recipe", "contrast_review", "trivia"]:
         mode = forced_mode
