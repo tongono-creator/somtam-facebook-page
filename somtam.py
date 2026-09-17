@@ -976,7 +976,11 @@ def main():
     if forced_mode in ["recipe", "contrast_review", "trivia"]:
         mode = forced_mode
     else:
-        mode = random.choices(["recipe", "contrast_review", "trivia"], weights=[50, 50, 0])[0]
+        mode = random.choices(["dilemma", "recipe", "contrast_review"], weights=[50, 25, 25])[0]
+        if mode == "dilemma":
+            import dilemma
+            dilemma.main(dry_run=dry_run)
+            return
     print(f"Selected Mode: {mode} (Forced: {forced_mode})")
 
     os.makedirs("output", exist_ok=True)
