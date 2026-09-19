@@ -1,32 +1,34 @@
 Direct use of automatic function calling (AFC) in Models.generate_content is not recommended. Instead, we recommend to use AFC in Chat.send_message. Similarly, direct use of AFC in Models.generate_content_stream is not recommended. Instead, we recommend to use AFC in Chat.send_message_stream.
 
 ===== Post 1/1 =====
-Product: [ยกลัง12ขวด]น้ำมันปาล์ม มรกต และ ทับทิม ขวด 1ลิตร x 12 ขวด น...
+[Review Strategy] Prioritizing iPhone review: Apple iPhone 18 Pro Max (เครื่องศูนย์ไทย ประกันศูนย์ 1 ปี) ช
+Product: Apple iPhone 18 Pro Max (เครื่องศูนย์ไทย ประกันศูนย์ 1 ปี) ช...
 [System Log] Converted Product JSON:
 {
-  "ประเภท": "น้ำมันปาล์ม",
-  "จุดเด่น": "ขายยกลัง 12 ขวด",
-  "ขนาด": "1 ลิตร x 12",
-  "ราคา": 893
+  "ประเภท": "มือถือ",
+  "รุ่น": "iPhone 18 Pro Max",
+  "จุดเด่น": "ชิป A20 Pro, ประกันศูนย์ 1 ปี",
+  "ราคา": 48900
 }
 [System Log] Caption approved on attempt 1!
-[System Log] Chosen Role: สายแซ่บ (R4)
-[System Log] Chosen Persona: คนเล่าเรื่องชีวิตประจำวัน (E)
-[System Log] Chosen Hook: ไม่คิดว่าจะ...
-[System Log] Chosen Style: การเปรียบเทียบ (BAB)
-[gemini-flash-latest] hook generation failed: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}
-Hook: น้ำมัน​ทอด​สาย​ตุน | เหมา​ทีเดียว​ใช้​ยาว​หลาย​เดือน
-Product image downloaded: output/product_20260918_220335.webp
-Card render done: output/product_20260918_220335_card.png
+[System Log] Chosen Role: คนเลือกวัตถุดิบ (R3)
+[System Log] Chosen Persona: เพื่อนบอกต่อ (A)
+[System Log] Chosen Hook: ลองแล้วเข้าใจเลยว่าทำไมขายดี
+[System Log] Chosen Style: คำถาม
+Hook: iPhone 18 เครื่อง​ศูนย์​แท้ | สั่ง​ร้าน Mall อุ่นใจ​ไม่​เสี่ยง​ย้อมแมว
+Product image downloaded: output/product_20260919_213146.jpg
+Card render done: output/product_20260919_213146_card.png
 Caption:
-ไม่คิดว่าจะ... ต้องมาเหนื่อยกับการวิ่งออกไปซื้อของเข้าครัวบ่อยขนาดนี้ เวลาจะทำกับข้าวทีไรแล้วเจอน้ำมันหมดกลางคันคือวุ่นวายมากค่ะ แต่ตอนนี้ชีวิตสบายขึ้นเยอะ มีของพร้อมใช้ทำอาหารตลอดไม่ต้องคอยพะวงอีกแล้ว เพราะเราสั่งน้ำมันปาล์มแบบขายยกลัง 12 ขวด ขนาด 1 ลิตร x 12 มาตุนไว้ติดบ้านในราคา 893 บาท ใครที่ทำกับข้าวทานเองบ่อยๆ เซฟเก็บไว้ดูตอนช้อปเข้าบ้านได้เลยนะคะ ดูลิ้งในคอมเมนต์แรกเลยนะคะ 👇
-🔥 โปรโมชั่น: ฿893.00
+ลองแล้วเข้าใจเลยว่าทำไมขายดี มีใครกำลังเล็ง iPhone 18 Pro Max ที่มาพร้อมชิป A20 Pro อยู่เหมือนเราบ้างไหมคะ? สำหรับการซื้อมือถือราคาสูง 48,900 บาท เราว่าเลือกร้าน Mall ทางการใน Shopee Mall หรือ Apple Flagship Store อุ่นใจเรื่องของแท้และบริการหลังการขายที่สุด เพราะไว้ใจร้านค้าได้ 100% ว่าเป็นเครื่องศูนย์ไทยแท้ มีประกันศูนย์ 1 ปีเต็ม ไม่ต้องเสี่ยงกับเครื่องย้อมแมว เครื่องหิ้ว หรือกลัวโดนโกงค่ะ เซฟเก็บไว้ดูตอนช้อปหรือแชร์ต่อให้เพื่อนได้เลยนะคะ 
+
+ดูลิ้งในคอมเมนต์แรกเลยนะคะ 👇
+🔥 โปรโมชั่น: ฿48,900.00
 
 Posting to Facebook Page...
-Using explicit scheduled_timestamp: 1789816800
-Scheduling to Facebook for timestamp 1789816800...
-Scheduled successfully! Photo ID: 122185801598726152
+Using explicit scheduled_timestamp: 1789903200
+Scheduling to Facebook for timestamp 1789903200...
+Scheduled successfully! Photo ID: 122185941140726152
 [DB] Successfully saved post memory.
-Marked row 150 as done
+Marked row 184 as done
 
 Done: 1/5 posts completed
