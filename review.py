@@ -778,6 +778,14 @@ def generate_hook(detail, highlights):
     global API_ENABLED
     active_client = globals().get('client')
     if API_ENABLED and active_client is not None:
+        is_iphone = "iphone" in detail.lower() or "apple" in detail.lower()
+        iphone_hook_guide = ""
+        if is_iphone:
+            iphone_hook_guide = (
+                "\n*** กฎพิเศษสำหรับ iPhone / Apple (โดยเฉพาะ iPhone 18) ***:\n"
+                "- ให้เน้นพาดหัวไปที่ประเด็น 'ของแท้ศูนย์ไทย มั่นใจร้านค้า Mall ไม่เสี่ยงเครื่องย้อมแมว' เช่น 'iPhone 18 เครื่องศูนย์แท้ | สั่งร้าน Mall อุ่นใจไม่เสี่ยงย้อมแมว' หรือ 'เครื่องศูนย์ไทยประกันเต็ม | ซื้อร้าน Mall มั่นใจของแท้ 100%'\n"
+            )
+
         prompt = (
             "คุณคือ Copywriter มืออาชีพสไตล์ CatDumb (แคทดัมบ์) ภาษาพูดคนไทยธรรมดา ธรรมชาติ สนุก เป็นกันเอง ชี้เป้าของน่าซื้อ\n"
             "จงสร้างพาดหัวรีวิวสินค้าภาษาไทย 2 บรรทัด คั่นด้วย '|' (บรรทัด 1 | บรรทัด 2)\n\n"
@@ -788,6 +796,7 @@ def generate_hook(detail, highlights):
             "4. เว้นวรรคเฉพาะจังหวะภาษาไทยปกติ ห้ามเว้นวรรคแตกคำย่อย\n\n"
             f"ข้อมูลสินค้า:\n{detail}\n\n"
             f"จุดเด่นสินค้า:\n{highlights}\n\n"
+            f"{iphone_hook_guide}\n"
             "ผลลัพธ์ (บรรทัด 1 | บรรทัด 2):"
         )
         for model_idx, model in enumerate(TEXT_MODELS):
@@ -811,6 +820,9 @@ def generate_hook(detail, highlights):
         print("[Warning] Hook generation failed on all models. Disabling API calls for this run.")
         API_ENABLED = False
     # Local fallback for hook
+    if "iphone" in detail.lower() or "apple" in detail.lower():
+        return "iPhone 18 เครื่องศูนย์แท้", "ร้าน Mall มั่นใจของแท้ 100%"
+
     title = re.sub(r'^[•\-\*\d\.\s\u2013\(\[\{\)\|\}]+', '', detail).strip()
     first_line = title.split('\n')[0].split('|')[0].split(' - ')[0].split(' – ')[0].strip()
     # line1: ตัดชื่อสั้นก่อน spec keyword แล้วเอา 3 คำแรก
@@ -1010,12 +1022,23 @@ def generate_caption(product_json, selected_persona, selected_hook, selected_sty
     
     active_client = globals().get("client")
     if API_ENABLED and active_client:
+        is_iphone = "iphone" in str(product_json).lower() or "apple" in str(product_json).lower()
+        iphone_caption_guide = ""
+        if is_iphone:
+            iphone_caption_guide = (
+                "\n*** กฎพิเศษสำหรับ iPhone / Apple (โดยเฉพาะ iPhone 18) ***:\n"
+                "- ต้องเขียนไปในแนวทาง 'ไว้ใจร้านค้าได้ 100% เพราะเป็นร้านค้าทางการ Shopee Mall / Apple Flagship Store'\n"
+                "- เน้นย้ำว่าเป็นเครื่องศูนย์ไทยแท้ มีประกันศูนย์ 1 ปีเต็ม ไม่ต้องเสี่ยงกับเครื่องย้อมแมว เครื่องหิ้ว หรือกลัวโดนโกง\n"
+                "- การซื้อสมาร์ตโฟนราคาสูง เลือกร้าน Mall ทางการอุ่นใจเรื่องของแท้และบริการหลังการขายที่สุด\n"
+            )
+
         prompt = (
             "สวมบทบาทรีวิวแบบคนธรรมดา เป็นกันเอง\n"
             f"Persona: {selected_persona['desc']}\n"
             f"สไตล์การเขียน: {selected_style['desc']}\n\n"
             f"เริ่มต้นประโยคแรกด้วย Hook นี้เป๊ะๆ ห้ามดัดแปลง: \"{selected_hook}\"\n\n"
             f"ข้อมูลสินค้า JSON:\n{json.dumps(product_json, ensure_ascii=False)}\n\n"
+            f"{iphone_caption_guide}\n"
             f"กฎเหล็ก:\n- ต้องระบุราคาสินค้าจาก JSON เสมอ\n"
             f"- ห้ามเริ่มโพสต์ด้วยชื่อแบรนด์/สินค้า\n"
             f"- ห้ามใช้คำโฆษณาจำพวก คุ้มมาก, คุ้มสุดๆ, คุ้มค่า, คุ้ม, ดีงาม, ห้ามพลาด, ของดี, ดีจริง, แนะนำเลย\n"
