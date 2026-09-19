@@ -330,9 +330,15 @@ def segment_thai_text(text, client=client):
     API_ENABLED = False
     return local_segment_thai(text)
 
-def load_next_product():
+def load_next_product(state=None):
     wb = openpyxl.load_workbook(EXCEL_PATH)
-    ws = wb.active
+    ws = wb.active if "Products" not in wb.sheetnames else wb["Products"]
+    if state is None:
+        state = load_state(wb)
+
+    unposted_iphone = []
+    unposted_other = []
+
     for row in ws.iter_rows(min_row=2, values_only=False):
         no    = row[0].value
         detail= row[1].value
@@ -352,15 +358,50 @@ def load_next_product():
         if not imgurl or "xxx" in str(imgurl) or not str(imgurl).strip().startswith("http"):
             continue
 
-        return {
+        detail_str = str(detail).strip()
+        is_iphone = "iphone" in detail_str.lower() or "apple" in detail_str.lower()
+
+        # กรองสินค้าเฉพาะเพจ (iPhone ได้รับการยกเว้นเป็นแคมเปญพิเศษเสมอ)
+        if not is_iphone and "is_product_suitable_for_page" in globals():
+            if not is_product_suitable_for_page(detail):
+                continue
+
+        candidate = {
             "row": row[0].row,
             "no": no,
-            "detail": str(detail).strip(),
+            "detail": detail_str,
             "shopee": str(shopee).strip(),
             "lazada": str(lazada).strip() if lazada else "",
             "image_url": str(imgurl).strip() if imgurl else "",
             "promo": str(promo).strip() if promo else "",
-        }, wb, ws
+            "is_iphone": is_iphone,
+        }
+
+        if is_iphone:
+            unposted_iphone.append(candidate)
+        else:
+            unposted_other.append(candidate)
+
+    # กลยุทธ์: ขาย iPhone ก่อน แล้วค่อยสลับเป็นสินค้าตัวอื่น
+    last_was_iphone = state.get("last_posted_is_iphone", False) if state else False
+
+    if unposted_iphone and not last_was_iphone:
+        target = unposted_iphone[0]
+        print(f"[Review Strategy] Prioritizing iPhone review: {target['detail'][:60]}")
+    elif unposted_other:
+        target = unposted_other[0]
+        print(f"[Review Strategy] Alternating to other product: {target['detail'][:60]}")
+    elif unposted_iphone:
+        target = unposted_iphone[0]
+        print(f"[Review Strategy] All others done, posting iPhone: {target['detail'][:60]}")
+    else:
+        target = None
+
+    if target:
+        if state is not None:
+            state["last_posted_is_iphone"] = target.get("is_iphone", False)
+        return target, wb, ws
+
     return None, wb, ws
 
 
@@ -479,7 +520,8 @@ def load_state(wb):
         "last_hooks": [],
         "last_styles": [],
         "last_roles": [],
-        "recent_captions": []
+        "recent_captions": [],
+        "last_posted_is_iphone": False
     }
     if "posted_state" in wb.sheetnames:
         ws = wb["posted_state"]
@@ -1180,7 +1222,7 @@ if __name__ == "__main__":
         print(f"\n===== Post {i+1}/{len(DAILY_SLOTS)} =====")
         scheduled_ts = slot_timestamps[i] if i < len(slot_timestamps) else None
 
-        product, wb, ws = load_next_product()
+        product, wb, ws = load_next_product(state=state)
         affiliate_mode = False
         if not product:
             print("review_products.xlsx หมดแล้ว — ลอง fallback จาก AFFILIATE_DIR")
