@@ -1,34 +1,35 @@
 Direct use of automatic function calling (AFC) in Models.generate_content is not recommended. Instead, we recommend to use AFC in Chat.send_message. Similarly, direct use of AFC in Models.generate_content_stream is not recommended. Instead, we recommend to use AFC in Chat.send_message_stream.
 
 ===== Post 1/1 =====
-[Review Strategy] Prioritizing iPhone review: Apple iPhone 18 Pro Max (เครื่องศูนย์ไทย ประกันศูนย์ 1 ปี) ช
-Product: Apple iPhone 18 Pro Max (เครื่องศูนย์ไทย ประกันศูนย์ 1 ปี) ช...
+[Review Strategy] Alternating to other product: มัทฉะ Kanbayashi Shunsho Usucha Aya no Mori อายะ โนะ โมริ 20
+Product: มัทฉะ Kanbayashi Shunsho Usucha Aya no Mori อายะ โนะ โมริ 20...
 [System Log] Converted Product JSON:
 {
-  "ประเภท": "มือถือ",
-  "รุ่น": "iPhone 18 Pro Max",
-  "จุดเด่น": "ชิป A20 Pro, ประกันศูนย์ 1 ปี",
-  "ราคา": 48900
+  "ประเภท": "มัทฉะ",
+  "รุ่น": "Aya no Mori",
+  "ขนาด": "20g/40g",
+  "จุดเด่น": "มัทฉะอุจิ ส่งตรงจากญี่ปุ่น",
+  "ราคา": 1451
 }
 [System Log] Caption approved on attempt 1!
-[System Log] Chosen Role: คนเลือกวัตถุดิบ (R3)
-[System Log] Chosen Persona: เพื่อนบอกต่อ (A)
-[System Log] Chosen Hook: ลองแล้วเข้าใจเลยว่าทำไมขายดี
+[System Log] Chosen Role: สายกิน (R2)
+[System Log] Chosen Persona: คนเจอโปรมาแชร์ (C)
+[System Log] Chosen Hook: เมื่อวานเพิ่งเจอ...
 [System Log] Chosen Style: คำถาม
-Hook: iPhone 18 เครื่อง​ศูนย์​แท้ | สั่ง​ร้าน Mall อุ่นใจ​ไม่​เสี่ยง​ย้อมแมว
-Product image downloaded: output/product_20260919_213146.jpg
-Card render done: output/product_20260919_213146_card.png
+Hook: มัทฉะ​อุจิ​ต้น​ตำรับ | รส​เข้ม​หอม​นัว​ส่ง​ตรง​จาก​ญี่ปุ่น
+Product image downloaded: output/product_20260920_214420.webp
+Card render done: output/product_20260920_214420_card.png
 Caption:
-ลองแล้วเข้าใจเลยว่าทำไมขายดี มีใครกำลังเล็ง iPhone 18 Pro Max ที่มาพร้อมชิป A20 Pro อยู่เหมือนเราบ้างไหมคะ? สำหรับการซื้อมือถือราคาสูง 48,900 บาท เราว่าเลือกร้าน Mall ทางการใน Shopee Mall หรือ Apple Flagship Store อุ่นใจเรื่องของแท้และบริการหลังการขายที่สุด เพราะไว้ใจร้านค้าได้ 100% ว่าเป็นเครื่องศูนย์ไทยแท้ มีประกันศูนย์ 1 ปีเต็ม ไม่ต้องเสี่ยงกับเครื่องย้อมแมว เครื่องหิ้ว หรือกลัวโดนโกงค่ะ เซฟเก็บไว้ดูตอนช้อปหรือแชร์ต่อให้เพื่อนได้เลยนะคะ 
+เมื่อวานเพิ่งเจอ... มีใครกำลังตามหาผงมัทฉะอุจิ ส่งตรงจากญี่ปุ่น รุ่น Aya no Mori อยู่เหมือนเราไหมคะ? พอดีเราบังเอิญไปเจอช่วงจัดโปรโมชั่นลดราคาเหลือ 1451 บาท มีขนาด 20g/40g ให้เลือกด้วย เลยตื่นเต้นจนต้องรีบเอามาบอกต่อทุกคนค่ะ ใครที่เป็นสายชาเขียวมัทฉะกดเซฟเก็บไว้ดูตอนช้อปหรือแชร์ต่อให้เพื่อนได้เลยนะคะ 
 
 ดูลิ้งในคอมเมนต์แรกเลยนะคะ 👇
-🔥 โปรโมชั่น: ฿48,900.00
+🔥 โปรโมชั่น: ฿1451.00
 
 Posting to Facebook Page...
-Using explicit scheduled_timestamp: 1789903200
-Scheduling to Facebook for timestamp 1789903200...
-Scheduled successfully! Photo ID: 122185941140726152
+Using explicit scheduled_timestamp: 1789989600
+Scheduling to Facebook for timestamp 1789989600...
+Scheduled successfully! Photo ID: 122186081672726152
 [DB] Successfully saved post memory.
-Marked row 184 as done
+Marked row 151 as done
 
 Done: 1/5 posts completed
