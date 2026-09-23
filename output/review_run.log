@@ -1,36 +1,36 @@
 Direct use of automatic function calling (AFC) in Models.generate_content is not recommended. Instead, we recommend to use AFC in Chat.send_message. Similarly, direct use of AFC in Models.generate_content_stream is not recommended. Instead, we recommend to use AFC in Chat.send_message_stream.
 
 ===== Post 1/1 =====
-[Review Strategy] Alternating to other product: Pre-order มาม่าJinmailang (จางหลิงเฮ่อ) แพค
-Product: Pre-order มาม่าJinmailang (จางหลิงเฮ่อ) แพค...
+[Review Strategy] Prioritizing iPhone review: Apple iPhone 16 Plus (เครื่องศูนย์ไทย ประกันศูนย์ 1 ปี) จอให
+Product: Apple iPhone 16 Plus (เครื่องศูนย์ไทย ประกันศูนย์ 1 ปี) จอให...
 [System Log] Converted Product JSON:
 {
-  "ประเภท": "บะหมี่กึ่งสำเร็จรูป",
-  "จุดเด่น": "พรีออเดอร์ จางหลิงเฮ่อ",
-  "ขนาด": "แพ็ค",
-  "ราคา": 260
+  "ประเภท": "มือถือ",
+  "รุ่น": "iPhone 16 Plus",
+  "จุดเด่น": "จอใหญ่ แบตอึด ชิป A18",
+  "ราคา": 34900
 }
-[System Log] Caption approved on attempt 1!
-[System Log] Chosen Role: คนเลือกวัตถุดิบ (R3)
-[System Log] Chosen Persona: คนเจอโปรมาแชร์ (C)
-[System Log] Chosen Hook: ตอนแรกไม่ได้จะซื้อ
-[System Log] Chosen Style: การเปรียบเทียบ (BAB)
-Hook: มาม่า​จาง​หลิง​เฮ่อ | แฟนคลับ​พี่​จาง​กด​พรี​รอ​เลย
-Product image downloaded: output/product_20260922_223333.webp
-Card render done: output/product_20260922_223333_card.png
+[Attempt 1] Caption rejected by Excel memory! Similarity too high (0.61 > 0.60)
+[Attempt 2] Caption rejected by Excel memory! Similarity too high (0.66 > 0.60)
+[System Log] Caption approved on attempt 3!
+[System Log] Chosen Role: เด็กหอสายประหยัด (R6)
+[System Log] Chosen Persona: คนสงสัยก่อนซื้อแล้วมาลอง (G)
+[System Log] Chosen Hook: โดนป้ายยามาอีกที
+[System Log] Chosen Style: คำถาม
+Hook: เครื่อง​ศูนย์​ไทย​ประกัน​เต็ม | สั่ง​ร้าน Mall อุ่น​ใจ​ไม่​เสี่ยง​ย้อม​แมว
+Product image downloaded: output/product_20260923_222940.jpg
+Card render done: output/product_20260923_222940_card.png
 Caption:
-ตอนแรกไม่ได้จะซื้อ 
-
-เมื่อก่อนเวลาดึกๆ เราหิวแล้วไม่มีอะไรกินติดห้องเลย แต่ตอนนี้แฮปปี้ขึ้นเยอะที่มีของกินตุนไว้ให้อุ่นใจค่ะ จุดเปลี่ยนคือเราบังเอิญไปเจอบะหมี่กึ่งสำเร็จรูป พรีออเดอร์ จางหลิงเฮ่อ แบบแพ็คในราคา 260 บาท แฟนคลับเซฟเก็บไว้ช้อปหรือแชร์ต่อให้เพื่อนได้เลยนะคะ
+โดนป้ายยามาอีกที มีใครเคยลังเลเหมือนเราไหมคะว่ามือถือราคา 34,900 บาทอย่าง iPhone 16 Plus จะตอบโจทย์จริงหรือเปล่า? ตอนแรกหนูก็ไม่แน่ใจ แต่พอตัดสินใจซื้อมาลองใช้งานจริง ทั้งเรื่องจอใหญ่ แบตอึด และชิป A18 ก็ทำงานได้ลื่นไหลตามสเปกเลยค่ะ และสำหรับการซื้อสมาร์ตโฟนราคาสูงแบบนี้ เลือกร้านค้าทางการ Shopee Mall ทำให้เราไว้ใจร้านค้าได้ 100% ได้เครื่องศูนย์ไทยแท้ มีประกันศูนย์ 1 ปีเต็ม ไม่ต้องเสี่ยงกับเครื่องย้อมแมว เครื่องหิ้ว หรือกลัวโดนโกง อุ่นใจเรื่องของแท้และบริการหลังการขายที่สุด เซฟเก็บไว้ดูตอนช้อปกันได้นะคะ 
 
 ดูลิ้งในคอมเมนต์แรกเลยนะคะ 👇
-🔥 โปรโมชั่น: ฿260.00
+🔥 โปรโมชั่น: ฿34,900.00
 
 Posting to Facebook Page...
-Using explicit scheduled_timestamp: 1790162400
-Scheduling to Facebook for timestamp 1790162400...
-Scheduled successfully! Photo ID: 122186343686726152
+Using explicit scheduled_timestamp: 1790248800
+Scheduling to Facebook for timestamp 1790248800...
+Scheduled successfully! Photo ID: 122186512946726152
 [DB] Successfully saved post memory.
-Marked row 152 as done
+Marked row 186 as done
 
 Done: 1/5 posts completed
