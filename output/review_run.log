@@ -1,32 +1,32 @@
 Direct use of automatic function calling (AFC) in Models.generate_content is not recommended. Instead, we recommend to use AFC in Chat.send_message. Similarly, direct use of AFC in Models.generate_content_stream is not recommended. Instead, we recommend to use AFC in Chat.send_message_stream.
 
 ===== Post 1/1 =====
-[Review Strategy] Prioritizing iPhone review: Apple iPhone 15 (เครื่องศูนย์ไทย ประกันศูนย์ 1 ปี) พอร์ต USB
-Product: Apple iPhone 15 (เครื่องศูนย์ไทย ประกันศูนย์ 1 ปี) พอร์ต USB...
+[Review Strategy] Alternating to other product: น้ำมันมรกต 1 ลิตร ยกลัง 12 ขวด สินค้าส่งตรงจากโรงงาน (1 คำสั
+Product: น้ำมันมรกต 1 ลิตร ยกลัง 12 ขวด สินค้าส่งตรงจากโรงงาน (1 คำสั...
 [System Log] Converted Product JSON:
 {
-  "ประเภท": "สมาร์ทโฟน",
-  "รุ่น": "iPhone 15",
-  "จุดเด่น": "พอร์ต USB-C, กล้อง 48MP",
-  "ราคา": 26900
+  "ประเภท": "น้ำมันพืช",
+  "จุดเด่น": "ยกลัง 12 ขวด ส่งตรงจากโรงงาน",
+  "ขนาด": "1 ลิตร x 12 ขวด",
+  "ราคา": 822
 }
 [System Log] Caption approved on attempt 1!
-[System Log] Chosen Role: สายกิน (R2)
-[System Log] Chosen Persona: คนเล่าเรื่องชีวิตประจำวัน (E)
-[System Log] Chosen Hook: อันนี้เกินคาดจริงๆ
-[System Log] Chosen Style: ประสบการณ์ส่วนตัว (PAS)
-Hook: เครื่อง​ศูนย์​ไทย​ประกัน​เต็ม | สั่ง​ร้าน Mall อุ่น​ใจ​ไม่​เสี่ยง​ย้อม​แมว
-Product image downloaded: output/product_20260925_225140.jpg
-Card render done: output/product_20260925_225140_card.png
+[System Log] Chosen Role: เด็กหอสายประหยัด (R6)
+[System Log] Chosen Persona: คนสงสัยก่อนซื้อแล้วมาลอง (G)
+[System Log] Chosen Hook: แชร์เผื่อมีคนกำลังหาอยู่
+[System Log] Chosen Style: การบอกต่อเฉยๆ
+Hook: น้ำมัน​พืช​ตุน​ยก​ครัว | ส่ง​ตรง​จาก​โรงงาน​สิบสอง​ขวด
+Product image downloaded: output/product_20260926_220041.webp
+Card render done: output/product_20260926_220041_card.png
 Caption:
-อันนี้เกินคาดจริงๆ ปกติเราเจอปัญหาพกสายชาร์จหลายแบบจนพันกันรกรุงรังในกระเป๋า แถมกล้องมือถือเดิมก็ไม่ชัด ถ่ายอะไรก็เบลอจนอึดอัดใจและเสียเวลาทำงานมากค่ะ จนเราได้สมาร์ทโฟน iPhone 15 ราคา 26,900 บาท เข้ามาช่วยชีวิต เพราะเปลี่ยนมาใช้พอร์ต USB-C ใช้สายร่วมกับอุปกรณ์อื่นได้ทันที พร้อมกล้อง 48MP ที่ถ่ายภาพได้คมชัดละเอียด ซึ่งการซื้อของราคาสูงแบบนี้เราเลือกสั่งจากร้านค้าทางการ Shopee Mall เพราะไว้ใจได้ 100% ว่าเป็นเครื่องศูนย์ไทยแท้ มีประกันศูนย์ 1 ปีเต็ม อุ่นใจเรื่องของแท้และบริการหลังการขาย ไม่ต้องเสี่ยงกับเครื่องย้อมแมวหรือกลัวโดนโกงเลยค่ะ ใครที่กำลังจะเปลี่ยนมือถือเซฟเก็บไว้ดูตอนช้อปกันได้นะคะ ดูลิ้งในคอมเมนต์แรกเลยนะคะ 👇
-🔥 โปรโมชั่น: ฿26,900.00
+แชร์เผื่อมีคนกำลังหาอยู่ ตอนแรกเราก็แอบไม่แน่ใจว่าจะโอเคไหมเพราะสั่งน้ำมันพืชส่งตรงจากโรงงานทางออนไลน์ แต่พอลองสั่งแบบยกลัง 12 ขวด ขนาด 1 ลิตร มาถึงบ้านในราคา 822 บาท สรุปคือได้ของเรียบร้อยปกติตามที่คิดไว้เลยค่ะ ใครที่กำลังมองหาน้ำมันพืชยกลังไปทำกับข้าว เซฟเก็บไว้ดูตอนช้อปได้เลยนะคะ ดูลิ้งในคอมเมนต์แรกเลยนะคะ 👇
+🔥 โปรโมชั่น: ฿822.00
 
 Posting to Facebook Page...
-Using explicit scheduled_timestamp: 1790421600
-Scheduling to Facebook for timestamp 1790421600...
-Scheduled successfully! Photo ID: 122186855576726152
+Using explicit scheduled_timestamp: 1790508000
+Scheduling to Facebook for timestamp 1790508000...
+Scheduled successfully! Photo ID: 122187001646726152
 [DB] Successfully saved post memory.
-Marked row 187 as done
+Marked row 154 as done
 
 Done: 1/5 posts completed
