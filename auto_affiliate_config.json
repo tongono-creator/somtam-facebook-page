@@ -1,0 +1,30 @@
+{
+  "facebook": {
+    "account_id": "554501167740603",
+    "expected_username": "",
+    "rollout_since": "2026-09-27T02:40:00Z",
+    "approved_fallback": {
+      "name": "Bertolli Extra Virgin",
+      "url": "https://s.shopee.co.th/9030hGnxIf"
+    },
+    "post_products": {
+      "554501167740603_122187046994726152": {
+        "name": "Bertolli Extra Virgin",
+        "url": "https://s.shopee.co.th/9030hGnxIf"
+      }
+    },
+    "post_products_file": "affiliate_post_products.json",
+    "catalog": [
+      {
+        "name": "Bertolli Extra Virgin",
+        "url": "https://s.shopee.co.th/9030hGnxIf",
+        "keywords": [
+          "Bertolli",
+          "น้ำมันมะกอก"
+        ]
+      }
+    ],
+    "token_env": "PAGE_ACCESS_TOKEN",
+    "lookback_hours": 72
+  }
+}
