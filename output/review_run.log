@@ -6,15 +6,15 @@ Product: พร้อมส่งในไทย Marukyu​ Koyamaen​ ผง�
 [System Log] Converted Product JSON:
 {
   "ประเภท": "ผงมัทฉะ",
-  "จุดเด่น": "Marukyu แท้จากญี่ปุ่น ชาจากอูจิ",
+  "จุดเด่น": "มารุคิวแท้จากญี่ปุ่น เมืองอูจิ",
   "ราคา": 790,
   "ชื่อสินค้า": "พร้อมส่งในไทย Marukyu​ Koyamaen​ ผงมัทฉะ​"
 }
 [System Log] Caption approved on attempt 1!
-[System Log] Chosen Role: สายกิน (R2)
-[System Log] Chosen Persona: คนเจอโปรมาแชร์ (C)
+[System Log] Chosen Role: แม่บ้านเข้าครัว (R5)
+[System Log] Chosen Persona: คนแนะนำของให้ครอบครัว (H)
 [System Log] Chosen Hook: เห็นคนพูดถึงเยอะเลยลอง
-[System Log] Chosen Style: การเปรียบเทียบ (BAB)
+[System Log] Chosen Style: คำถาม
 Traceback (most recent call last):
   File "/home/runner/work/somtam-facebook-page/somtam-facebook-page/review.py", line 1255, in <module>
     review_img = render_review_card(product_photos, line1_clean, line2_clean,
