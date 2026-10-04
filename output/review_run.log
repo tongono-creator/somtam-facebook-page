@@ -6,13 +6,14 @@ Product: พร้อมส่งในไทย Marukyu​ Koyamaen​ ผง�
 [System Log] Converted Product JSON:
 {
   "ประเภท": "ผงมัทฉะ",
-  "จุดเด่น": "ของแท้จากญี่ปุ่น, แบรนด์ดังจากอูจิ",
+  "จุดเด่น": "แท้จากญี่ปุ่น มัทฉะดังจากอูจิ",
   "ราคา": 790,
   "ชื่อสินค้า": "พร้อมส่งในไทย Marukyu​ Koyamaen​ ผงมัทฉะ​"
 }
+[gemini-flash-latest] caption rejected: ['fake_experience:กดสั่ง']
 [System Log] Caption approved on attempt 1!
-[System Log] Chosen Role: เด็กหอสายประหยัด (R6)
-[System Log] Chosen Persona: คนแนะนำของให้ครอบครัว (H)
+[System Log] Chosen Role: แม่บ้านเข้าครัว (R5)
+[System Log] Chosen Persona: คนเจอโปรมาแชร์ (C)
 [System Log] Chosen Hook: เห็นคนพูดถึงเยอะเลยลอง
 [System Log] Chosen Style: มุกตลก
 Traceback (most recent call last):
