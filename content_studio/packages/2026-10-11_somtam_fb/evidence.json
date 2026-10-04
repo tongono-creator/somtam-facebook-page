@@ -1,0 +1,18 @@
+{
+  "entries": [
+    {
+      "url": "https://image.mfa.go.th/mfa/0/Svp1QKEi4u/migrate_directory/news-20150908-021704-687783.pdf",
+      "title": "สถานทูตไทย — Discovering Thai Cuisine in Qatar หน้า 26–27",
+      "claim": "สูตร Pad Thai Gung Sod แยกแช่เส้น เตรียมซอส และเติมน้ำหรือสต็อกเล็กน้อยให้เส้นนุ่มระหว่างผัด",
+      "checked_at": "2026-10-04T16:43:01+00:00",
+      "source_type": "primary",
+      "verification": "web_source_opened_and_relevant_passage_checked"
+    }
+  ],
+  "fictional": false,
+  "checked_at": "2026-10-04T16:43:01+00:00",
+  "editorial_note": "ข้อสังเกตและคำแนะนำแยกจากข้ออ้างที่แหล่งต้นทางรองรับ ไม่ใช่ประสบการณ์ใช้สินค้าของแอดมิน",
+  "limitations": [
+    "ไม่ยกเวลา15นาทีในสูตรไปใช้กับทุกยี่ห้อ; ไม่อ้างว่าการใช้กระชอนแก้เส้นติดทุกสาเหตุ"
+  ]
+}

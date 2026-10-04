@@ -1,0 +1,17 @@
+{
+  "id": "2026-10-11_somtam_fb",
+  "reviewer": "root-editor",
+  "reviewed_at": "2026-10-04T17:56:03.048108+00:00",
+  "full_image_seen": true,
+  "mobile_seen": true,
+  "visual_status": "passed",
+  "signature_status": "unsigned_pending_evidence_and_affiliate",
+  "hashes": {
+    "card.png": "6d608d7c6c5f5b006e898dfccdd789117d2c5a1c5345a2e88471cba339e7ec2d",
+    "mobile.png": "05a89737136e2c57bf51a5276543bf1801931c09f55ecd92cf44251796643ac9"
+  },
+  "notes": "Root actually viewed both saved images. Thai legible; main subject visible and unobscured; no claimed real test; AI disclosure visible. Any minor crop of incidental background props is not used as proof of SKU. Root personally read current full caption and MFA DiscoveringThaiCuisine PDF26–27; bounded recipe, no universal soaking prescription or invented experiment. Root actual redirect shop263622256/item3987495263 and utm_content somtam-20261011-noodles-pacific24-comment. Seller sangdamrong_kitchenware แสงดำรง เครื่องครัว. Single Seagull Pacific Extra24cm stainless pan, no selector, stock11 and buy enabled. Full seller body stainless, reinforced base, induction compatibility; actual image single pan, no lid. No independent authenticity, heat distribution, nonstick, warranty, inner capacity or food-contact testing. Emperor57455056104 excluded for this PadThai context due seller acid/fishsauce restrictions.  Actual matching SKU and comment checked from catalog and selected proof files; per-post link uses Root browser verification when provided.",
+  "source_checked": true,
+  "affiliate_checked": true,
+  "status": "signed_approved"
+}
