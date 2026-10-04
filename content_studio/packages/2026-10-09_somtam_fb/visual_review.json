@@ -1,0 +1,17 @@
+{
+  "id": "2026-10-09_somtam_fb",
+  "reviewer": "root-editor",
+  "reviewed_at": "2026-10-04T17:56:03.048108+00:00",
+  "full_image_seen": true,
+  "mobile_seen": true,
+  "visual_status": "passed",
+  "signature_status": "unsigned_pending_evidence_and_affiliate",
+  "hashes": {
+    "card.png": "d9991b407f8f1672957921025b08f59fa8730b8a64ab2fd05518326afae48ce9",
+    "mobile.png": "cd5942e8165056568339cb8592cc646fe2f9c7c61c7b5f630abf1d3e157b8278"
+  },
+  "notes": "Root actually viewed both saved images. Thai legible; main subject visible and unobscured; no claimed real test; AI disclosure visible. Any minor crop of incidental background props is not used as proof of SKU. Root read complete caption and primary source for this slot; no invented experience or product result. Root selected available8inch and saw tick and stock56, purchase enabled.7inch disabled. Seller body describes wooden mortar for papaya salad and chili pastes. No food-contact certification, treatment, inner dimensions or independent durability test supplied; do not repeat seller strength claims. Replaces stone mortar whose own care restrictions exclude concentrated fish sauce/lime. Actual matching SKU and comment checked from catalog and selected proof files; per-post link uses Root browser verification when provided.",
+  "source_checked": true,
+  "affiliate_checked": true,
+  "status": "signed_approved"
+}

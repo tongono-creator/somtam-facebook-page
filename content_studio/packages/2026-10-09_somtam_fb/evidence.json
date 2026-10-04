@@ -1,0 +1,26 @@
+{
+  "entries": [
+    {
+      "url": "https://image.mfa.go.th/mfa/0/Svp1QKEi4u/migrate_directory/news-20150908-021704-687783.pdf",
+      "title": "สถานทูตไทย — Discovering Thai Cuisine in Qatar หน้า 28–29",
+      "claim": "สูตร Som Tum ตำเครื่อง ปรุงด้วยน้ำปลา น้ำตาลและมะนาว แล้วใส่มะละกอคลุก",
+      "checked_at": "2026-10-04T16:43:01+00:00",
+      "source_type": "primary",
+      "verification": "web_source_opened_and_relevant_passage_checked"
+    },
+    {
+      "url": "https://www.maangchi.com/recipe/som-tam",
+      "title": "Maangchi — Som tam",
+      "claim": "สูตรใส่มะละกอในขั้น6ก่อนส่วนผสมเหลวขั้น7 และใช้ช้อนช่วยขยับคลุก",
+      "checked_at": "2026-10-04T16:43:01+00:00",
+      "source_type": "primary",
+      "verification": "web_source_opened_and_relevant_passage_checked"
+    }
+  ],
+  "fictional": false,
+  "checked_at": "2026-10-04T16:43:01+00:00",
+  "editorial_note": "ข้อสังเกตและคำแนะนำแยกจากข้ออ้างที่แหล่งต้นทางรองรับ ไม่ใช่ประสบการณ์ใช้สินค้าของแอดมิน",
+  "limitations": [
+    "เป็นการเทียบสูตรที่เผยแพร่ ไม่ใช่ผลทดลองรสชาติ ไม่มีข้ออ้างสูตรดั้งเดิมหนึ่งเดียว"
+  ]
+}
