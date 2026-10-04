@@ -1,8 +1,12 @@
 {
   "7e72526af857f0aeed34e3dddefd3cebff07e49683efad3b01e78154e6f15af1": {
-    "state": "written_pending_readback",
+    "state": "verified",
     "channel": "somtam_fb",
     "page_id": "554501167740603",
-    "updated_at": "2026-10-04T18:56:00.674542+00:00"
+    "updated_at": "2026-10-04T18:56:01.946462+00:00",
+    "readback_about": {
+      "present": true,
+      "value": "ครัวนี้มีเหตุ! ไขกลไกของอาหาร เทียบวิธีตามจานที่อยากได้ และเลือกอุปกรณ์ให้เข้ากับครัวของคุณ"
+    }
   }
 }
