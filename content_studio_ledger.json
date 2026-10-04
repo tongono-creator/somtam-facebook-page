@@ -12,9 +12,11 @@
   "2026-10-06_somtam_fb": {
     "package_sha256": "6a322bb87ba5746cc87e451f90a0cde6a80669df203def361f3a41bfbb2d5d87",
     "page_id": "554501167740603",
+    "photo_id": "122188192190726152",
+    "post_id": null,
     "product_id": "50210960282",
     "scheduled_at": "2026-10-06T10:30:00+07:00",
     "status": "publishing",
-    "updated_at": "2026-10-04T18:15:33.305018+00:00"
+    "updated_at": "2026-10-04T18:15:37.222733+00:00"
   }
 }
