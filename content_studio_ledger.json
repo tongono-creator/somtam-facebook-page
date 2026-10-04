@@ -58,5 +58,13 @@
     "scheduled_at": "2026-10-10T10:30:00+07:00",
     "status": "verified",
     "updated_at": "2026-10-04T20:56:38.497243+00:00"
+  },
+  "2026-10-11_somtam_fb": {
+    "package_sha256": "54b98fbb49d8429cb4bddd13e34c0cfda88309d3e03b8cf6741f2266c4ba0144",
+    "page_id": "554501167740603",
+    "product_id": "3987495263",
+    "scheduled_at": "2026-10-11T10:30:00+07:00",
+    "status": "publishing",
+    "updated_at": "2026-10-04T20:56:39.460663+00:00"
   }
 }
