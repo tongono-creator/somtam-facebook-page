@@ -1,0 +1,17 @@
+{
+  "id": "2026-10-06_somtam_fb",
+  "reviewer": "root-editor",
+  "reviewed_at": "2026-10-04T17:56:03.048108+00:00",
+  "full_image_seen": true,
+  "mobile_seen": true,
+  "visual_status": "passed",
+  "signature_status": "unsigned_pending_evidence_and_affiliate",
+  "hashes": {
+    "card.png": "375a723139de82c045a61faea1895bf40b3ab7a734d7d928361a5cf99340f4e6",
+    "mobile.png": "3d5afb0408b0b58f8fc07acd4de77d3ecf7706d28d7406bfe997a7891bc13553"
+  },
+  "notes": "Root actually viewed both saved images. Thai legible; main subject visible and unobscured; no claimed real test; AI disclosure visible. Any minor crop of incidental background props is not used as proof of SKU. Root inspected full card and mobile and read complete caption. FDA Egg Safety primary guidance supports firm whites/yolks or pasteurized eggs for undercooked recipes; no guarantee based on photo. Actual Shopee Seagull Official Store destination and single 16cm black pan listing verified, including induction and care limitations. No health or FDA product certification claim copied from seller marketing. One disclosed relevant link; cooldown checked globally. Actual matching SKU and comment checked from approved_products proof.",
+  "source_checked": true,
+  "affiliate_checked": true,
+  "status": "signed_approved"
+}

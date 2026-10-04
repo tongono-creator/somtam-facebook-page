@@ -1,0 +1,18 @@
+{
+  "entries": [
+    {
+      "url": "https://www.fda.gov/food/buy-store-serve-safe-food/what-you-need-know-about-egg-safety",
+      "title": "FDA Egg Safety",
+      "claim": "FDA แนะนำปรุงไข่จนขาวและแดงสุกแข็ง; สูตรเสิร์ฟดิบหรือสุกไม่เต็มที่ให้ใช้ไข่ที่ผ่านพาสเจอไรซ์หรือผลิตภัณฑ์ไข่พาสเจอไรซ์",
+      "checked_at": "2026-10-04T16:43:01+00:00",
+      "source_type": "primary",
+      "verification": "web_source_opened_and_relevant_passage_checked"
+    }
+  ],
+  "fictional": false,
+  "checked_at": "2026-10-04T16:43:01+00:00",
+  "editorial_note": "ข้อสังเกตและคำแนะนำแยกจากข้ออ้างที่แหล่งต้นทางรองรับ ไม่ใช่ประสบการณ์ใช้สินค้าของแอดมิน",
+  "limitations": [
+    "ภาพไม่พิสูจน์อุณหภูมิหรือความสุกจริง ไม่มีขั้นตอนทดลองทอดหรือคำแนะนำไข่ดิบสำหรับผู้เสี่ยง"
+  ]
+}
