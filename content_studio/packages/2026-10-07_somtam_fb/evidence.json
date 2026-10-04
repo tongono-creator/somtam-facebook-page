@@ -1,0 +1,26 @@
+{
+  "entries": [
+    {
+      "url": "https://www.kikkoman.com/en/culture/soysaucemuseum/features/",
+      "title": "Kikkoman Soy Sauce Museum",
+      "claim": "ผู้ผลิตอธิบาย oxidation ทำให้สีเข้มขึ้น และการเก็บเย็นในที่มืดช่วยรักษาสี",
+      "checked_at": "2026-10-04T16:43:01+00:00",
+      "source_type": "primary",
+      "verification": "web_source_opened_and_relevant_passage_checked"
+    },
+    {
+      "url": "https://customer.kikkoman.co.jp/hc/ja/articles/34767925162265",
+      "title": "Kikkoman Customer FAQ",
+      "claim": "ผู้ผลิตแยกการเก็บหลังเปิดตามชนิดบรรจุภัณฑ์ และระบุว่าคำแนะนำเป็นเงื่อนไขของผลิตภัณฑ์นั้น",
+      "checked_at": "2026-10-04T16:49:30+00:00",
+      "source_type": "primary",
+      "verification": "web_source_opened_and_relevant_passage_checked"
+    }
+  ],
+  "fictional": false,
+  "checked_at": "2026-10-04T16:43:01+00:00",
+  "editorial_note": "ข้อสังเกตและคำแนะนำแยกจากข้ออ้างที่แหล่งต้นทางรองรับ ไม่ใช่ประสบการณ์ใช้สินค้าของแอดมิน",
+  "limitations": [
+    "ตรวจฉลาก SKU ที่ root เลือกจริงอีกครั้ง ห้ามใช้เงื่อนไขเก็บของขวด AI เป็นข้อมูลสินค้า; URL ID-only ตรวจแล้วเปลี่ยนทางไปบทความผู้ผลิตตรงเรื่อง"
+  ]
+}

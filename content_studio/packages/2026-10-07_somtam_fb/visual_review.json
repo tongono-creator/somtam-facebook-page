@@ -1,0 +1,17 @@
+{
+  "id": "2026-10-07_somtam_fb",
+  "reviewer": "root-editor",
+  "reviewed_at": "2026-10-04T17:56:03.048108+00:00",
+  "full_image_seen": true,
+  "mobile_seen": true,
+  "visual_status": "passed",
+  "signature_status": "unsigned_pending_evidence_and_affiliate",
+  "hashes": {
+    "card.png": "912023359e31828f0e0b1bf33ffcfe523d0250d1c75d4d0524ae7b0dd67372d2",
+    "mobile.png": "cffcadeefe22d02b067814e4d6799424049eaf65cea6c04afc7caa937265a86a"
+  },
+  "notes": "Root actually viewed both saved images. Thai legible; main subject visible and unobscured; no claimed real test; AI disclosure visible. Any minor crop of incidental background props is not used as proof of SKU. Root read Kikkoman museum description of air oxidation and refrigeration guidance, and Japanese primary FAQ distinguishing conventional PET refrigeration from specific sealed fresh packaging. Caption limits claims by formulation and packaging and does not assign shelf life by color. Root inspected full/mobile and actual 150ml pack2 reseller listing, canonical IDs and SubIDs. Actual SKU label/storage/expiry unknown, so comment asks purchaser to verify them and does not claim authenticity/health/popularity. Global cooldown checked. Actual matching SKU and comment checked from approved_products proof.",
+  "source_checked": true,
+  "affiliate_checked": true,
+  "status": "signed_approved"
+}
