@@ -1,0 +1,18 @@
+{
+  "entries": [
+    {
+      "url": "https://redboatfishsauce.com/collections/shop/products/fish-sauce-40n",
+      "title": "Red Boat — 40°N Fish Sauce",
+      "claim": "หน้าผู้ผลิตของ40°Nระบุ Ingredients: Anchovy, Sea Salt; เป็นข้ออ้างเฉพาะสูตรนี้",
+      "checked_at": "2026-10-04T16:43:01+00:00",
+      "source_type": "primary",
+      "verification": "web_source_opened_and_relevant_passage_checked"
+    }
+  ],
+  "fictional": false,
+  "checked_at": "2026-10-04T16:43:01+00:00",
+  "editorial_note": "ข้อสังเกตและคำแนะนำแยกจากข้ออ้างที่แหล่งต้นทางรองรับ ไม่ใช่ประสบการณ์ใช้สินค้าของแอดมิน",
+  "limitations": [
+    "การให้ลิงก์affiliateของน้ำปลายี่ห้ออื่นต้องไม่สวมข้อมูลส่วนประกอบจากRedBoat; ตรวจlabelตัวเลือกจริง"
+  ]
+}

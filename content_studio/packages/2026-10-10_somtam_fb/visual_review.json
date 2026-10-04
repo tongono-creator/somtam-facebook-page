@@ -1,0 +1,17 @@
+{
+  "id": "2026-10-10_somtam_fb",
+  "reviewer": "root-editor",
+  "reviewed_at": "2026-10-04T17:56:03.048108+00:00",
+  "full_image_seen": true,
+  "mobile_seen": true,
+  "visual_status": "passed",
+  "signature_status": "unsigned_pending_evidence_and_affiliate",
+  "hashes": {
+    "card.png": "28357e8ee00ae92f666cb030cfa644a0f7708085cdeaa3c800855245474f68fd",
+    "mobile.png": "7309c6b602c9759e33ad790116163bb42037161ff21f6e4ac77e935c36af781f"
+  },
+  "notes": "Root actually viewed both saved images. Thai legible; main subject visible and unobscured; no claimed real test; AI disclosure visible. Any minor crop of incidental background props is not used as proof of SKU. Root full caption and official RedBoat40N ingredient source personally checked; comment distinguishes actual ThaiSKU from illustrative brand and makes no ingredient substitution. Root read canonical shop515076000/item27665578715, AFBS.CO.TH seller, single300ml bottle without size selector, stock4 and enabled buy, actual bottle photograph and complete seller body. Actual destination utm_content matches five captured SubIDs. Full ingredients/allergen/expiry label not readable independently; do not claim RedBoat ingredients, no additives, certification, flavor superiority or remaining shelf life from seller marketing. Seller24months shelf life is not actual batch expiry;300g field not300ml volume. Actual matching SKU and comment checked from catalog and selected proof files; per-post link uses Root browser verification when provided.",
+  "source_checked": true,
+  "affiliate_checked": true,
+  "status": "signed_approved"
+}
