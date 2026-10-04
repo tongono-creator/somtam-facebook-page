@@ -1,0 +1,17 @@
+{
+  "id": "2026-10-08_somtam_fb",
+  "reviewer": "root-editor",
+  "reviewed_at": "2026-10-04T17:56:03.048108+00:00",
+  "full_image_seen": true,
+  "mobile_seen": true,
+  "visual_status": "passed",
+  "signature_status": "unsigned_pending_evidence_and_affiliate",
+  "hashes": {
+    "card.png": "854951f54f145a40f9a7bf8c1263555ef2e4edb58193277e7b5707288a8aa8d5",
+    "mobile.png": "3b35aab2f73bdf94947729e190c3b44566c297a7edba3bc2d28fa6252fcfbd48"
+  },
+  "notes": "Root actually viewed both saved images. Thai legible; main subject visible and unobscured; no claimed real test; AI disclosure visible. Any minor crop of incidental background props is not used as proof of SKU. Root read complete caption and prior primary indexed TAMU Cooking Vegetables guidance on uniform pieces and method appropriate to the vegetable, with no invented cooking time. Full/mobile illustration previously seen in root receipt; not an experiment. Root inspected complete single Seagull Home Mall knife/board listing, seller enumerated set, canonical shop/item and actual SubIDs. Comment avoids sharpness, food-safety or automatic uniform-cut guarantees and asks to check included items. Actual matching SKU and comment checked from approved_products proof.",
+  "source_checked": true,
+  "affiliate_checked": true,
+  "status": "signed_approved"
+}
