@@ -1,0 +1,65 @@
+[
+  {
+    "id": "2026-10-05_somtam",
+    "channel": "somtam_fb",
+    "post_id": "554501167740603_122188185680726152",
+    "caption_sha256": "b9670ec68582cb49f06b8e5605922d802d7545ff33299d9e21adb39e1f06137c",
+    "scheduled_at": "2026-10-05T10:30:00+07:00",
+    "known_release_proof": "live_release/som_oct11/content-studio-result/content_studio_result.json",
+    "kind": "root_signed_native_release"
+  },
+  {
+    "id": "2026-10-06_somtam_fb",
+    "channel": "somtam_fb",
+    "post_id": "554501167740603_122188192190726152",
+    "caption_sha256": "cd8210f1d783d27385446b0d3db94c7bb853a711b75cea3361600bce350af702",
+    "scheduled_at": "2026-10-06T10:30:00+07:00",
+    "known_release_proof": "live_release/som_oct11/content-studio-result/content_studio_result.json",
+    "kind": "root_signed_native_release"
+  },
+  {
+    "id": "2026-10-07_somtam_fb",
+    "channel": "somtam_fb",
+    "post_id": "554501167740603_122188193282726152",
+    "caption_sha256": "7ccd0bb00e5e2b30259b12d989bbf8874928053791a5658192775b6c4117939e",
+    "scheduled_at": "2026-10-07T10:30:00+07:00",
+    "known_release_proof": "live_release/som_oct11/content-studio-result/content_studio_result.json",
+    "kind": "root_signed_native_release"
+  },
+  {
+    "id": "2026-10-08_somtam_fb",
+    "channel": "somtam_fb",
+    "post_id": "554501167740603_122188196270726152",
+    "caption_sha256": "5f68ccca05b07ce2c3accfa544a3ae91b4eb5d106c7d8382eacc045325d94247",
+    "scheduled_at": "2026-10-08T10:30:00+07:00",
+    "known_release_proof": "live_release/som_oct11/content-studio-result/content_studio_result.json",
+    "kind": "root_signed_native_release"
+  },
+  {
+    "id": "2026-10-09_somtam_fb",
+    "channel": "somtam_fb",
+    "post_id": "554501167740603_122188201208726152",
+    "caption_sha256": "d4e18bc84319b1a8d02228ec1326832355131396cbf7fbd1b9c3c6bcc2402a61",
+    "scheduled_at": "2026-10-09T10:30:00+07:00",
+    "known_release_proof": "live_release/som_oct11/content-studio-result/content_studio_result.json",
+    "kind": "root_signed_native_release"
+  },
+  {
+    "id": "2026-10-10_somtam_fb",
+    "channel": "somtam_fb",
+    "post_id": "554501167740603_122188202306726152",
+    "caption_sha256": "37560ae093c59cc547c1357b3a1cf1544092041d58907957fd4bfcbb0e6e5cbb",
+    "scheduled_at": "2026-10-10T10:30:00+07:00",
+    "known_release_proof": "live_release/som_oct11/content-studio-result/content_studio_result.json",
+    "kind": "root_signed_native_release"
+  },
+  {
+    "id": "2026-10-11_somtam_fb",
+    "channel": "somtam_fb",
+    "post_id": "554501167740603_122188215902726152",
+    "caption_sha256": "5335f97b40bb24d33601516248137a67d778dbab4eff59bebac42725dd2ae9ca",
+    "scheduled_at": "2026-10-11T10:30:00+07:00",
+    "known_release_proof": "live_release/som_oct11/content-studio-result/content_studio_result.json",
+    "kind": "root_signed_native_release"
+  }
+]
