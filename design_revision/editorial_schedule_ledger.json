@@ -168,13 +168,15 @@
     }
   },
   "oct07_newimg_2026-10-29_somtam_fb": {
-    "state": "reserved_create",
+    "state": "created_pending_readback",
     "package_id": "oct07_newimg_2026-10-29_somtam_fb",
     "page_id": "554501167740603",
     "plan_sha256": "d721b809ea8e68a31796b40a259bbf1afb6110658e4875486b2ce3032b2b8888",
-    "updated_at": "2026-10-07T13:46:32.954044+00:00",
+    "updated_at": "2026-10-07T13:46:36.671994+00:00",
     "slot": 1793271600,
     "caption_sha256": "c577773eb2baf05bee6498077ee961c20ebea3f4ef5d8acbb03c83ae4b41a6ab",
-    "package_sha256": "2ed590e89329e12f7d733d3175bffd6d9a7465cc2a8c6557024516dfe896468e"
+    "package_sha256": "2ed590e89329e12f7d733d3175bffd6d9a7465cc2a8c6557024516dfe896468e",
+    "photo_id": "122188679456726152",
+    "new_post_id": null
   }
 }
