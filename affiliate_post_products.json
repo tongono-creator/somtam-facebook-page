@@ -35,6 +35,27 @@
       "name": "Seagull Pacific Extra สเตนเลส24ซม. กระทะหนึ่งใบ",
       "url": "https://s.shopee.co.th/4qG9o4SC1q"
     },
+    "122188682618726152": {
+      "affiliate_enabled": true,
+      "canonical_sku": "53085910/42763140924",
+      "comment": "ตัวเลือกที่คัดคือตะหลิว ก่อนซื้อเช็กให้ตรงกับชื่อตัวเลือกและอ่านข้อจำกัดเรื่องความร้อนของร้านค่ะ\nลิงก์ Affiliate — เพจอาจได้รับค่าคอมมิชชันจากการซื้อผ่านลิงก์นี้\nhttps://s.shopee.co.th/4qGE7hXtSb",
+      "name": "Seagull NewEnjoy ตะหลิวไนลอน",
+      "product_id": "42763140924",
+      "root_package_sha256": "101c697f36e2976ca5c5cda46bc81e4890abdf79c7fa8471c99be957161563dd",
+      "scheduled_at": "2026-10-14T18:00:00+07:00",
+      "shop_id": "53085910",
+      "subids": [
+        "somtam",
+        "20261014",
+        "seagullturner",
+        "facebook",
+        "reviewA"
+      ],
+      "url": "https://s.shopee.co.th/4qGE7hXtSb",
+      "variants": [
+        "ตะหลิว"
+      ]
+    },
     "554501167740603_122187046994726152": {
       "name": "Bertolli Extra Virgin",
       "url": "https://s.shopee.co.th/9030hGnxIf"
@@ -75,12 +96,14 @@
       "url": "https://s.shopee.co.th/4qG9o4SC1q"
     },
     "554501167740603_122188682618726152": {
+      "affiliate_enabled": true,
       "canonical_sku": "53085910/42763140924",
-      "shop_id": "53085910",
-      "product_id": "42763140924",
-      "name": "Seagull NewEnjoy ตะหลิวไนลอน",
-      "url": "https://s.shopee.co.th/4qGE7hXtSb",
       "comment": "ตัวเลือกที่คัดคือตะหลิว ก่อนซื้อเช็กให้ตรงกับชื่อตัวเลือกและอ่านข้อจำกัดเรื่องความร้อนของร้านค่ะ\nลิงก์ Affiliate — เพจอาจได้รับค่าคอมมิชชันจากการซื้อผ่านลิงก์นี้\nhttps://s.shopee.co.th/4qGE7hXtSb",
+      "name": "Seagull NewEnjoy ตะหลิวไนลอน",
+      "product_id": "42763140924",
+      "root_package_sha256": "101c697f36e2976ca5c5cda46bc81e4890abdf79c7fa8471c99be957161563dd",
+      "scheduled_at": "2026-10-14T18:00:00+07:00",
+      "shop_id": "53085910",
       "subids": [
         "somtam",
         "20261014",
@@ -88,33 +111,10 @@
         "facebook",
         "reviewA"
       ],
-      "variants": [
-        "ตะหลิว"
-      ],
-      "affiliate_enabled": true,
-      "scheduled_at": "2026-10-14T18:00:00+07:00",
-      "root_package_sha256": "101c697f36e2976ca5c5cda46bc81e4890abdf79c7fa8471c99be957161563dd"
-    },
-    "122188682618726152": {
-      "canonical_sku": "53085910/42763140924",
-      "shop_id": "53085910",
-      "product_id": "42763140924",
-      "name": "Seagull NewEnjoy ตะหลิวไนลอน",
       "url": "https://s.shopee.co.th/4qGE7hXtSb",
-      "comment": "ตัวเลือกที่คัดคือตะหลิว ก่อนซื้อเช็กให้ตรงกับชื่อตัวเลือกและอ่านข้อจำกัดเรื่องความร้อนของร้านค่ะ\nลิงก์ Affiliate — เพจอาจได้รับค่าคอมมิชชันจากการซื้อผ่านลิงก์นี้\nhttps://s.shopee.co.th/4qGE7hXtSb",
-      "subids": [
-        "somtam",
-        "20261014",
-        "seagullturner",
-        "facebook",
-        "reviewA"
-      ],
       "variants": [
         "ตะหลิว"
-      ],
-      "affiliate_enabled": true,
-      "scheduled_at": "2026-10-14T18:00:00+07:00",
-      "root_package_sha256": "101c697f36e2976ca5c5cda46bc81e4890abdf79c7fa8471c99be957161563dd"
+      ]
     }
   }
 }
