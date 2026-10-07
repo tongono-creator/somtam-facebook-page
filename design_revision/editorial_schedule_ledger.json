@@ -190,5 +190,15 @@
         "122188679456726152"
       ]
     }
+  },
+  "oct07_newimg_2026-10-31_somtam_fb": {
+    "state": "reserved_create",
+    "package_id": "oct07_newimg_2026-10-31_somtam_fb",
+    "page_id": "554501167740603",
+    "plan_sha256": "e3207bc6f3d4599e13edc76a5b921c9835126b9075b3678e16f03d72b7f9b57c",
+    "updated_at": "2026-10-07T13:46:42.206809+00:00",
+    "slot": 1793444400,
+    "caption_sha256": "80f36897e2f7341a817871858124d5edeb1a9cb08cc2ede940a42b94adf180ad",
+    "package_sha256": "25605c7958ff7b2a5a68dd79c527062574488c48c4b70ff0becac6bb2528c7a9"
   }
 }
