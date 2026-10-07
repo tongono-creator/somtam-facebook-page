@@ -1,10 +1,10 @@
 {
   "oct07_newcommercial_somtam_seagull_20261014": {
-    "state": "enabling_verified_exact_mapping",
+    "state": "verified",
     "plan_sha256": "f54335cdf2fbc95819231ac6160f2a233d7511bf07e34b4a5efde7b2875aaf37",
     "package_id": "oct07_newcommercial_somtam_seagull_20261014",
     "page_id": "554501167740603",
-    "updated_at": "2026-10-07T14:24:36.939499+00:00",
+    "updated_at": "2026-10-07T14:24:39.335494+00:00",
     "slot": 1791975600,
     "caption_sha256": "8af5dcf849e7ecac1a20714022aeb347c6954dc290020bdf13560f7cceb19620",
     "canonical_sku": "53085910/42763140924",
