@@ -72,15 +72,27 @@
     }
   },
   "oct07_newimg_2026-10-12_somtam_fb": {
-    "state": "created_pending_readback",
+    "state": "verified",
     "package_id": "oct07_newimg_2026-10-12_somtam_fb",
     "page_id": "554501167740603",
     "plan_sha256": "3ac62eacbf567c8203cc7dbb2d234df72153f4c6bf364ed0ddc0b2ae10c3265e",
-    "updated_at": "2026-10-07T13:46:04.222410+00:00",
+    "updated_at": "2026-10-07T13:46:06.449705+00:00",
     "slot": 1791802800,
     "caption_sha256": "0882ba6209e2b6acac07fa08a59033e00810424f657003e8d9578e155eae4963",
     "package_sha256": "756e7f05d1de1925ebecae033d293505d8750ce3147ad68ea60c4ce323d9eb63",
     "photo_id": "122188678754726152",
-    "new_post_id": null
+    "new_post_id": "554501167740603_122188678754726152",
+    "after": {
+      "post_id": "554501167740603_122188678754726152",
+      "is_published": false,
+      "schedule": {
+        "present": true,
+        "value": 1791802800
+      },
+      "message_sha256": "0882ba6209e2b6acac07fa08a59033e00810424f657003e8d9578e155eae4963",
+      "attachment_ids": [
+        "122188678754726152"
+      ]
+    }
   }
 }
