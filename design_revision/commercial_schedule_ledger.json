@@ -1,0 +1,32 @@
+{
+  "oct07_newcommercial_somtam_seagull_20261014": {
+    "state": "reserved_create",
+    "plan_sha256": "f54335cdf2fbc95819231ac6160f2a233d7511bf07e34b4a5efde7b2875aaf37",
+    "package_id": "oct07_newcommercial_somtam_seagull_20261014",
+    "page_id": "554501167740603",
+    "updated_at": "2026-10-07T14:24:27.446701+00:00",
+    "slot": 1791975600,
+    "caption_sha256": "8af5dcf849e7ecac1a20714022aeb347c6954dc290020bdf13560f7cceb19620",
+    "canonical_sku": "53085910/42763140924",
+    "product_reservation": {
+      "canonical_sku": "53085910/42763140924",
+      "shop_id": "53085910",
+      "product_id": "42763140924",
+      "name": "Seagull NewEnjoy ตะหลิวไนลอน",
+      "url": "https://s.shopee.co.th/4qGE7hXtSb",
+      "comment": "ตัวเลือกที่คัดคือตะหลิว ก่อนซื้อเช็กให้ตรงกับชื่อตัวเลือกและอ่านข้อจำกัดเรื่องความร้อนของร้านค่ะ\nลิงก์ Affiliate — เพจอาจได้รับค่าคอมมิชชันจากการซื้อผ่านลิงก์นี้\nhttps://s.shopee.co.th/4qGE7hXtSb",
+      "subids": [
+        "somtam",
+        "20261014",
+        "seagullturner",
+        "facebook",
+        "reviewA"
+      ],
+      "variants": [
+        "ตะหลิว"
+      ]
+    },
+    "package_sha256": "101c697f36e2976ca5c5cda46bc81e4890abdf79c7fa8471c99be957161563dd",
+    "month": "2026-10"
+  }
+}
