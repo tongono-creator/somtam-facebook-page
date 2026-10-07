@@ -1,10 +1,20 @@
 {
   "somtam_fb": {
-    "platform": "facebook",
+    "channel_key": "somtam_fb",
     "name": "พริก 10 เม็ด",
     "page_id": "554501167740603",
+    "repository": "somtam-facebook-page",
+    "platform": "facebook",
+    "timezone": "Asia/Bangkok",
+    "token_env": "PAGE_ACCESS_TOKEN",
+    "allowed_categories": [
+      "kitchen",
+      "food",
+      "cooking_tools"
+    ],
+    "enabled": true,
+    "require_signature": true,
     "editor_public_key": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAXpGllY0WdysBzqTWBJ7evbAz13J/DUuGnlrfhzgr4Kg=\n-----END PUBLIC KEY-----\n",
-    "repository_slug": "tongono-creator/somtam-facebook-page",
-    "token_env": "PAGE_ACCESS_TOKEN"
+    "repository_slug": "tongono-creator/somtam-facebook-page"
   }
 }

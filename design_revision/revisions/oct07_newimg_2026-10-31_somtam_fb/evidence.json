@@ -1,0 +1,54 @@
+{
+  "entries": [
+    {
+      "url": "https://www.fda.gov/food/nutrition-facts-label/how-understand-and-use-nutrition-facts-label",
+      "title": "FDA — Nutrition Facts Label",
+      "claim": "ปริมาณสารอาหารอ้างหน่วยบริโภค; สองหน่วยเป็นสองเท่า; serving size ไม่ใช่คำแนะนำปริมาณที่แต่ละคนควรกิน",
+      "checked_at": "2026-10-04T18:26:22Z",
+      "source_type": "primary",
+      "verification": "web_primary_page_body_read",
+      "access_note": null,
+      "relevant_section": "Serving Information and two-serving example"
+    }
+  ],
+  "fictional": false,
+  "illustration_is_hypothetical": true,
+  "checked_at": "2026-10-04T18:26:22Z",
+  "editorial_note": "ภาพ AI เป็นฉากอธิบายสมมติ ข้อเท็จจริงด้านกลไก/ฉลากมาจากแหล่งระบุ การจัดครัวและคำถามเป็นข้อเสนอบรรณาธิการ ไม่ใช่ประสบการณ์ใช้สินค้าหรือผลทดลองของแอดมิน",
+  "limitations": [
+    "ตัวอย่าง FDA ใช้ฉลากสหรัฐฯ; ไทยอาจใช้รูปแบบอื่น ต้องอ่านฐานปริมาณบนฉลากจริง; ไม่ให้คำแนะนำอาหารเฉพาะโรค"
+  ],
+  "audit": {
+    "auditor": "production_research_subagent",
+    "root_approval": false,
+    "checked_at": "2026-10-04T18:26:22Z",
+    "exact_supported_proposition": "Nutrition Factsอ้างหนึ่งหน่วย; สองหน่วยต้องคูณสอง; serving sizeไม่ใช่คำแนะนำปริมาณกิน",
+    "claim_scope": "Specific source proposition; other questions, observation checklists and shopping considerations are editorial suggestions",
+    "static_image_diagnosis_used": false,
+    "therapy_or_disease_prevention_claim_used": false
+  },
+  "oct07_caption_source_check": {
+    "package_id": "oct07_newimg_2026-10-31_somtam_fb",
+    "source_draft_id": "2026-10-31_somtam_fb",
+    "channel_key": "somtam_fb",
+    "caption": {
+      "path": "D:\\Projects\\page-content-studio\\design_revision_oct07\\new_image_packages\\oct07_newimg_2026-10-31_somtam_fb\\caption.txt",
+      "exists": true,
+      "sha256": "a5dafe2bbd129387ad88f18a833912bb9b527e569f5babd187c6a9bb57f3f56c"
+    },
+    "checked_on": "2026-10-07",
+    "primary_source_access_method": "full_primary_body",
+    "claim_checked": "US FDA Nutrition Facts uses per-serving quantities; two servings double listed amounts and serving size is not a personal recommendation.",
+    "limits": "Caption explicitly says US label example and Thai formats can differ; no Thai regulation claim.",
+    "caption_source_urls": [
+      "https://www.fda.gov/food/nutrition-facts-label/how-understand-and-use-nutrition-facts-label"
+    ],
+    "all_caption_sources_primary_except_named_participant_interview": true,
+    "original_caption_path": "D:\\Projects\\page-content-studio\\packages\\2026-10-31_somtam_fb\\caption.txt",
+    "original_signed_package_modified": false,
+    "new_lead_reframing": true,
+    "root_visual_and_final_caption_approval": false
+  },
+  "source_evidence_wrapper_file": "source-evidence-wrapper.json",
+  "source_evidence_wrapper_sha256": "29cb4a677cc8032317b351be34a2e2acd4303e573a702c53460ac60faa11a3bf"
+}

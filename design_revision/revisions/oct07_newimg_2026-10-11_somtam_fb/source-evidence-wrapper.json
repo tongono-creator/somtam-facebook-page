@@ -1,0 +1,46 @@
+{
+  "status": "LOCAL_NEW_PACKAGE_EVIDENCE_NOT_APPROVAL",
+  "source_package_evidence_path": "D:\\Projects\\page-content-studio\\packages\\2026-10-11_somtam_fb\\evidence.json",
+  "source_package_evidence_sha256": "9804e0ff43bcd70af41be7323ee502d5df949a12c54496a63c15744cf8541dcc",
+  "original_evidence": {
+    "entries": [
+      {
+        "url": "https://image.mfa.go.th/mfa/0/Svp1QKEi4u/migrate_directory/news-20150908-021704-687783.pdf",
+        "title": "สถานทูตไทย — Discovering Thai Cuisine in Qatar หน้า 26–27",
+        "claim": "สูตร Pad Thai Gung Sod แยกแช่เส้น เตรียมซอส และเติมน้ำหรือสต็อกเล็กน้อยให้เส้นนุ่มระหว่างผัด",
+        "checked_at": "2026-10-04T16:43:01+00:00",
+        "source_type": "primary",
+        "verification": "web_source_opened_and_relevant_passage_checked"
+      }
+    ],
+    "fictional": false,
+    "checked_at": "2026-10-04T16:43:01+00:00",
+    "editorial_note": "ข้อสังเกตและคำแนะนำแยกจากข้ออ้างที่แหล่งต้นทางรองรับ ไม่ใช่ประสบการณ์ใช้สินค้าของแอดมิน",
+    "limitations": [
+      "ไม่ยกเวลา15นาทีในสูตรไปใช้กับทุกยี่ห้อ; ไม่อ้างว่าการใช้กระชอนแก้เส้นติดทุกสาเหตุ"
+    ]
+  },
+  "oct07_caption_source_check": {
+    "package_id": "oct07_newimg_2026-10-11_somtam_fb",
+    "source_draft_id": "2026-10-11_somtam_fb",
+    "channel_key": "somtam_fb",
+    "caption": {
+      "path": "D:\\Projects\\page-content-studio\\design_revision_oct07\\new_image_packages\\oct07_newimg_2026-10-11_somtam_fb\\caption.txt",
+      "exists": true,
+      "sha256": "4b28090a48f5684528c51ef55e89176a94dbbadc032bded4db23f680d7e1ac3f"
+    },
+    "checked_on": "2026-10-07",
+    "primary_source_access_method": "full_primary_PDF",
+    "claim_checked": "Thai MFA printed26–27/PDF13 Pad Thai recipe soaks noodles, then adds limited water while stir-frying to soften them.",
+    "limits": "Its recipe-specific soak time is not generalized to every noodle. No claim that a product pan prevents sticking.",
+    "caption_source_urls": [
+      "https://image.mfa.go.th/mfa/0/Svp1QKEi4u/migrate_directory/news-20150908-021704-687783.pdf"
+    ],
+    "all_caption_sources_primary_except_named_participant_interview": true,
+    "original_caption_path": "D:\\Projects\\page-content-studio\\packages\\2026-10-11_somtam_fb\\caption.txt",
+    "original_signed_package_modified": false,
+    "new_lead_reframing": true,
+    "root_visual_and_final_caption_approval": false
+  },
+  "external_writes": 0
+}

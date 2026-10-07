@@ -1,0 +1,50 @@
+{
+  "payload": {
+    "action": "schedule_new_editorial_batch",
+    "channel": "somtam_fb",
+    "page_id": "554501167740603",
+    "page_name": "พริก 10 เม็ด",
+    "reviewed_at": "2026-10-07T13:34:35.773093+00:00",
+    "plans": [
+      {
+        "path": "design_revision/plans/2026-10-08_somtam_fb-new-unsigned.json",
+        "plan_sha256": "884939de628d5fbfff5847eb0536d787135719c7345a829a06971083ff5bff84"
+      },
+      {
+        "path": "design_revision/plans/2026-10-09_somtam_fb-new-unsigned.json",
+        "plan_sha256": "a03c6673f54bc4c4011d5bdf68e2d3c13759ed59b03914ebd293f7b53d6315af"
+      },
+      {
+        "path": "design_revision/plans/2026-10-11_somtam_fb-new-unsigned.json",
+        "plan_sha256": "6af1ceb8fceaacf4e818c19734ffa43b80f36f7f86b55d459f7425d7fac9045e"
+      },
+      {
+        "path": "design_revision/plans/2026-10-12_somtam_fb-new-unsigned.json",
+        "plan_sha256": "d3393d59c4aad34c848af30bbc138eebceeb8783b2ea005c6670d70b3c4dfd3a"
+      },
+      {
+        "path": "design_revision/plans/2026-10-16_somtam_fb-new-unsigned.json",
+        "plan_sha256": "081bcf1dd886841ecd9ed5fc439902aaee4bffd8d1553b66d1e96e1dfd11c4ea"
+      },
+      {
+        "path": "design_revision/plans/2026-10-18_somtam_fb-new-unsigned.json",
+        "plan_sha256": "0cd9452f83f5d263478e9299c7aac2fde87dd33e139a13925c760137bef49dad"
+      },
+      {
+        "path": "design_revision/plans/2026-10-23_somtam_fb-new-unsigned.json",
+        "plan_sha256": "98d38538e480ffd435b0acb9b3c0079a0235f0b5a9a57ab9c7966f2a9b4b6b79"
+      },
+      {
+        "path": "design_revision/plans/2026-10-29_somtam_fb-new-unsigned.json",
+        "plan_sha256": "47c3e76c2355083672ba89f5cef46ea629949a759be06094c428cfb26c4c22ef"
+      },
+      {
+        "path": "design_revision/plans/2026-10-31_somtam_fb-new-unsigned.json",
+        "plan_sha256": "8dfe04f7ba4de117452f0872839daee80a1f16f9e2fbf035a5887b7af7500a0a"
+      }
+    ],
+    "root_batch_new_posts_only_confirmed": true
+  },
+  "payload_sha256": "50abbe0bf5d0991036192d998624639079adf24d38ed93d77bc715c27c448073",
+  "root_signature": "zbw3xuwnQExU+HLADtC3lonf0T01LLryAQ3gMWLPiCdAQqma0Gm0vrv3envzieIl/R2w9AzpEY3+ySJTdfzoDg=="
+}

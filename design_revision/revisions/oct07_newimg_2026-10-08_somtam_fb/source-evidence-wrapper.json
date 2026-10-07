@@ -1,0 +1,46 @@
+{
+  "status": "LOCAL_NEW_PACKAGE_EVIDENCE_NOT_APPROVAL",
+  "source_package_evidence_path": "D:\\Projects\\page-content-studio\\packages\\2026-10-08_somtam_fb\\evidence.json",
+  "source_package_evidence_sha256": "54083e2bb470cd624d60dde0b4a9364eeb4555a5ffeeb97783c38bbeaec0f39a",
+  "original_evidence": {
+    "entries": [
+      {
+        "url": "https://dinnertonight.tamu.edu/cooking-vegetables/",
+        "title": "Texas A&M AgriLife — Cooking Vegetables",
+        "claim": "แนะนำหั่นผักให้ขนาดสม่ำเสมอเพื่อการปรุงสม่ำเสมอ และตามสูตร/วิธีสำหรับผักนั้น",
+        "checked_at": "2026-10-04T16:43:01+00:00",
+        "source_type": "primary",
+        "verification": "web_source_opened_and_relevant_passage_checked"
+      }
+    ],
+    "fictional": false,
+    "checked_at": "2026-10-04T16:43:01+00:00",
+    "editorial_note": "ข้อสังเกตและคำแนะนำแยกจากข้ออ้างที่แหล่งต้นทางรองรับ ไม่ใช่ประสบการณ์ใช้สินค้าของแอดมิน",
+    "limitations": [
+      "ไม่ใช้ข้อมูลอุณหภูมิ food code เก่าบนหน้าเป็นคำแนะนำประเทศไทย; ไม่มีข้ออ้างโภชนาการ"
+    ]
+  },
+  "oct07_caption_source_check": {
+    "package_id": "oct07_newimg_2026-10-08_somtam_fb",
+    "source_draft_id": "2026-10-08_somtam_fb",
+    "channel_key": "somtam_fb",
+    "caption": {
+      "path": "D:\\Projects\\page-content-studio\\design_revision_oct07\\new_image_packages\\oct07_newimg_2026-10-08_somtam_fb\\caption.txt",
+      "exists": true,
+      "sha256": "2badd55bfaac01014448d309f7a9fdc1f2e4c70360dcad9bb2c939ac7a4e91a7"
+    },
+    "checked_on": "2026-10-07",
+    "primary_source_access_method": "indexed_primary_body",
+    "claim_checked": "Texas A&M Dinner Tonight recommends uniformly sized vegetable pieces for even cooking.",
+    "limits": "Original URL returned403. Caption does not claim measured times or a universal recipe; old temperature recommendations on the page are not used.",
+    "caption_source_urls": [
+      "https://dinnertonight.tamu.edu/cooking-vegetables/"
+    ],
+    "all_caption_sources_primary_except_named_participant_interview": true,
+    "original_caption_path": "D:\\Projects\\page-content-studio\\packages\\2026-10-08_somtam_fb\\caption.txt",
+    "original_signed_package_modified": false,
+    "new_lead_reframing": true,
+    "root_visual_and_final_caption_approval": false
+  },
+  "external_writes": 0
+}

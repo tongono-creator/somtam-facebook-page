@@ -1,0 +1,65 @@
+{
+  "entries": [
+    {
+      "url": "https://extension.colostate.edu/resource/ingredient-substitutions/",
+      "title": "Colorado State University Extension — Ingredient Substitutions",
+      "claim": "CSU กำหนดคำย่อ tsp=teaspoon และ Tbsp=tablespoon; หน้าอ้างอิงนี้ไม่ได้ระบุหน่วย 5ml/15ml",
+      "checked_at": "2026-10-04T18:26:22Z",
+      "source_type": "primary",
+      "verification": "web_primary_page_body_read",
+      "access_note": null,
+      "relevant_section": "Key Points; definition of tsp/Tbsp; thickening-substitution table"
+    },
+    {
+      "url": "https://extension.colostate.edu/resource/food-preparation-young-children/",
+      "title": "Colorado State University Extension — Measuring Basics",
+      "claim": "ช้อนตวงมาตรฐานแม่นยำกว่าช้อนกินข้าว; ถ้วยตวงของเหลวอ่านระดับสายตา",
+      "checked_at": "2026-10-04T18:26:22Z",
+      "source_type": "primary",
+      "verification": "web_primary_page_body_read",
+      "access_note": null,
+      "relevant_section": "Let's Talk about Measuring Basics"
+    }
+  ],
+  "fictional": false,
+  "illustration_is_hypothetical": true,
+  "checked_at": "2026-10-04T18:26:22Z",
+  "editorial_note": "ภาพ AI เป็นฉากอธิบายสมมติ ข้อเท็จจริงด้านกลไก/ฉลากมาจากแหล่งระบุ การจัดครัวและคำถามเป็นข้อเสนอบรรณาธิการ ไม่ใช่ประสบการณ์ใช้สินค้าหรือผลทดลองของแอดมิน",
+  "limitations": [
+    "บทความ CSU ที่อ้างไม่ได้ระบุ 1tsp=5ml/1Tbsp=15ml จึงตัดตัวเลขออก ไม่เหมารวมมาตรฐานทุกประเทศ; ช้อนกินข้าวไม่ใช่อุปกรณ์ตวงที่รับรองความจุ"
+  ],
+  "audit": {
+    "auditor": "production_research_subagent",
+    "root_approval": false,
+    "checked_at": "2026-10-04T18:26:22Z",
+    "exact_supported_proposition": "CSUระบุ tsp=teaspoon/Tbsp=tablespoon; ช้อนตวงแม่นกว่าช้อนกินข้าว; ถ้วยเหลวอ่านระดับสายตา",
+    "claim_scope": "Specific source proposition; other questions, observation checklists and shopping considerations are editorial suggestions",
+    "static_image_diagnosis_used": false,
+    "therapy_or_disease_prevention_claim_used": false
+  },
+  "oct07_caption_source_check": {
+    "package_id": "oct07_newimg_2026-10-29_somtam_fb",
+    "source_draft_id": "2026-10-29_somtam_fb",
+    "channel_key": "somtam_fb",
+    "caption": {
+      "path": "D:\\Projects\\page-content-studio\\design_revision_oct07\\new_image_packages\\oct07_newimg_2026-10-29_somtam_fb\\caption.txt",
+      "exists": true,
+      "sha256": "1852d9ae6c85b849ad4e755e8d6adb3b9e1bc12a03ea915fe24003e6302d0e23"
+    },
+    "checked_on": "2026-10-07",
+    "primary_source_access_method": "full_primary_bodies",
+    "claim_checked": "Colorado State identifies tsp/Tbsp and recommends standard measuring spoons instead of eating utensils; liquid measures read at eye level.",
+    "limits": "Caption does not infer5/15ml from these pages or claim equal masses for different ingredients.",
+    "caption_source_urls": [
+      "https://extension.colostate.edu/resource/ingredient-substitutions/",
+      "https://extension.colostate.edu/resource/food-preparation-young-children/"
+    ],
+    "all_caption_sources_primary_except_named_participant_interview": true,
+    "original_caption_path": "D:\\Projects\\page-content-studio\\packages\\2026-10-29_somtam_fb\\caption.txt",
+    "original_signed_package_modified": false,
+    "new_lead_reframing": true,
+    "root_visual_and_final_caption_approval": false
+  },
+  "source_evidence_wrapper_file": "source-evidence-wrapper.json",
+  "source_evidence_wrapper_sha256": "b392b545d580538aaefd5ed34ed1fcf245fe2e71ec879c085a1f874dbf581d21"
+}

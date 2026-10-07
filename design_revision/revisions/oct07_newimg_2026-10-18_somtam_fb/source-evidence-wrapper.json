@@ -1,0 +1,58 @@
+{
+  "status": "LOCAL_NEW_PACKAGE_EVIDENCE_NOT_APPROVAL",
+  "source_package_evidence_path": "D:\\Projects\\page-content-studio\\packages\\2026-10-18_somtam_fb\\evidence.json",
+  "source_package_evidence_sha256": "6de5374c460ee0e70dfeebc76edf2471b6b6d2edc20d849b499e8136eee6dd85",
+  "original_evidence": {
+    "entries": [
+      {
+        "url": "https://hot-thai-kitchen.com/creamy-tom-yum/",
+        "title": "Pailin Chongchitnant — Creamy Tom Yum",
+        "claim": "สูตรใช้ evaporated milk แบบไม่หวานกับน้ำพริกเผา; ระบุให้ปิดไฟและรอหยุดเดือดก่อนใส่น้ำมะนาว",
+        "checked_at": "2026-10-04T18:26:22Z",
+        "source_type": "primary",
+        "verification": "web_primary_indexed_text_read",
+        "access_note": "Repeated direct open failed; two focused primary-domain searches exposed exact ingredients and off-heat/lime sequence.",
+        "relevant_section": "Ingredients: unsweetened evaporated milk/nam prik pao; steps8–9"
+      }
+    ],
+    "fictional": false,
+    "illustration_is_hypothetical": true,
+    "checked_at": "2026-10-04T18:26:22Z",
+    "editorial_note": "ภาพ AI เป็นฉากอธิบายสมมติ ข้อเท็จจริงด้านกลไก/ฉลากมาจากแหล่งระบุ การจัดครัวและคำถามเป็นข้อเสนอบรรณาธิการ ไม่ใช่ประสบการณ์ใช้สินค้าหรือผลทดลองของแอดมิน",
+    "limitations": [
+      "สูตรต้นฉบับตรวจจากข้อความค้นหาที่มีขั้นตอนครบ; หน้าเต็มเปิดไม่สำเร็จ; อ้างลำดับสูตรนั้น ไม่อ้างสูตรทุกบ้าน; ไม่คัดสูตรทั้งชิ้น"
+    ],
+    "audit": {
+      "auditor": "production_research_subagent",
+      "root_approval": false,
+      "checked_at": "2026-10-04T18:26:22Z",
+      "exact_supported_proposition": "สูตรน้ำข้นนี้มีนมระเหยไม่หวาน/น้ำพริกเผา; ปิดไฟรอหยุดเดือดก่อนมะนาว",
+      "claim_scope": "Specific source proposition; other questions, observation checklists and shopping considerations are editorial suggestions",
+      "static_image_diagnosis_used": false,
+      "therapy_or_disease_prevention_claim_used": false
+    }
+  },
+  "oct07_caption_source_check": {
+    "package_id": "oct07_newimg_2026-10-18_somtam_fb",
+    "source_draft_id": "2026-10-18_somtam_fb",
+    "channel_key": "somtam_fb",
+    "caption": {
+      "path": "D:\\Projects\\page-content-studio\\design_revision_oct07\\new_image_packages\\oct07_newimg_2026-10-18_somtam_fb\\caption.txt",
+      "exists": true,
+      "sha256": "06c1af35601e39d25f06a71ade3e7954bbf3229ead82f2130fd58f7452988e45"
+    },
+    "checked_on": "2026-10-07",
+    "primary_source_access_method": "indexed_primary_recipe_passages",
+    "claim_checked": "Pailin's creamy tom yum uses evaporated milk; recipe turns off heat and waits until simmering stops before lime juice.",
+    "limits": "One named recipe's method, not a universal rule for all tom yum. Original page retrieval failed; official recipe indexed passages were checked.",
+    "caption_source_urls": [
+      "https://hot-thai-kitchen.com/creamy-tom-yum/"
+    ],
+    "all_caption_sources_primary_except_named_participant_interview": true,
+    "original_caption_path": "D:\\Projects\\page-content-studio\\packages\\2026-10-18_somtam_fb\\caption.txt",
+    "original_signed_package_modified": false,
+    "new_lead_reframing": true,
+    "root_visual_and_final_caption_approval": false
+  },
+  "external_writes": 0
+}

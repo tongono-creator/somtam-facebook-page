@@ -1,0 +1,58 @@
+{
+  "status": "LOCAL_NEW_PACKAGE_EVIDENCE_NOT_APPROVAL",
+  "source_package_evidence_path": "D:\\Projects\\page-content-studio\\packages\\2026-10-16_somtam_fb\\evidence.json",
+  "source_package_evidence_sha256": "5ac3124e3fac3199faafbb4475af7ce4f36f692528da63a2249e7c8a3cc06c66",
+  "original_evidence": {
+    "entries": [
+      {
+        "url": "https://ask.fsis.usda.gov/article/Are-frozen-breaded-boneless-chicken-products-fully-cooked",
+        "title": "USDA FSIS — Frozen breaded chicken",
+        "claim": "คำ Ready to Cook, Cook and Serve, Oven Ready ในไก่แช่แข็งอาจหมายถึงดิบหรือยังไม่พร้อมกิน ต้องปรุงตามคำแนะนำ",
+        "checked_at": "2026-10-04T18:26:22Z",
+        "source_type": "primary",
+        "verification": "web_primary_indexed_text_read",
+        "access_note": "Direct open failed; primary USDA search text includes the relevant label terms and instructions. Last updated Aug23 2024.",
+        "relevant_section": "Knowledge Article: label terms and raw/not-ready-to-eat status"
+      }
+    ],
+    "fictional": false,
+    "illustration_is_hypothetical": true,
+    "checked_at": "2026-10-04T18:26:22Z",
+    "editorial_note": "ภาพ AI เป็นฉากอธิบายสมมติ ข้อเท็จจริงด้านกลไก/ฉลากมาจากแหล่งระบุ การจัดครัวและคำถามเป็นข้อเสนอบรรณาธิการ ไม่ใช่ประสบการณ์ใช้สินค้าหรือผลทดลองของแอดมิน",
+    "limitations": [
+      "ข้ออ้างเฉพาะอาหารไก่ชุบเกล็ดแช่แข็งและคำดังกล่าว; ต้องตามฉลากจริง ไม่เหมารวมว่าทุกอาหารแช่แข็งยังดิบ"
+    ],
+    "audit": {
+      "auditor": "production_research_subagent",
+      "root_approval": false,
+      "checked_at": "2026-10-04T18:26:22Z",
+      "exact_supported_proposition": "คำ Ready to Cook/Cook and Serve/Oven Ready ในไก่ชนิดนี้บอกดิบหรือยังไม่พร้อมกิน",
+      "claim_scope": "Specific source proposition; other questions, observation checklists and shopping considerations are editorial suggestions",
+      "static_image_diagnosis_used": false,
+      "therapy_or_disease_prevention_claim_used": false
+    }
+  },
+  "oct07_caption_source_check": {
+    "package_id": "oct07_newimg_2026-10-16_somtam_fb",
+    "source_draft_id": "2026-10-16_somtam_fb",
+    "channel_key": "somtam_fb",
+    "caption": {
+      "path": "D:\\Projects\\page-content-studio\\design_revision_oct07\\new_image_packages\\oct07_newimg_2026-10-16_somtam_fb\\caption.txt",
+      "exists": true,
+      "sha256": "b70970d55f5399e8217159b8d85f1bff9705063296059127057bcea61ae9de65"
+    },
+    "checked_on": "2026-10-07",
+    "primary_source_access_method": "indexed_primary_body",
+    "claim_checked": "USDA explains browned frozen breaded boneless chicken can be raw/not ready to eat; labels and complete cooking instructions matter.",
+    "limits": "Specific product category, not all frozen foods. Original article retrieval failed; primary indexed passages were checked.",
+    "caption_source_urls": [
+      "https://ask.fsis.usda.gov/article/Are-frozen-breaded-boneless-chicken-products-fully-cooked"
+    ],
+    "all_caption_sources_primary_except_named_participant_interview": true,
+    "original_caption_path": "D:\\Projects\\page-content-studio\\packages\\2026-10-16_somtam_fb\\caption.txt",
+    "original_signed_package_modified": false,
+    "new_lead_reframing": true,
+    "root_visual_and_final_caption_approval": false
+  },
+  "external_writes": 0
+}

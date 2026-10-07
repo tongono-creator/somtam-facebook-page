@@ -1,0 +1,65 @@
+{
+  "entries": [
+    {
+      "url": "https://www.fsis.usda.gov/food-safety/safe-food-handling-and-preparation/food-safety-basics/food-thermometers",
+      "title": "USDA FSIS — Food Thermometers",
+      "claim": "ไก่เป็นชิ้นวัดส่วนหนาที่สุดและหลีกกระดูก; ไก่ทั้งตัวตรวจอกส่วนหนาและด้านในปีกกับสะโพก",
+      "checked_at": "2026-10-04T18:26:22Z",
+      "source_type": "primary",
+      "verification": "web_primary_indexed_text_read",
+      "access_note": "Direct open failed; primary-domain indexed text provides poultry parts and three whole-poultry probe positions.",
+      "relevant_section": "Where to Place: Poultry"
+    },
+    {
+      "url": "https://www.fsis.usda.gov/food-safety/safe-food-handling-and-preparation/food-safety-basics/air-fryers-and-food-safety",
+      "title": "USDA FSIS — Air Fryers and Food Safety",
+      "claim": "ไม่ใส่แน่นจนการไหลเวียนอากาศไม่พอ; ทำเป็นรอบตามคู่มือ; ไก่ตรวจอุณหภูมิภายในอย่างน้อย165°F/ประมาณ74°C",
+      "checked_at": "2026-10-04T18:26:22Z",
+      "source_type": "primary",
+      "verification": "web_primary_indexed_text_read",
+      "access_note": "Direct open failed; primary-domain indexed article supports circulation/batches, appliance-specific times and 165F poultry, and raw stuffed breaded chicken exception.",
+      "relevant_section": "Food Safety Tips and four steps"
+    }
+  ],
+  "fictional": false,
+  "illustration_is_hypothetical": true,
+  "checked_at": "2026-10-04T18:26:22Z",
+  "editorial_note": "ภาพ AI เป็นฉากอธิบายสมมติ ข้อเท็จจริงด้านกลไก/ฉลากมาจากแหล่งระบุ การจัดครัวและคำถามเป็นข้อเสนอบรรณาธิการ ไม่ใช่ประสบการณ์ใช้สินค้าหรือผลทดลองของแอดมิน",
+  "limitations": [
+    "ข้อมูล USDA ตรวจจากข้อความ indexed; ไม่มีตัวเลขวัดจริงจากเพจ; การทำภาพต้องไม่สร้างสเกลตัวเลขเป็นหลักฐาน"
+  ],
+  "audit": {
+    "auditor": "production_research_subagent",
+    "root_approval": false,
+    "checked_at": "2026-10-04T18:26:22Z",
+    "exact_supported_proposition": "ไก่เป็นชิ้นวัดส่วนหนาหลีกกระดูก; ทั้งตัวตรวจหลายจุด; poultry165Fประมาณ74C",
+    "claim_scope": "Specific source proposition; other questions, observation checklists and shopping considerations are editorial suggestions",
+    "static_image_diagnosis_used": false,
+    "therapy_or_disease_prevention_claim_used": false
+  },
+  "oct07_caption_source_check": {
+    "package_id": "oct07_newimg_2026-10-23_somtam_fb",
+    "source_draft_id": "2026-10-23_somtam_fb",
+    "channel_key": "somtam_fb",
+    "caption": {
+      "path": "D:\\Projects\\page-content-studio\\design_revision_oct07\\new_image_packages\\oct07_newimg_2026-10-23_somtam_fb\\caption.txt",
+      "exists": true,
+      "sha256": "fe9910c1cf33c92d2774bf4aa2e852633593f4dfa8af56331c5c5431b9f54023"
+    },
+    "checked_on": "2026-10-07",
+    "primary_source_access_method": "indexed_primary_bodies",
+    "claim_checked": "USDA recommends165F/about74C for poultry; check each piece at its appropriate thickest point, away from bone, and follow appliance/probe instructions.",
+    "limits": "Caption corrected to check each piece rather than imply a single thick piece proves all pieces safe; visual color alone is not a doneness test. Original USDA retrieval failed; official indexed text checked.",
+    "caption_source_urls": [
+      "https://www.fsis.usda.gov/food-safety/safe-food-handling-and-preparation/food-safety-basics/food-thermometers",
+      "https://www.fsis.usda.gov/food-safety/safe-food-handling-and-preparation/food-safety-basics/air-fryers-and-food-safety"
+    ],
+    "all_caption_sources_primary_except_named_participant_interview": true,
+    "original_caption_path": "D:\\Projects\\page-content-studio\\design_revision_oct07\\caption_overrides\\2026-10-23_somtam_fb.txt",
+    "original_signed_package_modified": false,
+    "new_lead_reframing": true,
+    "root_visual_and_final_caption_approval": false
+  },
+  "source_evidence_wrapper_file": "source-evidence-wrapper.json",
+  "source_evidence_wrapper_sha256": "56e7522bbaa2126bec4488bfbe1b9c0d0f4781d00c8747f36f6ffd4285a94e8e"
+}

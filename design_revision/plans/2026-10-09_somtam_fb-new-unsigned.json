@@ -1,0 +1,22 @@
+{
+  "payload": {
+    "action": "schedule_new_editorial_image",
+    "channel": "somtam_fb",
+    "page_id": "554501167740603",
+    "page_name": "พริก 10 เม็ด",
+    "reviewed_at": "2026-10-07T13:34:35.773093+00:00",
+    "package_id": "oct07_newimg_2026-10-09_somtam_fb",
+    "package_path": "design_revision/revisions/oct07_newimg_2026-10-09_somtam_fb",
+    "package_sha256": "8a7ce525016b1c35b42c5b167920c0a45e6f7dfe427070b1129d18992b84f429",
+    "mobile_path": "design_revision/revisions/oct07_newimg_2026-10-09_somtam_fb/mobile.png",
+    "mobile_sha256": "413dbf695319f7552438dc0eb479fc5f3799554b09b6512e972fdadc438a83fc",
+    "monthly_plan_path": "design_revision/monthly_operations_oct07.json",
+    "monthly_plan_sha256": "1e7217d2d4bd408adfc1e0859f9afeebe24de2c7e22a72ce67858c1075e90449",
+    "root_full_mobile_confirmed": true,
+    "root_monthly_plan_confirmed": true,
+    "root_new_slot_confirmed": true,
+    "root_optional_affiliate_policy_confirmed": true
+  },
+  "payload_sha256": "fe7a12d25855d659bba171e52464f49d0ed4441e4b0b6dde418b74a8d903d25e",
+  "root_signature": "vzpb/QPXDAeiY86NWfkm5furPbwduiRNdwH2e8xUQTJMAKxt8sc7St38mynEgdW5+m4SSGqpezX/SRklZGkLCg=="
+}
