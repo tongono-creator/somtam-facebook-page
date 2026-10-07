@@ -1,0 +1,71 @@
+{
+  "generated_at": "2026-10-07T14:13:46.343785+00:00",
+  "channel_key": "somtam_fb",
+  "canonical_product_id": "53085910:42763140924",
+  "selected_variant": [
+    "ตะหลิว"
+  ],
+  "source": {
+    "path": "D:\\Projects\\page-content-studio\\design_revision_oct07\\product_cards\\somtam_fb_seagull_spatula_v1\\source.webp",
+    "sha256": "4840aac8a0780ebb145e705d378bf97ce8679eba1e1c4c6c83765f916c939e8e",
+    "dimensions": [
+      450,
+      450
+    ],
+    "display_rect": {
+      "x": 0,
+      "y": 0,
+      "width": 450,
+      "height": 450
+    },
+    "scale": 1.9466666666666668,
+    "proof_path": "D:\\Projects\\page-content-studio\\design_revision_oct07\\somtam_seagull_listing_ax.txt",
+    "proof_sha256": "82a0e4f833bf24108a6cadcd009d51a49b361644ba5afdd8ff6abf065c5cda7d",
+    "ai_product_generated": false
+  },
+  "additional_proofs": [
+    {
+      "path": "D:\\Projects\\page-content-studio\\design_revision_oct07\\somtam_seagull_link_verified.json",
+      "sha256": "265cde6aef4346665f8700b96b2af9aad26ee4646724913892262e65a4f2a300"
+    }
+  ],
+  "native_html_frame_only": true,
+  "copy": [
+    "กระทะเคลือบ",
+    "คู่กับตะหลิวแบบไหน?"
+  ],
+  "product_label": "Seagull New Enjoy · ตะหลิว",
+  "qa": {
+    "headlineFont": 100,
+    "headlineLineCount": 2,
+    "headlineFits": true,
+    "labelFits": true,
+    "photoCount": 1,
+    "fontsLoaded": true,
+    "decoded": true
+  },
+  "root_approved": false,
+  "root_full_mobile_visual_review_pending": true,
+  "live_mutations": false,
+  "price_shown": false,
+  "personal_test_claimed": false,
+  "artifacts": {
+    "card.html": {
+      "path": "D:\\Projects\\page-content-studio\\design_revision_oct07\\product_cards\\somtam_fb_seagull_spatula_v1\\card.html",
+      "sha256": "00a4f4634c1c32c4e50225f892bfb5a500fe06e7c869425bef3dd09d3bb113f5"
+    },
+    "card.png": {
+      "path": "D:\\Projects\\page-content-studio\\design_revision_oct07\\product_cards\\somtam_fb_seagull_spatula_v1\\card.png",
+      "sha256": "f618c844d2a351cec3d9a1c47db569c9610e22bd5914b467349ea27eb2c31aec"
+    },
+    "mobile.png": {
+      "path": "D:\\Projects\\page-content-studio\\design_revision_oct07\\product_cards\\somtam_fb_seagull_spatula_v1\\mobile.png",
+      "sha256": "31c2d074859766eaaa570fc9b2f6c22596502e2eb54c7762255a1ed2cb611015"
+    }
+  },
+  "original_photo_path": "C:\\Users\\tongo\\Downloads\\th-11134207-7ra0t-mdfl0nb4cp6acf@resize_w450_nl.webp",
+  "original_photo_sha256": "4840aac8a0780ebb145e705d378bf97ce8679eba1e1c4c6c83765f916c939e8e",
+  "original_photo_byte_unchanged": true,
+  "source_photo_byte_identical": true,
+  "producer_actual_full_mobile_visual_review_completed": false
+}

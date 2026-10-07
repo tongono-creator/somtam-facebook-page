@@ -1,0 +1,51 @@
+{
+  "channel_key": "somtam_fb",
+  "canonical_sku": "53085910/42763140924",
+  "selected_variant": "ตะหลิว (NewEnjoyTurner)",
+  "card_headline": [
+    "กระทะเคลือบ",
+    "คู่กับตะหลิวแบบไหน?"
+  ],
+  "caption_path": "D:\\Projects\\page-content-studio\\design_revision_oct07\\commercial_review_briefs\\somtam_fb\\caption_selected_oct07.txt",
+  "caption_sha256": "1258f3f2dcf81dcecbb0eb1f50f290980e582512b55e365365f31deb75631fa2",
+  "proof_path": "D:\\Projects\\page-content-studio\\design_revision_oct07\\somtam_seagull_listing_ax.txt",
+  "proof_sha256": "82a0e4f833bf24108a6cadcd009d51a49b361644ba5afdd8ff6abf065c5cda7d",
+  "checked_on": "2026-10-07",
+  "claim_review": {
+    "source_selected_variant_tick": true,
+    "listing_material": "ไนลอน",
+    "listing_size_cm": "10x33x5.6",
+    "seller_temperature_rating": "210C, sellerclaim only, not independenttesting",
+    "seller_limits": "No openflame proximity/highheat container soaking; spongeclean/dryafteruse",
+    "listing_rating": "4.9",
+    "listing_reviews_label": "7.8k",
+    "listing_sold_label": "30k+",
+    "scope": "Header aggregate acrosslistingvariants; not selectedturner sales/currenttrend/pageconversions",
+    "reviewer_electrical_safety_testimonial_not_used": true,
+    "buyer_highheat_no_melting_testimonial_not_generalized": true,
+    "no_foodsafe_heavymetal_toxin_independent_test_claim": true
+  },
+  "source_is_root_logged_in_Shopee_capture": true,
+  "root_reported_actual_selected_clean_photo_viewed_PASS": true,
+  "personal_use_claim": false,
+  "performance_guarantee": false,
+  "current_price_or_stock_in_caption": false,
+  "actual_photo_credit_condition": "Use Root reviewed actual selectedplainturner sellerphoto",
+  "root_approved": false,
+  "signed": false,
+  "scheduled_at": null,
+  "affiliate_url": null,
+  "external_writes": 0,
+  "caption_version": 2,
+  "prior_caption_archived": "D:\\Projects\\page-content-studio\\design_revision_oct07\\commercial_review_briefs\\version_history\\somtam_fb\\caption_selected_oct07.cd68ae82ae205468.txt",
+  "prior_evidence_archived": "D:\\Projects\\page-content-studio\\design_revision_oct07\\commercial_review_briefs\\version_history\\somtam_fb\\selected_caption_evidence_oct07.3851827fea32f2e5.json",
+  "main_copy_characters": 659,
+  "editorial_revision_note": "Root requested concise benefit, suitable buyer and one relevant tradeoff; one honest source footer replaces repetitive disclaimers.",
+  "prior_source_ax_sha256": "8a9d3dff54e4d6a1b957f0661203872ebc48b288df9001b57b54fbb71ff5d436",
+  "root_fresh_source_recheck": {
+    "source": "Root explicitly confirmed full fresh AX read and caption claim bounds",
+    "checked_at": "2026-10-07T14:15:00+00:00",
+    "previous_audit_archive": "D:\\Projects\\page-content-studio\\design_revision_oct07\\commercial_review_briefs\\version_history\\somtam_fb\\selected_caption_evidence_oct07.pre_fresh_ax.7e706ea2916359a4.json",
+    "previous_audit_sha256": "7e706ea2916359a486496bc6eb581b2e5ee67982ec11dd54577321b1cbb6ee03"
+  }
+}

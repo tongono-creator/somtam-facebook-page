@@ -1,0 +1,437 @@
+Browser tab: 6, Title: "Seagull ตะหลิว ตะหลิวกรอง กระบวย ทัพพี (นิวเอนจอย) มี 4 แบบให้เลือก อุปกรณ์การทำอาหาร คุณภาพดี ปลอดภัยในการสัมผัสอาหาร | Shopee Thailand", URL: "https://shopee.co.th/product/53085910/42763140924".
+0 AXWebArea URL: shopee.co.th/product/53085910…, Seagull ตะหลิว ตะหลิวกรอง กระบวย ทัพพี (นิวเอนจอย) มี 4 แบบให้เลือก อุปกรณ์การทำอาหาร คุณภาพดี ปลอดภัยในการสัมผัสอาหาร | Shopee Thailand
+	1 container
+		2 container main
+			3 button ข้ามไปที่เนื้อหาหลัก
+			4 container
+				5 container
+					6 link Description: Shopee Home, Value: shopee.co.th/
+					7 link Description: เปิดร้านค้า, Value: shopee.co.th/seller/signup
+					8 link Description: ดาวน์โหลด, Value: shopee.co.th/web/, ID: temporaryId
+					9 text ติดตามเราบน
+					10 link Description: ติดตามเราบน Facebook, Value: facebook.com/ShopeeTH
+					11 link Description: ติดตามเราบน Instagram!, Value: instagram.com/Shopee_TH
+					12 link Description: ติดตามเราบน Line, Value: line.me/R/ti/p/@shopeeth
+					13 content list
+						14 link Description: 9+ การแจ้งเตือน, Value: shopee.co.th/user/notificatio…
+						15 link Description: ช่วยเหลือ, Value: help.shopee.co.th/th/s
+						16 button ไทย
+							17 image
+							18 text ไทย
+						19 button profile tongono21
+							20 container
+								21 image
+								22 image profile
+							23 text tongono21
+				24 link shopee.co.th/
+				25 link shopee.co.th/mall
+				26 link shopee.co.th/mall
+				27 container
+					28 combo box (collapsed, settable) Description: ค้นหาใน Shopee Mall, Secondary Actions: Expand
+					29 button search
+						30 image
+					31 link Description: Shopping Cart Icon Shopping Cartnumber of items in cart 18, Value: shopee.co.th/cart, ID: cart_drawer_target_id
+				32 container sll2-normal-pdp-main
+					33 container
+						34 link Description: Shopee, Value: shopee.co.th/
+						35 image icon arrow right
+						36 link Description: เครื่องใช้ในบ้าน, Value: shopee.co.th/%E0%B9%80%E0%B8%…
+						37 image icon arrow right
+						38 link Description: ห้องครัวและห้องอาหาร, Value: shopee.co.th/%E0%B8%AB%E0%B9%…
+						39 image icon arrow right
+						40 link Description: อุปกรณ์เบ็ดเตล็ดในครัวอื่นๆ, Value: shopee.co.th/%E0%B8%AD%E0%B8%…
+						41 image icon arrow right
+						42 text Seagull ตะหลิว ตะหลิวกรอง กระบวย ทัพพี (นิวเอนจอย) มี 4 แบบให้เลือก อุปกรณ์การทำอาหาร คุณภาพดี ปลอดภัยในการสัมผัสอาหาร
+						43 container
+							44 image Product image Seagull ตะหลิว ตะหลิวกรอง กระบวย ทัพพี (นิวเอนจอย) มี 4 แบบให้เลือก อุปกรณ์การทำอาหาร คุณภาพดี ปลอดภัยในการสัมผัสอาหาร 
+							45 container
+								46 image
+								47 image icon video play
+							48 button icon arrow left bold
+								49 image icon arrow left bold
+							50 button icon arrow right bold
+								51 image icon arrow right bold
+							52 text แชร์ :
+							53 button Share on Messenger
+							54 button Share on Facebook
+							55 button Share on Pinterest
+							56 button Share on Twitter
+							57 button Favorite (2.7k)
+								58 image
+								59 text Favorite (2.7k)
+						60 container
+							61 image fbs-logo-sg-my-th-ph
+							62 image mall inline badge
+							63 heading Value: 1, Seagull ตะหลิว ตะหลิวกรอง กระบวย ทัพพี (นิวเอนจอย) มี 4 แบบให้เลือก อุปกรณ์การทำอาหาร คุณภาพดี ปลอดภัยในการสัมผัสอาหาร
+								64 text Seagull ตะหลิว ตะหลิวกรอง กระบวย ทัพพี (นิวเอนจอย) มี 4 แบบให้เลือก อุปกรณ์การทำอาหาร คุณภาพดี ปลอดภัยในการสัมผัสอาหาร
+							65 button 4.9
+								66 text 4.9
+							67 button 7.8k รีวิว
+								68 text 7.8k
+								69 text รีวิว
+							70 container
+								71 text ขายแล้ว 
+								72 text 30k+
+								73 text  ชิ้น
+								74 image icon help
+							75 button รายงานสินค้า
+							76 container
+								77 text ฿72 ฿82 -12%
+							78 link Description: VIP Price | สมัครสมาชิก VIP ซื้อได้ในราคา ฿68, Value: u.shopee.co.th/share-shopee-v…
+							79 container
+								80 heading โค้ดส่วนลดร้านค้า, Value: 2
+									81 text โค้ดส่วนลดร้านค้า
+								82 text ลด 2%
+								83 text ลด 3%
+								84 text ลด 4%
+							85 heading การจัดส่ง, Value: 2
+								86 text การจัดส่ง
+							87 image fast green truck icon
+							88 text 10 ต.ค.
+							89 text ส่งฟรี
+							90 container
+								91 text รับโค้ดส่วนลด  ฿30  หากได้รับสินค้าล่าช้า
+							92 heading ช้อปปี้การันตี, Value: 2
+								93 text ช้อปปี้การันตี
+							94 container pc-drawer-id-1
+								95 image service entrance icon
+								96 text คืนเงิน/สินค้าฟรีใน 15 วัน • Fulfilled by Shopee • ของแท้ 100% • ดีลพิเศษแบรนด์ชั้นนำ • ช้อปปี้ถูกชัวร์ • เก็บเงินปลายทาง
+							97 heading แบบ, Value: 2
+								98 text แบบ
+							99 button ตะหลิว 
+								100 image
+								101 text ตะหลิว
+								102 image icon-tick-bold
+							103 button ตะหลิวกรอง 
+								104 image
+								105 text ตะหลิวกรอง
+							106 button กระบวย 
+								107 image
+								108 text กระบวย
+							109 button ทัพพี 
+								110 image
+								111 text ทัพพี
+							112 heading จำนวน, Value: 2
+								113 text จำนวน
+							114 button (disabled) Decrease
+								115 image
+							116 stepper (settable, integer) 1
+							117 button Increase
+								118 image
+							119 text มีสินค้าทั้งหมด 1225 ชิ้น
+							120 button icon-add-to-cart เพิ่มไปยังรถเข็น
+								121 image icon-add-to-cart
+								122 text เพิ่มไปยังรถเข็น
+							123 button ซื้อสินค้า
+						124 container
+							125 link Description: icon head shot click here to visit shop mall shop badge, Value: shopee.co.th/seagull_official…
+							126 text Seagull Official Store ออนไลน์
+							127 button แชทเลย
+								128 text แชทเลย
+							129 link Description: icon shop ดูร้านค้า, Value: shopee.co.th/seagull_official…
+							130 text คะแนน
+							131 text 430.2k
+							132 text อัตราการตอบกลับ
+							133 text 98%
+							134 text เข้าร่วมเมื่อ
+							135 text 9 ปี ที่ผ่านมา
+							136 link Description: รายการสินค้า 283, Value: shopee.co.th/seagull_official…
+							137 text เวลาในการตอบกลับ
+							138 text ภายในไม่กี่นาที
+							139 text ผู้ติดตาม
+							140 text 684.2k
+						141 heading ข้อมูลจำเพาะของสินค้า, Value: 2
+							142 text ข้อมูลจำเพาะของสินค้า
+						143 heading หมวดหมู่, Value: 3
+							144 text หมวดหมู่
+						145 link Description: Shopee, Value: shopee.co.th/
+						146 image icon arrow right
+						147 link Description: เครื่องใช้ในบ้าน, Value: shopee.co.th/%E0%B9%80%E0%B8%…
+						148 image icon arrow right
+						149 link Description: ห้องครัวและห้องอาหาร, Value: shopee.co.th/%E0%B8%AB%E0%B9%…
+						150 image icon arrow right
+						151 link Description: อุปกรณ์เบ็ดเตล็ดในครัวอื่นๆ, Value: shopee.co.th/%E0%B8%AD%E0%B8%…
+						152 heading คลัง, Value: 3
+							153 text คลัง
+						154 text สินค้าพร้อมส่ง
+						155 heading สินค้า, Value: 3
+							156 text สินค้า
+						157 link Description: Seagull(ซีกัล), Value: shopee.co.th/search
+						158 heading Custom Product, Value: 3
+							159 text Custom Product
+						160 text ใช่
+						161 heading Quantity per Pack, Value: 3
+							162 text Quantity per Pack
+						163 text 1
+						164 heading วัสดุ, Value: 3
+							165 text วัสดุ
+						166 text ไนลอน
+						167 heading ส่งจาก, Value: 3
+							168 text ส่งจาก
+						169 text จังหวัดพระนครศรีอยุธยา
+						170 heading รายละเอียดสินค้า, Value: 2
+							171 text รายละเอียดสินค้า
+						172 text Seagull  ตะหลิว ตะหลิวกรอง กระบวย ทัพพี  (นิวเอนจอย)
+						173 text ข้อมูลสินค้า
+						174 text ผลิตจากไนล่อน คุณภาพดี ไม่มีสารพิษจากโลหะหนัก  ปลอดภัยในการสัมผัสอาหาร ทนความร้อนได้ถึง 210 องศาเซลเซียส
+						175 text ข้อแนะนำ
+						176 text 1. ห้ามวางใกล้เปลวไฟหรือแช่ในภาชนะที่มีความร้อนสูง
+						177 text 2. ไม่ควรแช่หรือสัมผัสกรดหรือเกลือหรือด่างเข้มข้น เช่น น้ำปลา น้ำมะนาว น้ำส้มสายชู
+						178 text 3. ไม่ควรใช้ฝอยเหล็กขัดทำความสะอาด
+						179 text 4. ควรใช้ฟองน้ำในการทำความสะอาดและเช็ดให้แห้งทันทีหลังการใช้งาน
+						180 text คำเตือน
+						181 text 1. ห้ามใช้กับเตาไมโครเวฟ
+						182 text 2. ห้ามวางใกล้เปลวไฟ
+						183 text สินค้าประกอบด้วย
+						184 text ตะหลิว (นิวเอนจอย)        Turner (New Enjoy)
+						185 text ตะหลิวกรอง (นิวเอนจอย)        Slotted Turner (New Enjoy)
+						186 text กระบวย (นิวเอนจอย)        Soup Ladle (New Enjoy)
+						187 text ทัพพี (นิวเอนจอย)        Ladle (New Enjoy)
+						188 text วัตถุดิบ เกรดและความหนา (มม) Nylon
+						189 text กว้างxยาวxสูง (ซม.)
+						190 text ตะหลิว (นิวเอนจอย)        10x33x5.6
+						191 text ตะหลิวกรอง (นิวเอนจอย)        10x33x5.6
+						192 text กระบวย (นิวเอนจอย)        9.5x31.8x8.7
+						193 text ทัพพี (นิวเอนจอย)        7.3x31.3x5.1
+						194 text คะแนนของสินค้า
+						195 container
+							196 text 4.9  เต็ม 5
+						197 container
+							198 text ทั้งหมด 5 ดาว (7.4k) 4 ดาว (275) 3 ดาว (47) 2 ดาว (4) 1 ดาว (18) ความคิดเห็น (1.4k) มีรูปภาพ/วิดีโอ (1.2k)
+						199 container
+							200 link Description: profile, Value: shopee.co.th/shop/buyer/15360…
+							201 link Description: thimakon10wy, Value: shopee.co.th/shop/buyer/15360…
+							202 image
+							203 image
+							204 image
+							205 image
+							206 image
+							207 text 2025-10-01 19:14 | ตัวเลือกสินค้า: ตะหลิวกรอง การออกแบบ :  สวย คุณภาพ :  ดี ได้รับสินค้าเรียบร้อยแพ็คกันกระแทกมาอย่างดี รู้อยู่แล้วว่าสินค้ายี่ห้อนี้ดีอีกอย่างนึงรุ่นนี้ราคาไม่แพง เพิ่งเคยใช้ตะหลิวแบบนี้เพราะว่าเพิ่งซื้อกระทะแบบเทฟล่อนมาใช้ ยังไม่ได้ลองใช้แต่ดูแล้วน่าจะดี เนื้อหนาและดีแข็งแรงทนทาน ทำรายการลดราคาบ่อยๆนะคะ
+พนักงานส่งของบริการดีเป็นกันเอง
+							208 container
+								209 image
+								210 text 0:14
+							211 image
+							212 text 11
+						213 container
+							214 text g*****d
+							215 image
+							216 image
+							217 image
+							218 image
+							219 image
+							220 text 2026-01-05 23:59 | ตัวเลือกสินค้า: ตะหลิว การออกแบบ :  สวย เริ่ด คุณภาพ :  ดีมาก แพ็คดี ส่งไว สินค้าคุณภาพดี ที่เห็นตำหนิคือชั้นใช้ฉ่ำแล้ว เพิ่งมารีวิว คือชั้นใช้หม้อไฟฟ้าไง แล้วใช้ช้อนส้อมสแตนเลสมันไฟช้อต เปลี่ยนมาใช้อันนี้คือเริ่ด ล้างง่าย แห้งไวแม่
+							221 container
+								222 image
+								223 text 0:09
+							224 image
+							225 text 5
+						226 container
+							227 text h*****3
+							228 image
+							229 image
+							230 image
+							231 image
+							232 image
+							233 text 2025-12-15 10:42 | ตัวเลือกสินค้า: ทัพพี ทัพพี Seagull รุ่นนิวเอนจอย วัสดุแข็งแรง น้ำหนักกำลังดี จับถนัดมือ ทนความร้อน ใช้งานสะดวก เหมาะทำอาหารทุกวัน คุ้มราคา
+							234 container
+								235 image
+								236 text 0:13
+							237 image
+							238 text 2
+						239 container
+							240 link Description: profile, Value: shopee.co.th/shop/buyer/89554…
+							241 link Description: taejurai, Value: shopee.co.th/shop/buyer/89554…
+							242 image
+							243 image
+							244 image
+							245 image
+							246 image
+							247 text 2026-07-12 15:07 | ตัวเลือกสินค้า: ทัพพี วัสดุ :  วัสดุแข็งแรงทนทานเคยซื้อใช้เมื่อ 10 ปีที่แล้วอันนั้นอ่อนมากแต่ปัจจุบันวัสดุดีมากกว่าเมื่อ 10 ปีที่แล้วค่ะ ￼ ออกแบบ :  ขนาดกระทัดรัดออกแบบมาดีรูแขวนใหญ่มาก ตะหลิวแข็งแรงน้ำหนักเบาใช้งานสะดวก ￼
+							248 container
+								249 image
+								250 text 0:11
+							251 container
+								252 image
+								253 text 0:05
+							254 image
+							255 text 1
+						256 container
+							257 link Description: profile, Value: shopee.co.th/shop/buyer/34107…
+							258 link Description: andyant, Value: shopee.co.th/shop/buyer/34107…
+							259 image
+							260 image
+							261 image
+							262 image
+							263 image
+							264 text 2026-05-26 09:39 | ตัวเลือกสินค้า: ตะหลิว วัสดุ :  แข็งแรงดีมาก ออกแบบ :  ดี จับถนัดมือ ความทนทาน :  ทนความร้อนดี ไม่ละลาย เมื่อต้องทอดของร้อนๆ เบา แข็งแรง ถือง่าย ไม่ละลายเมื่อโดนความร้อนจัดๆ ราคาดีมากกกก
+							265 container
+								266 image
+								267 text 0:13
+							268 image
+							269 text 2
+						270 container
+							271 link Description: profile, Value: shopee.co.th/shop/buyer/30255…
+							272 link Description: gamoum, Value: shopee.co.th/shop/buyer/30255…
+							273 image
+							274 image
+							275 image
+							276 image
+							277 image
+							278 text 2025-12-07 15:48 | ตัวเลือกสินค้า: ตะหลิว ออกแบบ :  เหมาะมือ ใช้งานได้ถนัดดี วัสดุ :  ดี หนาแน่น แข็งแรง ความทนทาน :  ดี เหมาะกับการทำอาหาร สินค้าตรงปก แพ็คมาดีมากกกก ส่งไวมาก แข็งแรง หนาแน่น ทนทาน แบรนด์นี้ไม่ผิดหวัง ดีมากๆๆๆ
+							279 container
+								280 image
+								281 text 0:10
+							282 image
+							283 text 2
+						284 container
+							285 button
+								286 image
+							287 button 1
+							288 button 2
+							289 button 3
+							290 button 4
+							291 button 5
+							292 button ...
+							293 button
+								294 image
+						295 text โค้ดส่วนลดร้านค้า
+						296 container
+							297 container voucher #
+							298 text ส่วนลด 2%
+							299 text ขั้นต่ำ ฿899 ลดสูงสุด ฿40
+							300 text ใช้ได้ถึง: 31.10.2026
+							301 button เก็บ
+						302 container
+							303 container voucher #
+							304 text ส่วนลด 3%
+							305 text ขั้นต่ำ ฿1,490 ลดสูงสุด ฿80
+							306 container
+								307 text ใช้แล้ว 70%,  ใช้ได้ถึง: 31.10.2026
+							308 button เก็บ
+						309 container
+							310 container voucher #
+							311 text ส่วนลด 4%
+							312 text ขั้นต่ำ ฿2,599 ลดสูงสุด ฿150
+							313 text ใช้ได้ถึง: 31.10.2026
+							314 button เก็บ
+						315 heading สินค้าขายดีประจำร้าน, Value: 2
+							316 text สินค้าขายดีประจำร้าน
+						317 container Product card: Seagull เตาแม่เหล็กไฟฟ้า รุ่นโมเดิร์น (ครีม) Modern Induction Cooker
+							318 container Product card
+								319 link Value: shopee.co.th/Seagull-%E0%B9%8…, Description: Seagull เตาแม่เหล็กไฟฟ้า รุ่นโมเดิร์น (ครีม) Modern Induction Cooker Seagull เตาแม่เหล็กไฟฟ้า รุ่นโมเดิร์น (ครีม) Modern Induction Cooker promotion price ฿ 1,764
+						320 container Product card: Seagull ถังขยะแบบเซ็นเซอร์ โมเดิร์น Modern Sensor Bin มีให้เลือก 2 ขนาด
+							321 container Product card
+								322 link Value: shopee.co.th/Seagull-%E0%B8%9…, Description: Seagull ถังขยะแบบเซ็นเซอร์ โมเดิร์น Modern Sensor Bin มีให้เลือก 2 ขนาด flag-label Seagull ถังขยะแบบเซ็นเซอร์ โมเดิร์น Modern Sensor Bin มีให้เลือก 2 ขนาด promotion price ฿ 379
+						323 container Product card: Seagull แก้วน้ำสุญญากาศ มินิมอล ขนาด 0.5 ลิตร Minimal Vacuum Mug มีให้เลือก 12 สี
+							324 container Product card
+								325 link Value: shopee.co.th/Seagull-%E0%B9%8…, Description: Seagull แก้วน้ำสุญญากาศ มินิมอล ขนาด 0.5 ลิตร Minimal Vacuum Mug มีให้เลือก 12 สี Seagull แก้วน้ำสุญญากาศ มินิมอล ขนาด 0.5 ลิตร Minimal Vacuum Mug มีให้เลือก 12 สี promotion price ฿ 219
+						326 container Product card: Seagull กระทะย่างชาบู กริลล์ อินดักชั่น ขนาด 30 ซม. และเตาอินดักชั่น Shabu Grill Induction Grill Pan and Induction Hob
+							327 container Product card
+								328 link Value: shopee.co.th/Seagull-%E0%B8%8…, Description: Seagull กระทะย่างชาบู กริลล์ อินดักชั่น ขนาด 30 ซม. และเตาอินดักชั่น Shabu Grill Induction Grill Pan and Induction Hob Seagull กระทะย่างชาบู กริลล์ อินดักชั่น ขนาด 30 ซม. และเตาอินดักชั่น Shabu Grill Induction Grill Pan and Induction Hob promotion price ฿ 2,667
+						329 container Product card: Seagull กระทะย่างชาบู กริลล์ อินดักชั่น ขนาด 30 ซม. Shabu Grill Induction Grill Pan
+							330 container Product card
+								331 link Value: shopee.co.th/Seagull-%E0%B8%8…, Description: Seagull กระทะย่างชาบู กริลล์ อินดักชั่น ขนาด 30 ซม. Shabu Grill Induction Grill Pan flag-label Seagull กระทะย่างชาบู กริลล์ อินดักชั่น ขนาด 30 ซม. Shabu Grill Induction Grill Pan promotion price ฿ 1,521
+						332 container Product card: Seagull เตาอบไฟฟ้า ขนาด 60 ลิตร (สีดำ) Electric Oven 60 Liters
+							333 container Product card
+								334 link Value: shopee.co.th/Seagull-%E0%B9%8…, Description: Seagull เตาอบไฟฟ้า ขนาด 60 ลิตร (สีดำ) Electric Oven 60 Liters Seagull เตาอบไฟฟ้า ขนาด 60 ลิตร (สีดำ) Electric Oven 60 Liters promotion price ฿ 4,009
+						335 container Product card: Seagull เครื่องกดน้ำร้อนอัตโนมัติ ขนาด 2.2 ลิตร (สีขาว)
+							336 container Product card
+								337 link Value: shopee.co.th/Seagull-%E0%B9%8…, Description: Seagull เครื่องกดน้ำร้อนอัตโนมัติ ขนาด 2.2 ลิตร (สีขาว) Seagull เครื่องกดน้ำร้อนอัตโนมัติ ขนาด 2.2 ลิตร (สีขาว) promotion price ฿ 1,871
+						338 container Product card: Seagull เครื่องกดน้ำร้อนอัตโนมัติ ดิจิตอล ขนาด 2.7 ลิตร Digital Instant Hot Water Dispenser มีให้เลือก 2 สี
+							339 container Product card
+								340 link Value: shopee.co.th/Seagull-%E0%B9%8…, Description: Seagull เครื่องกดน้ำร้อนอัตโนมัติ ดิจิตอล ขนาด 2.7 ลิตร Digital Instant Hot Water Dispenser มีให้เลือก 2 สี Seagull เครื่องกดน้ำร้อนอัตโนมัติ ดิจิตอล ขนาด 2.7 ลิตร Digital Instant Hot Water Dispenser มีให้เลือก 2 สี promotion price ฿ 3,080
+				341 text ศูนย์ช่วยเหลือ
+				342 content list
+					343 link Description: Help Centre, Value: help.shopee.co.th/th/s
+					344 link Description: สั่งซื้อสินค้าอย่างไร, Value: help.shopee.co.th/th/s/articl…
+					345 link Description: เริ่มขายสินค้าอย่างไร, Value: seller.shopee.co.th/edu/categ…
+					346 link Description: ช่องทางการชำระเงินใน Shopee, Value: help.shopee.co.th/th/s/articl…
+					347 link Description: Shopee Coins, Value: help.shopee.co.th/th/s/topic/…
+					348 link Description: การจัดส่งสินค้า, Value: help.shopee.co.th/portal/cate…
+					349 link Description: การคืนเงินและคืนสินค้า, Value: help.shopee.co.th/portal/cate…
+					350 link Description: การันตีโดย Shopee คืออะไร?, Value: help.shopee.co.th/th/s/articl…
+					351 link Description: ติดต่อ Shopee, Value: help.shopee.co.th/portal/arti…
+				352 text เกี่ยวกับ SHOPEE
+				353 content list
+					354 link Description: เกี่ยวกับเรา, Value: careers.shopee.com/about
+					355 link Description: โปรแกรม Affiliate, Value: shopee.co.th/m/affiliate-prog…
+					356 link Description: ร่วมงานกับเรา, Value: careers.shopee.com/jobs
+					357 link Description: นโยบาย, Value: help.shopee.co.th/portal/4/ca…
+					358 link Description: นโยบายความเป็นส่วนตัวของ Shopee, Value: help.shopee.co.th/portal/4/ar…
+					359 link Description: Shopee Blog, Value: shopee.co.th/blog
+					360 link Description: Shopee Mall, Value: shopee.co.th/mall/
+					361 link Description: Seller Centre, Value: seller.shopee.co.th/
+					362 link Description: Flash Deals, Value: shopee.co.th/flash_sale/
+					363 link Description: ผู้ติดต่อออนไลน์, Value: mailto:media.th@shopee.com
+				364 text วิธีการชำระเงิน
+				365 content list
+					366 link logo
+						367 image logo
+					368 link logo
+						369 image logo
+					370 link logo
+						371 image logo
+					372 link logo
+						373 image logo
+					374 link logo
+						375 image logo
+					376 link logo
+						377 image logo
+					378 link logo
+						379 image logo
+					380 link logo
+						381 image logo
+					382 link logo
+						383 image logo
+					384 link logo
+						385 image logo
+					386 link logo
+						387 image logo
+					388 link logo
+						389 image logo
+					390 link logo
+						391 image logo
+					392 link logo
+						393 image logo
+					394 link logo
+						395 image logo
+				396 text บริการจัดส่ง
+				397 content list
+					398 link Description: logo, Value: spx.co.th/th
+					399 link logo
+						400 image logo
+					401 link logo
+						402 image logo
+					403 link logo
+						404 image logo
+					405 link logo
+						406 image logo
+					407 link logo
+						408 image logo
+				409 text ติดตามเรา
+				410 content list
+					411 link Description: Facebook, Value: facebook.com/ShopeeTH
+					412 link Description: Instagram, Value: instagram.com/Shopee_TH
+					413 link Description: Line, Value: line.me/R/ti/p/@shopeeth
+					414 link Description: LinkedIn, Value: linkedin.com/company/shopee
+				415 text ดาวน์โหลดแอปพลิเคชั่น
+				416 link Description: download_qr_code, Value: linkedin.com/company/shopee
+				417 link Description: app, Value: linkedin.com/company/shopee
+				418 link Description: app, Value: linkedin.com/company/shopee
+				419 link Description: app, Value: linkedin.com/company/shopee
+				420 text © 2026 Shopee. All Rights Reserved
+				421 text Country & Region:
+				422 link Description: อาร์เจนตินา, Value: shopee.com.ar/
+				423 link Description: สิงคโปร์, Value: shopee.sg/
+				424 link Description: อินโดนีเซีย, Value: shopee.co.id/
+				425 link Description: ไทย, Value: shopee.co.th/
+				426 link Description: มาเลเซีย, Value: shopee.com.my/
+				427 link Description: เวียดนาม, Value: shopee.vn/
+				428 link Description: ฟิลิปปินส์, Value: shopee.ph/
+				429 link Description: บราซิล, Value: shopee.com.br/
+				430 link Description: เม็กซิโก, Value: shopee.com.mx/
+				431 link Description: ไต้หวัน, Value: shopee.tw/
+		432 image
+
+The focused UI element is 99 button ตะหลิว 

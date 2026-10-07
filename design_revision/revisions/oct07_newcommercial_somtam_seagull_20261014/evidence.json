@@ -1,0 +1,18 @@
+{
+  "entries": [
+    {
+      "url": "https://shopee.co.th/product/53085910/42763140924",
+      "claim": "Selected variant [\"ตะหลิว\"]. Caption claim review: {\"buyer_highheat_no_melting_testimonial_not_generalized\": true, \"listing_material\": \"ไนลอน\", \"listing_rating\": \"4.9\", \"listing_reviews_label\": \"7.8k\", \"listing_size_cm\": \"10x33x5.6\", \"listing_sold_label\": \"30k+\", \"no_foodsafe_heavymetal_toxin_independent_test_claim\": true, \"reviewer_electrical_safety_testimonial_not_used\": true, \"scope\": \"Header aggregate acrosslistingvariants; not selectedturner sales/currenttrend/pageconversions\", \"seller_limits\": \"No openflame proximity/highheat container soaking; spongeclean/dryafteruse\", \"seller_temperature_rating\": \"210C, sellerclaim only, not independenttesting\", \"source_selected_variant_tick\": true}",
+      "checked_at": "2026-10-07T14:15:00+00:00",
+      "source_file": "source-listing-ax.txt",
+      "source_sha256": "82a0e4f833bf24108a6cadcd009d51a49b361644ba5afdd8ff6abf065c5cda7d"
+    }
+  ],
+  "source_caption_audit_file": "source-caption-audit.json",
+  "source_caption_audit_sha256": "285c94aeb49a65aeeb41528e09b22404720db094ca7286df1f31a216ee7dfcd5",
+  "source_tracking_proof_file": "source-tracking-proof.json",
+  "source_tracking_proof_sha256": "265cde6aef4346665f8700b96b2af9aad26ee4646724913892262e65a4f2a300",
+  "actual_product_photo_file": "actual-product.webp",
+  "actual_product_photo_sha256": "4840aac8a0780ebb145e705d378bf97ce8679eba1e1c4c6c83765f916c939e8e",
+  "source_review_scope": "Root actual current listing/caption audit, not hands-on product testing; upstream audit flags are preserved as historical source."
+}

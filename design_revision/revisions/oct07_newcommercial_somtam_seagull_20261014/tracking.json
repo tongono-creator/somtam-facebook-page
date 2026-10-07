@@ -1,0 +1,23 @@
+{
+  "canonical_sku": "53085910/42763140924",
+  "affiliate_url": "https://s.shopee.co.th/4qGE7hXtSb",
+  "destination_url": "https://shopee.co.th/product/53085910/42763140924",
+  "observed_destination_url": "https://shopee.co.th/opaanlp/53085910/42763140924",
+  "subids": [
+    "somtam",
+    "20261014",
+    "seagullturner",
+    "facebook",
+    "reviewA"
+  ],
+  "observed_utm_content": "somtam-20261014-seagullturner-facebook-reviewA",
+  "variants": [
+    "ตะหลิว"
+  ],
+  "actual_product_photo_path": "actual-product.webp",
+  "root_actual_destination_variant_subids_verified": true,
+  "verified_at": "2026-10-07T13:55:22.194Z",
+  "actual_product_photo_sha256": "4840aac8a0780ebb145e705d378bf97ce8679eba1e1c4c6c83765f916c939e8e",
+  "source_tracking_proof_file": "source-tracking-proof.json",
+  "source_tracking_proof_sha256": "265cde6aef4346665f8700b96b2af9aad26ee4646724913892262e65a4f2a300"
+}

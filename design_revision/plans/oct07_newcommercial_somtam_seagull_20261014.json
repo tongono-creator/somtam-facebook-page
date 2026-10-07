@@ -1,0 +1,32 @@
+{
+  "payload": {
+    "action": "schedule_new_commercial_product_photo",
+    "channel": "somtam_fb",
+    "page_id": "554501167740603",
+    "page_name": "พริก 10 เม็ด",
+    "reviewed_at": "2026-10-07T14:17:35.145373+00:00",
+    "package_id": "oct07_newcommercial_somtam_seagull_20261014",
+    "package_path": "design_revision/revisions/oct07_newcommercial_somtam_seagull_20261014",
+    "package_sha256": "101c697f36e2976ca5c5cda46bc81e4890abdf79c7fa8471c99be957161563dd",
+    "mobile_path": "design_revision/revisions/oct07_newcommercial_somtam_seagull_20261014/mobile.png",
+    "mobile_sha256": "31c2d074859766eaaa570fc9b2f6c22596502e2eb54c7762255a1ed2cb611015",
+    "actual_product_photo_path": "design_revision/revisions/oct07_newcommercial_somtam_seagull_20261014/actual-product.webp",
+    "actual_product_photo_sha256": "4840aac8a0780ebb145e705d378bf97ce8679eba1e1c4c6c83765f916c939e8e",
+    "canonical_sku": "53085910/42763140924",
+    "tracking_variant_proof_path": "design_revision/revisions/oct07_newcommercial_somtam_seagull_20261014/tracking.json",
+    "tracking_variant_proof_sha256": "2989784bd1402788d71fa39dd54e502bf48ff320eb9229256d2620fb1349ab0c",
+    "monthly_plan_path": "design_revision/monthly_commercial_operations_oct07.json",
+    "monthly_plan_sha256": "544a85a19778ef28c9372925987307daf2eb8bd614c1489684ba04cd289acfe5",
+    "worker_before_sha256": "5b087bab345f32a72799341f653ebf6a1381bb3bb802208e46d0220975bf1412",
+    "mapping_before_sha256": "08bf9ad6a462abf51b45ff492e8c040c9f4bc58207bcd24a98a1452f015189fa",
+    "monthly_sales_limit_after": 2,
+    "root_actual_product_photo_confirmed": true,
+    "root_variant_destination_subids_confirmed": true,
+    "root_existing_single_writer_confirmed": true,
+    "root_whole_page_7day_cooldown_confirmed": true,
+    "root_monthly_sales_plan_confirmed": true,
+    "root_enable_exact_selected_comment_after_native_verified": true
+  },
+  "payload_sha256": "f54335cdf2fbc95819231ac6160f2a233d7511bf07e34b4a5efde7b2875aaf37",
+  "root_signature": "/FAjPkrsrchnrEJjMlifPj4ffb8T3e6tKMH/bhHLLGLjdOSic6bXh1GAksadBpWWFgHUlmBivgOrsopUUtsvCg=="
+}

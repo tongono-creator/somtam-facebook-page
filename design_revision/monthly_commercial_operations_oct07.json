@@ -1,0 +1,28 @@
+{
+  "status": "ROOT_REVIEWED_NEW_COMMERCIAL_ONLY",
+  "month": "2026-10",
+  "per_page_ceiling": 2,
+  "selected_new_commercial_posts": 1,
+  "operations": [
+    {
+      "action": "schedule_new_commercial_product_photo",
+      "package_id": "oct07_newcommercial_somtam_seagull_20261014",
+      "after_schedule": 1791975600,
+      "canonical_sku": "53085910/42763140924"
+    }
+  ],
+  "root_slot_spacing_review": {
+    "channel_key": "somtam_fb",
+    "scheduled_at": "2026-10-14T18:00:00+07:00",
+    "minimum_separation_minutes": 2880.0,
+    "existing_queue_checked_at": "2026-10-07T13:12:01.967589+00:00",
+    "new38_verified_receipt_checked": true,
+    "old_operations": 0
+  },
+  "minimum_native_spacing_minutes": 90,
+  "root_current_full_queue_90minute_review_confirmed": true,
+  "root_whole_page_7day_sku_cooldown_confirmed": true,
+  "old_native_operations": 0,
+  "existing_single_worker_only": true,
+  "root_reviewed_at": "2026-10-07T14:17:35.145373+00:00"
+}
