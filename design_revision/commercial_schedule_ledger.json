@@ -1,10 +1,10 @@
 {
   "oct07_newcommercial_somtam_seagull_20261014": {
-    "state": "created_pending_readback",
+    "state": "native_verified_pending_mapping",
     "plan_sha256": "f54335cdf2fbc95819231ac6160f2a233d7511bf07e34b4a5efde7b2875aaf37",
     "package_id": "oct07_newcommercial_somtam_seagull_20261014",
     "page_id": "554501167740603",
-    "updated_at": "2026-10-07T14:24:32.267406+00:00",
+    "updated_at": "2026-10-07T14:24:35.090092+00:00",
     "slot": 1791975600,
     "caption_sha256": "8af5dcf849e7ecac1a20714022aeb347c6954dc290020bdf13560f7cceb19620",
     "canonical_sku": "53085910/42763140924",
@@ -29,6 +29,18 @@
     "package_sha256": "101c697f36e2976ca5c5cda46bc81e4890abdf79c7fa8471c99be957161563dd",
     "month": "2026-10",
     "photo_id": "122188682618726152",
-    "new_post_id": null
+    "new_post_id": "554501167740603_122188682618726152",
+    "after": {
+      "post_id": "554501167740603_122188682618726152",
+      "is_published": false,
+      "schedule": {
+        "present": true,
+        "value": 1791975600
+      },
+      "message_sha256": "8af5dcf849e7ecac1a20714022aeb347c6954dc290020bdf13560f7cceb19620",
+      "attachment_ids": [
+        "122188682618726152"
+      ]
+    }
   }
 }
